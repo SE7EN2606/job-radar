@@ -28,7 +28,7 @@
     </nav>
   </aside>
   <main class="main">
-    <div class="top"><div><h1>Opportunity radar</h1><div class="muted">Strategic account growth first. Hunters downranked.</div></div><button class="btn primary" onclick="scan(event)">Scan now</button></div>
+    <div class="top"><div><h1>Opportunity radar</h1><div class="muted">Strategic account growth first. Hunters downranked.</div><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Curated roles loaded · scanner data pending</div></div><button class="btn primary" onclick="scan(event)">Scan now</button></div>
     <div class="grid">
       <div class="stat"><span class="muted">Strong matches</span><b id="strong">0</b></div>
       <div class="stat"><span class="muted">Low hunter intensity</span><b id="lowHunter">0</b></div>
@@ -119,13 +119,35 @@ function filterRows(kind,el){
   document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); el.classList.add('active');
   render(kind==='all'?jobs:jobs.filter(j=>j.type.includes(kind)));
 }
+async function loadScannedJobs(){
+  try{
+    const res=await fetch('data/jobs.json?ts='+Date.now(),{cache:'no-store'});
+    if(!res.ok) return;
+    const payload=await res.json();
+    const existing=new Set(jobs.map(j=>j.id));
+    (payload.jobs||[]).forEach(j=>{
+      if(!existing.has(j.id)){
+        j.type=(j.type||'')+' scanned';
+        jobs.push(j);
+        existing.add(j.id);
+      }
+    });
+    const when=payload.generatedAt?new Date(payload.generatedAt).toLocaleString():'not run yet';
+    scanMeta.textContent='Scanner: LinkedIn · Indeed · Glassdoor · HelloWork · last scan '+when+' · '+(payload.count||0)+' raw matches';
+    updateStats();
+    render();
+  }catch(err){
+    scanMeta.textContent='Curated roles loaded · scanner data unavailable';
+  }
+}
 function scan(e){
-  const b=e.currentTarget;b.textContent='Scanning…';
-  setTimeout(()=>{b.textContent='Scan now';alert('MVP UI only. Next step connects verified job ingestion and persistent application tracking.')},800)
+  const url='https://github.com/SE7EN2606/job-radar/actions/workflows/scan-jobs.yml';
+  window.open(url,'_blank','noopener');
 }
 function tailor(){alert('Next phase: generate controlled CV changes + cover letter + application answers.')}
 updateStats();
 render();
+loadScannedJobs();
 </script>
 </body>
 </html>

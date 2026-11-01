@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "15 6 * * 1-5"
+  push:
+    paths:
+      - "scanner/**"
+      - "requirements.txt"
+      - ".github/workflows/scan-jobs.yml"
 
 permissions:
   contents: write

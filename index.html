@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Job Radar</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#182238;--text:#eef3ff;--muted:#9aaccc;--line:#27344f;--good:#42d392;--warn:#f6c453;--bad:#ff6b6b;--accent:#7aa2ff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#09101d,#0d1424 55%,#0a1020);color:var(--text)}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{border-right:1px solid var(--line);padding:28px 18px;background:rgba(8,13,25,.7);position:sticky;top:0;height:100vh}.brand{font-size:20px;font-weight:800;margin-bottom:28px}.brand span{color:var(--accent)}.nav a{display:block;color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:10px;margin:4px 0}.nav a.active,.nav a:hover{background:var(--panel2);color:var(--text)}.main{padding:28px;max-width:1500px;width:100%}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}.top h1{margin:0;font-size:28px}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:#07101f}.btn.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}.stat b{display:block;font-size:26px;margin-top:6px}.muted{color:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}.chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}.chip.active{color:var(--text);border-color:var(--accent)}
+.table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.row{display:grid;grid-template-columns:2.1fr .9fr .8fr .8fr .8fr .8fr 1fr;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}.row.head{border-top:0;background:#10182a;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}.company{font-weight:800}.title{font-size:13px;color:var(--muted);margin-top:4px}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.score{font-size:22px;font-weight:900}.salary{font-weight:700}.actions{display:flex;gap:6px;justify-content:flex-end}.small{padding:7px 9px;font-size:12px}
+.drawer{display:none;position:fixed;right:0;top:0;width:min(620px,95vw);height:100vh;background:#0f1728;border-left:1px solid var(--line);padding:24px;overflow:auto;box-shadow:-20px 0 60px rgba(0,0,0,.35)}.drawer.open{display:block}.drawer h2{margin:0 0 6px}.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.section h3{margin:0 0 10px;font-size:15px}.kv{display:grid;grid-template-columns:130px 1fr;gap:8px;font-size:14px;margin:6px 0}.diff{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;background:#0a1120;border-radius:10px;padding:12px}.plus{color:var(--good)}.minus{color:var(--bad)}
+@media(max-width:1000px){.app{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1.8fr .7fr .7fr .7fr 1fr}.row>*:nth-child(3),.row>*:nth-child(6){display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">Job<span>Radar</span></div>
+    <nav class="nav">
+      <a class="active" href="#">Opportunities</a>
+      <a href="#">Applications</a>
+      <a href="#">CV Master</a>
+      <a href="#">Companies</a>
+      <a href="#">Settings</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="top"><div><h1>Opportunity radar</h1><div class="muted">Strategic account growth first. Hunters downranked.</div></div><button class="btn primary" onclick="scan()">Scan now</button></div>
+    <div class="grid">
+      <div class="stat"><span class="muted">Strong matches</span><b id="strong">6</b></div>
+      <div class="stat"><span class="muted">Low hunter intensity</span><b id="lowHunter">4</b></div>
+      <div class="stat"><span class="muted">Applied</span><b>3</b></div>
+      <div class="stat"><span class="muted">Needs follow-up</span><b>2</b></div>
+    </div>
+    <div class="filters">
+      <button class="chip active" onclick="filterRows('all',this)">All</button>
+      <button class="chip" onclick="filterRows('growth',this)">Account growth</button>
+      <button class="chip" onclick="filterRows('ae',this)">AE</button>
+      <button class="chip" onclick="filterRows('remote',this)">Remote</button>
+      <button class="chip" onclick="filterRows('apply',this)">Apply</button>
+    </div>
+    <div class="table" id="jobs">
+      <div class="row head"><div>Company / Role</div><div>Fit</div><div>Hunter</div><div>Location</div><div>Salary</div><div>Rating</div><div></div></div>
+    </div>
+  </main>
+</div>
+<div class="drawer" id="drawer">
+  <button class="btn ghost small" style="float:right" onclick="closeDrawer()">Close</button>
+  <h2 id="dCompany"></h2><div class="muted" id="dTitle"></div>
+  <div class="section"><h3>Decision</h3><div class="kv"><span class="muted">Recommendation</span><b id="dRec"></b></div><div class="kv"><span class="muted">Fit score</span><span id="dFit"></span></div><div class="kv"><span class="muted">Hunter intensity</span><span id="dHunter"></span></div><div class="kv"><span class="muted">Location</span><span id="dLocation"></span></div></div>
+  <div class="section"><h3>Pros</h3><div id="dPros"></div></div>
+  <div class="section"><h3>Cons / risks</h3><div id="dCons"></div></div>
+  <div class="section"><h3>Suggested CV tweaks</h3><div class="diff" id="dDiff"></div></div>
+  <div class="section"><h3>Cover letter angle</h3><div id="dCover"></div></div>
+  <button class="btn primary" style="width:100%" onclick="alert('MVP: next step connects this button to the tailoring backend and generates DOCX/PDF + cover letter.')">Tailor application</button>
+</div>
+<script>
+const jobs=[
+{company:'Duvo.ai',title:'Senior Account Executive, EMEA',fit:86,hunter:'Medium',location:'EU/UK Remote',salary:'€100–130k listed',rating:'—',type:'ae remote apply',rec:'FOLLOW UP',pros:['Retail/ecommerce operations','AI workflow automation','Complex enterprise solution selling','Strong domain adjacency'],cons:['Early-stage pressure','Meaningful self-sourced pipeline'],diff:'Headline: Senior Enterprise Account Executive | SaaS | Retail Operations and Complex Solutions\n+ Emphasize operational efficiency, workflow complexity and integrations in Productsup\n- Reduce compliance-heavy wording from Insly',cover:'Retail operations + ecommerce + complex workflow discovery + AI automation.'},
+{company:'Zip',title:'Strategic Enterprise Account Executive',fit:84,hunter:'Medium',location:'Remote (role-dependent)',salary:'Undisclosed',rating:'Strong brand',type:'ae remote apply',rec:'APPLY',pros:['Strategic enterprise','Procurement/finance/IT/ops buyers','AI platform','BDR + marketing support'],cons:['No direct procurement software history','Very large $7B+ enterprises'],diff:'+ Emphasize multi-stakeholder enterprise buying groups\n+ Highlight finance, IT, operations and procurement-process exposure\n- De-emphasize ecommerce-only framing',cover:'Enterprise transformation, operational workflows, executive selling and measurable ROI.'},
+{company:'GitLab',title:'Major / Strategic Account Executive France',fit:82,hunter:'Medium',location:'France Remote',salary:'Undisclosed',rating:'Established',type:'ae remote apply',rec:'APPLY',pros:['Strategic accounts','New + expansion','Transferable backgrounds welcomed','Fully remote culture'],cons:['DevSecOps domain gap','Travel expected'],diff:'+ Emphasize integrations and technical stakeholders\n+ Keep consultative enterprise sales front and center\n- Do not claim DevOps expertise',cover:'Complex enterprise selling and ability to learn technical platforms; focus on business value.'},
+{company:'TeamViewer',title:'Enterprise Account Manager France',fit:88,hunter:'Low',location:'France',salary:'Undisclosed',rating:'Established',type:'growth apply',rec:'PRIORITY',pros:['Farming-focused','Existing enterprise portfolio','Renewal + expansion','AE team handles new logos'],cons:['France employment/location to verify'],diff:'+ Reframe headline toward Strategic / Enterprise Account Management\n+ Elevate Air Group, Aurea and expansion achievements\n+ Add renewals, upsell and long-term account planning',cover:'Strategic account ownership, retention, expansion and executive relationships.'},
+{company:'Mozilla',title:'Strategic Account Manager, Firefox Enterprise',fit:86,hunter:'Low',location:'Remote France',salary:'Undisclosed',rating:'Strong mission',type:'growth remote apply',rec:'PRIORITY',pros:['Strategic account management','Remote','Enterprise customers','Less cold outbound'],cons:['Enterprise browser category is new'],diff:'+ Emphasize strategic portfolio growth\n+ Highlight long-term customer relationships and cross-functional orchestration',cover:'Enterprise account growth, adoption, expansion and strategic customer relationships.'},
+{company:'Yotpo',title:'Enterprise Account Executive',fit:90,hunter:'Medium',location:'London Hybrid',salary:'£90–100k / £180–200k OTE',rating:'Mixed',type:'ae',rec:'INVESTIGATE',pros:['Excellent ecommerce fit','Partner-sourced pipeline','Strong compensation','Recognizable brands'],cons:['London hybrid','Mixed employee reviews','Competitive product category'],diff:'+ Emphasize ecommerce, CX, reviews/loyalty adjacency\n+ Productsup, Nosto and SoCloz should dominate narrative',cover:'Enterprise ecommerce growth, CX, partner ecosystem and complex SaaS sales.'}
+];
+function render(items=jobs){const host=document.getElementById('jobs');host.querySelectorAll('.data').forEach(x=>x.remove());items.forEach((j,i)=>{const r=document.createElement('div');r.className='row data';r.dataset.type=j.type;r.innerHTML=`<div><div class="company">${j.company}</div><div class="title">${j.title}</div></div><div class="score">${j.fit}</div><div><span class="pill ${j.hunter==='Low'?'good':j.hunter==='High'?'bad':'warn'}">${j.hunter}</span></div><div>${j.location}</div><div class="salary">${j.salary}</div><div>${j.rating}</div><div class="actions"><button class="btn ghost small" onclick="openDrawer(${i})">Review</button></div>`;host.appendChild(r)});}
+function openDrawer(i){const j=jobs[i];dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dFit.textContent=j.fit+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dPros.innerHTML=j.pros.map(x=>'• '+x).join('<br>');dCons.innerHTML=j.cons.map(x=>'• '+x).join('<br>');dDiff.textContent=j.diff;dCover.textContent=j.cover;drawer.classList.add('open')}
+function closeDrawer(){drawer.classList.remove('open')}
+function filterRows(kind,el){document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));el.classList.add('active');if(kind==='all')return render(jobs);render(jobs.filter(j=>j.type.includes(kind)))}
+function scan(){const b=event.target;b.textContent='Scanning…';setTimeout(()=>{b.textContent='Scan now';alert('MVP UI only. Next step connects Greenhouse/Ashby/Lever/Recruitee/company-careers ingestion and your ChatGPT job-search automation.')},800)}
+render();
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 const OWNER = "SE7EN2606";
 const REPO = "job-radar";
-const WORKFLOW = "scan-jobs.yml";
+const WORKFLOW = "scan-careerops.yml";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {

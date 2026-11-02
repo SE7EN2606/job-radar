@@ -11,10 +11,11 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 .main{padding:28px;max-width:1550px;width:100%}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}.top h1{margin:0;font-size:28px}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.btn:disabled{cursor:not-allowed}.btn.primary{background:var(--accent);color:#07101f}.btn.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.btn.danger{background:transparent;color:var(--bad);border:1px solid rgba(255,107,107,.4)}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}.stat b{display:block;font-size:26px;margin-top:6px}.muted{color:var(--muted)}
 .toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:14px 0 18px;flex-wrap:wrap}.tabs,.filters{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}.chip.active{color:var(--text);border-color:var(--accent)}select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
-.table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.row{display:grid;grid-template-columns:2.25fr .58fr .72fr .85fr .9fr .68fr 1fr .72fr;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}.row.head{border-top:0;background:#10182a;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}.row.blocked{background:rgba(255,107,107,.035)}.company{font-weight:800}.title{font-size:13px;color:var(--muted);margin-top:4px}.meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.info{color:var(--accent)}.score{font-size:22px;font-weight:900}.salary{font-weight:700}.actions{display:flex;gap:6px;justify-content:flex-end}.small{padding:7px 9px;font-size:12px}
+.table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.row{display:grid;grid-template-columns:2.05fr .55fr .68fr .8fr .76fr .82fr .62fr .95fr .72fr;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}.row.head{border-top:0;background:#10182a;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}.row.blocked{background:rgba(255,107,107,.035)}.company{font-weight:800}.title{font-size:13px;color:var(--muted);margin-top:4px}.meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.info{color:var(--accent)}.score{font-size:22px;font-weight:900}.salary{font-weight:700}.actions{display:flex;gap:6px;justify-content:flex-end}.small{padding:7px 9px;font-size:12px}
 .drawer{display:none;position:fixed;right:0;top:0;width:min(680px,96vw);height:100vh;background:#0f1728;border-left:1px solid var(--line);padding:24px;overflow:auto;box-shadow:-20px 0 60px rgba(0,0,0,.35);z-index:20}.drawer.open{display:block}.drawer h2{margin:0 0 6px}.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.section h3{margin:0 0 10px;font-size:15px}.kv{display:grid;grid-template-columns:145px 1fr;gap:8px;font-size:14px;margin:6px 0}.diff,.copybox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;background:#0a1120;border-radius:10px;padding:12px;line-height:1.5}.drawer-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}.empty{padding:40px;text-align:center;color:var(--muted)}
 @media(max-width:1100px){.app{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1.8fr .6fr .7fr .9fr 1fr .7fr}.row>*:nth-child(3),.row>*:nth-child(6){display:none}}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <div class="app">
@@ -58,7 +59,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
   </div>
 
   <div class="table" id="jobs">
-    <div class="row head"><div>Company / Role</div><div>Fit</div><div>Hunter</div><div>Location</div><div>Salary</div><div>Rating</div><div>Status</div><div></div></div>
+    <div class="row head"><div>Company / Role</div><div>Fit</div><div>Hunter</div><div>Location</div><div>Posted</div><div>Salary</div><div>Rating</div><div>Status</div><div></div></div>
   </div>
 </main>
 </div>
@@ -74,6 +75,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
     <div class="kv"><span class="muted">Domain fit</span><span id="dDomainFit"></span></div>
     <div class="kv"><span class="muted">Hunter intensity</span><span id="dHunter"></span></div>
     <div class="kv"><span class="muted">Location</span><span id="dLocation"></span></div>
+    <div class="kv"><span class="muted">Date posted</span><span id="dDate"></span></div>
     <div class="kv"><span class="muted">Company domain</span><span id="dDomain"></span></div>
     <div class="kv"><span class="muted">Job ad</span><span id="dLink"></span></div>
   </div>
@@ -88,6 +90,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
     <div class="muted" style="margin-bottom:8px">Controlled wording only. No invented experience.</div>
     <div class="copybox" id="tailorText"></div>
     <button class="btn ghost small" style="margin-top:8px" onclick="copyTailor()">Copy all</button>
+    <button class="btn primary small" style="margin-top:8px" onclick="generateAtsPdf()">Generate ATS PDF</button>
   </div>
 
   <div class="drawer-actions">
@@ -106,6 +109,40 @@ const curatedJobs=[
 {id:'mozilla',company:'Mozilla',domain:'mozilla.org',applyUrl:'https://www.mozilla.org/en-US/careers/',title:'Strategic Account Manager, Firefox Enterprise',fit:86,domainFit:76,hunter:'Low',location:'Remote France',salary:'Undisclosed',rating:'Strong mission',status:'Priority',statusTone:'good',type:'growth remote',rec:'PRIORITY',pros:['Strategic account management','Remote','Enterprise customers','Less cold outbound'],cons:['Enterprise browser category is new'],diff:'Emphasize strategic portfolio growth, long-term customer relationships and cross-functional orchestration.',cover:'Enterprise account growth, adoption, expansion and strategic customer relationships.'},
 {id:'yotpo',company:'Yotpo',domain:'yotpo.com',applyUrl:'https://www.yotpo.com/careers/',title:'Enterprise Account Executive',fit:45,domainFit:90,hunter:'Medium',location:'London Hybrid',salary:'£90–100k / £180–200k OTE',rating:'Mixed',status:'LOCATION BLOCKED',statusTone:'bad',type:'ae blocked',rec:'SKIP UNLESS LOCATION CHANGES',pros:['Excellent ecommerce/domain fit','Partner-sourced pipeline','Strong compensation','Recognizable brands'],cons:['London hybrid is incompatible with your location preference','Not planning to relocate to London','Mixed employee reviews'],diff:'Do not tailor further unless Yotpo confirms an approved location option.',cover:'No cover letter recommended until location flexibility is confirmed.'}
 ];
+
+const MASTER_CV={
+  headline:'Senior Strategic Account Executive | B2B SaaS | Enterprise Growth & Complex Sales',
+  summary:[
+    'Senior SaaS sales professional with 10+ years of experience in enterprise software, strategic account development and complex B2B sales across European markets.',
+    'Experienced in managing multi-stakeholder sales cycles from qualification and discovery through product demonstrations, commercial negotiation, procurement and close.',
+    'Strong background in enterprise account growth, new-market development, executive engagement and cross-functional collaboration with product and technical teams.'
+  ],
+  insly:{
+    expansion:'Developed tailored commercial solutions supporting long-term platform adoption, account growth and expansion opportunities.'
+  },
+  productsup:{
+    focus:'Enterprise SaaS sales and development of the French market for a complex ecommerce technology platform.',
+    needs:'Translated complex customer needs into tailored SaaS solutions across integrations, channels, markets and usage.',
+    results:'Increased average deal size by 25 percent through solution selling and account expansion.'
+  },
+  socloz:{
+    focus:'Complex omnichannel SaaS sales to enterprise retailers with long sales cycles and multiple decision makers.'
+  },
+  airgroup:{
+    focus:'Managed and grew a multi brand portfolio across major retail and ecommerce accounts.',
+    relationships:'Built senior relationships through account planning, commercial development, and regular performance reviews.',
+    result:'Helped grow annual portfolio turnover from approximately €160,000 to €4 million over more than three years.'
+  },
+  nosto:{
+    focus:'New business development in the French market for an ecommerce personalization SaaS platform.'
+  }
+};
+
+const BASE_COVER={
+  opening:'I am applying for this opportunity because it aligns with my background in enterprise SaaS, complex B2B sales and strategic account development across European markets.',
+  evidence:'Across Insly, Productsup and earlier roles, I have managed multi-stakeholder sales cycles, worked with senior business and technical stakeholders, and developed long-term commercial opportunities.',
+  close:'I would welcome the opportunity to discuss how my experience could contribute to your team.'
+};
 
 const jobs=[...curatedJobs];
 let state={hidden:[],applied:['duvo']};
@@ -159,6 +196,12 @@ function filteredJobs(){
   });
   return list;
 }
+function formatDate(value){
+  if(!value) return '—';
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime())) return String(value).slice(0,10)||'—';
+  return d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
+}
 function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
   const items=filteredJobs();
@@ -170,7 +213,7 @@ function renderCurrent(){
     r.innerHTML='<div><div class="company">'+j.company+'</div><div class="title">'+j.title+'</div><div class="meta"><span>'+domain+'</span>'+(url?'<a href="'+url+'" target="_blank" rel="noopener">Job ad ↗</a>':'')+'</div></div>'+
       '<div class="score">'+practicalFit(j)+'</div>'+
       '<div><span class="pill '+(j.hunter==='Low'?'good':j.hunter==='High'?'bad':'warn')+'">'+j.hunter+'</span></div>'+
-      '<div>'+j.location+'</div><div class="salary">'+j.salary+'</div><div>'+j.rating+'</div><div>'+statusPill(j)+'</div>'+
+      '<div>'+j.location+'</div><div>'+formatDate(j.datePosted)+'</div><div class="salary">'+j.salary+'</div><div>'+j.rating+'</div><div>'+statusPill(j)+'</div>'+
       '<div class="actions"><button class="btn ghost small" onclick="openDrawer(\''+j.id+'\')">Review</button></div>';
     host.appendChild(r);
   });
@@ -186,7 +229,7 @@ function setFilter(filter,el){currentFilter=filter;document.querySelectorAll('[d
 function openDrawer(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;activeJobId=id;
   dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dStatus.textContent=isHidden(j)?'Hidden':isApplied(j)?'Applied':j.status;
-  dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;
+  dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);
   const domain=domainFromJob(j);const companyUrl=safeUrl(j.companyUrl)||(j.domain?'https://'+j.domain:'');dDomain.innerHTML=domain==='—'?'—':(companyUrl?'<a href="'+companyUrl+'" target="_blank" rel="noopener">'+domain+' ↗</a>':domain);
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);dLink.innerHTML=url?'<a href="'+url+'" target="_blank" rel="noopener">Open job ad ↗</a>':'No direct link';
   dPros.innerHTML=(j.pros||[]).map(x=>'• '+x).join('<br>');dCons.innerHTML=(j.cons||[]).map(x=>'• '+x).join('<br>');
@@ -203,21 +246,170 @@ async function persistState(action,id){
 }
 async function markApplied(){if(!activeJobId)return;const j=jobs.find(x=>x.id===activeJobId);try{await persistState(isApplied(j)?'unapply':'applied',activeJobId);openDrawer(activeJobId)}catch(e){alert(e.message)}}
 async function hideJob(){if(!activeJobId)return;const j=jobs.find(x=>x.id===activeJobId);try{await persistState(isHidden(j)?'unhide':'hide',activeJobId);closeDrawer();}catch(e){alert(e.message)}}
-function tailor(){
-  const j=jobs.find(x=>x.id===activeJobId);if(!j)return;
-  if(isHidden(j)) return;
-  const role=j.title;
-  const headline=j.type.includes('growth')||/account manager|customer success/i.test(role)
-    ? 'Strategic Enterprise Account Manager | SaaS | Customer Growth & Complex Solutions'
-    : 'Senior Enterprise Account Executive | SaaS | Complex Solutions & Strategic Accounts';
-  const summary='Senior SaaS sales professional with 10+ years of experience in enterprise software, complex B2B sales and strategic account development across Europe. Experienced in multi-stakeholder sales cycles, executive engagement, account growth and cross-functional collaboration. Native French speaker, fluent in English.';
-  const why='I am interested in '+j.company+' because the '+role+' role aligns with my background in enterprise SaaS, complex solution selling and strategic customer development. My experience across ecommerce, retail technology, product data and operational SaaS gives me a strong foundation for understanding complex customer environments and translating them into measurable business value.';
-  const fit='My strongest relevant experience includes developing the French market at Productsup, managing complex enterprise sales cycles, working with brands such as LVMH and L’Oréal, and collaborating closely with product, technical and customer-facing teams. I would bring a consultative approach focused on strong discovery, executive relationships and long-term commercial value.';
-  const cover='Dear Hiring Team,\n\nI am applying for the '+role+' position at '+j.company+'. '+why+'\n\n'+fit+'\n\nI would welcome the opportunity to discuss how my experience in enterprise SaaS and strategic customer development could contribute to '+j.company+'.\n\nBest regards,\nGregory Busnel';
-  tailorText.textContent='HEADLINE\n'+headline+'\n\nSUMMARY\n'+summary+'\n\nCV CHANGES\n'+(j.diff||'Keep changes light and role-specific.')+'\n\nCOVER LETTER\n'+cover+'\n\nAPPLICATION ANSWER — WHY THIS ROLE?\n'+why+'\n\nAPPLICATION ANSWER — WHY YOU?\n'+fit;
+async function tailor(){
+  const j=jobs.find(x=>x.id===activeJobId);if(!j||isHidden(j))return;
+  tailorBtn.disabled=true;tailorBtn.textContent='Reading job…';
+  let jd=(j.description||'').trim();
+  try{
+    if(j.id.startsWith('careerops-')){
+      const r=await fetch('/api/job-details?id='+encodeURIComponent(j.id),{cache:'no-store'});
+      if(r.ok){
+        const details=await r.json();
+        jd=details.description||jd;
+        if(details.datePosted){j.datePosted=details.datePosted;dDate.textContent=formatDate(j.datePosted);renderCurrent()}
+      }
+    }
+  }catch{}
+  tailorBtn.disabled=false;tailorBtn.textContent='Tailor application';
+
+  const text=(j.title+' '+jd).toLowerCase();
+  const isGrowth=/account manager|customer success|renewal|retention|expansion|portfolio|existing accounts/.test(text);
+  const isRetail=/ecommerce|e-commerce|retail|commerce|product data|marketplace/.test(text);
+  const isStrategic=/strategic|enterprise|key account|major account|global account/.test(text);
+  const isTechnical=/integration|api|technical|platform|workflow|data/.test(text);
+
+  const changes=[];
+  const headline=isGrowth
+    ? 'Strategic Enterprise Account Manager | B2B SaaS | Account Growth & Complex Solutions'
+    : (isStrategic
+      ? 'Senior Strategic Account Executive | B2B SaaS | Enterprise Growth & Complex Sales'
+      : 'Senior Enterprise Account Executive | B2B SaaS | Complex & Consultative Sales');
+  if(headline!==MASTER_CV.headline) changes.push({section:'Headline',from:MASTER_CV.headline,to:headline,why:'Align the headline with the role archetype without changing your actual seniority or experience.'});
+
+  let s1=MASTER_CV.summary[0];
+  if(isGrowth) s1='Senior SaaS sales professional with 10+ years of experience in enterprise software, strategic account development, account growth and complex B2B sales across European markets.';
+  if(s1!==MASTER_CV.summary[0]) changes.push({section:'Summary · line 1',from:MASTER_CV.summary[0],to:s1,why:'Moves account growth and strategic account development earlier for an installed-base / AM role.'});
+
+  let s3=MASTER_CV.summary[2];
+  if(isGrowth) s3='Strong background in enterprise account growth, executive engagement, long-term commercial development and cross-functional collaboration with product and technical teams.';
+  else if(isTechnical) s3='Strong background in enterprise sales, executive engagement and cross-functional collaboration with product and technical teams on complex platform and integration-led opportunities.';
+  if(s3!==MASTER_CV.summary[2]) changes.push({section:'Summary · line 3',from:MASTER_CV.summary[2],to:s3,why:'Mirrors the job emphasis using facts already present in your CV.'});
+
+  if(isGrowth){
+    changes.push({section:'Air Group · Focus',from:MASTER_CV.airgroup.focus,to:'Managed and grew a multi brand portfolio across major retail and ecommerce accounts, combining account planning, commercial development and long-term relationship growth.',why:'Makes your strongest true account-management evidence more explicit.'});
+    changes.push({section:'Insly · Achievement',from:MASTER_CV.insly.expansion,to:'Developed tailored commercial solutions supporting long-term platform adoption, account growth and expansion opportunities across complex enterprise accounts.',why:'Strengthens the expansion/retention angle without inventing metrics.'});
+  }
+
+  if(isRetail){
+    changes.push({section:'Productsup · Focus',from:MASTER_CV.productsup.focus,to:'Enterprise SaaS sales and French market development for a complex ecommerce and product-data technology platform serving large brands.',why:'Surfaces the ecommerce/product-data relevance earlier.'});
+  }
+
+  if(isTechnical){
+    changes.push({section:'Productsup · Action',from:MASTER_CV.productsup.needs,to:'Translated complex customer needs into tailored SaaS solutions across integrations, data flows, channels, markets and platform usage.',why:'Makes the technical/integration dimension easier for ATS and recruiters to see.'});
+  }
+
+  // Keep the change set controlled rather than rewriting the whole CV.
+  const unique=[];
+  const seen=new Set();
+  for(const ch of changes){const k=ch.section+'|'+ch.to;if(!seen.has(k)){seen.add(k);unique.push(ch)}}
+  const selected=unique.slice(0,5);
+
+  const coverOpening='I am applying for the '+j.title+' role at '+j.company+' because it closely aligns with my background in enterprise SaaS, '+(isGrowth?'strategic account growth':'complex B2B sales')+' and multi-stakeholder commercial development across European markets.';
+  const coverEvidence=isGrowth
+    ? 'My experience includes managing and growing strategic account portfolios, building senior customer relationships, developing expansion opportunities, and working cross-functionally with product and technical teams. At Air Group, I helped grow a major retail and ecommerce portfolio from approximately €160,000 to €4 million, while my SaaS roles at Productsup and Insly strengthened my experience with complex enterprise customers and technology-led buying cycles.'
+    : 'Across Insly, Productsup and SoCloz, I have managed complex enterprise sales cycles from discovery through negotiation and close, working with executive, operational and technical stakeholders. At Productsup, I achieved 115 percent of target in year one and 138 percent in year two, secured enterprise projects with LVMH and L’Oréal, and increased average deal size by 25 percent through solution selling and account expansion.';
+  const coverClose='I would welcome the opportunity to discuss how this combination of enterprise SaaS experience, '+(isGrowth?'strategic account development':'consultative selling')+' and French-market expertise could contribute to '+j.company+'.';
+
+  const diffText=selected.length
+    ? selected.map((x,i)=>(i+1)+'. '+x.section+'\nCURRENT\n'+x.from+'\n\nREPLACE WITH\n'+x.to+'\n\nWHY\n'+x.why).join('\n\n------------------------------\n\n')
+    : 'No material CV wording change recommended. Keep the master CV and tailor only the cover letter for this role.';
+
+  const coverDiff=[
+    'OPENING PARAGRAPH\nBASE\n'+BASE_COVER.opening+'\n\nREPLACE WITH\n'+coverOpening,
+    'EVIDENCE PARAGRAPH\nBASE\n'+BASE_COVER.evidence+'\n\nREPLACE WITH\n'+coverEvidence,
+    'CLOSING PARAGRAPH\nBASE\n'+BASE_COVER.close+'\n\nREPLACE WITH\n'+coverClose
+  ].join('\n\n------------------------------\n\n');
+
+  const fullCover='Dear Hiring Team,\n\n'+coverOpening+'\n\n'+coverEvidence+'\n\n'+coverClose+'\n\nBest regards,\nGregory Busnel';
+
+  j.tailored={headline,summary:[s1,MASTER_CV.summary[1],s3],changes:selected,cover:fullCover};
+  tailorText.textContent='CV — EXACT CHANGES\n\n'+diffText+'\n\n================================\n\nCOVER LETTER — EXACT CHANGES\n\n'+coverDiff+'\n\n================================\n\nFINAL COVER LETTER\n\n'+fullCover;
   tailorOutput.style.display='block';
 }
+
 async function copyTailor(){await navigator.clipboard.writeText(tailorText.textContent)}
+function getPdfContact(){
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem('jobRadarContact')||'{}')}catch{}
+  if(!saved.email){
+    const email=prompt('Email for the CV PDF (saved only in this browser):','')||'';
+    const phone=prompt('Phone for the CV PDF (saved only in this browser):','')||'';
+    const linkedin=prompt('LinkedIn URL for the CV PDF (saved only in this browser):','')||'';
+    saved={email,phone,linkedin};
+    localStorage.setItem('jobRadarContact',JSON.stringify(saved));
+  }
+  return saved;
+}
+function generateAtsPdf(){
+  const j=jobs.find(x=>x.id===activeJobId);
+  if(!j||!j.tailored){alert('Run Tailor application first.');return}
+  if(!window.jspdf?.jsPDF){alert('PDF library is not available.');return}
+  const contact=getPdfContact();
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'pt',format:'a4'});
+  const left=48,right=547,width=right-left;
+  let y=48;
+  const add=(text,size=9,bold=false,gap=12)=>{
+    doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(size);
+    const lines=doc.splitTextToSize(String(text),width);
+    for(const line of lines){
+      if(y>790){doc.addPage();y=48}
+      doc.text(line,left,y);y+=gap;
+    }
+  };
+  add('GREGORY BUSNEL',15,true,18);
+  add(j.tailored.headline,10,true,15);
+  const contactLine=[contact.email,contact.linkedin,contact.phone].filter(Boolean).join(' | ');
+  if(contactLine)add(contactLine,8,false,13);
+  y+=4;
+  j.tailored.summary.forEach(s=>add(s,9,false,13));
+  y+=8;add('PROFESSIONAL EXPERIENCE',10,true,16);
+
+  const exp=[
+    ['BUSINESS SOLUTIONS MANAGER — Insly','August 2025 – Present',[
+      'Enterprise SaaS sales across international markets, managing complex opportunities with technical and compliance stakeholders.',
+      'Own the full sales cycle from account development, qualification and discovery through demo, negotiation and close.',
+      'Build relationships with executive, operational and technical stakeholders across complex customer organisations.',
+      'Managed enterprise opportunities with €60k–€120k recurring ACV, plus implementation fees and multi-year commitments.',
+      j.tailored.changes.find(x=>x.section==='Insly · Achievement')?.to||MASTER_CV.insly.expansion
+    ]],
+    ['SENIOR ACCOUNT EXECUTIVE — ProductsUp','March 2022 – July 2025',[
+      j.tailored.changes.find(x=>x.section==='Productsup · Focus')?.to||MASTER_CV.productsup.focus,
+      'Managed complex enterprise sales cycles from prospecting and discovery through negotiation, contracting and close.',
+      j.tailored.changes.find(x=>x.section==='Productsup · Action')?.to||MASTER_CV.productsup.needs,
+      'Achieved 115 percent of target in year one and 138 percent in year two.',
+      'Secured enterprise projects with LVMH and L’Oréal through complex, multi-stakeholder SaaS sales.',
+      MASTER_CV.productsup.results
+    ]],
+    ['SALES EXECUTIVE — SoCloz','January 2021 – March 2022',[
+      MASTER_CV.socloz.focus,
+      'Led discovery across IT, operations, finance and leadership to align platform capabilities with business priorities.',
+      'Exceeded sales targets by 35 percent through complex enterprise software sales.'
+    ]],
+    ['STRATEGIC ACCOUNT MANAGER — Air Group Holding','March 2017 – January 2021',[
+      j.tailored.changes.find(x=>x.section==='Air Group · Focus')?.to||MASTER_CV.airgroup.focus,
+      MASTER_CV.airgroup.relationships,
+      MASTER_CV.airgroup.result
+    ]],
+    ['SALES EXECUTIVE — Nosto','December 2015 – March 2017',[
+      MASTER_CV.nosto.focus,
+      'Expanded the client base in the assigned territory by 30 percent during the first year.',
+      'Increased average deal size by 15 percent through upselling and cross selling.'
+    ]]
+  ];
+  for(const [role,date,bullets] of exp){
+    add(role,9,true,13);add(date,8,false,12);
+    bullets.forEach(b=>add('• '+b,8.5,false,12));
+    y+=5;
+  }
+  add('EDUCATION',10,true,15);
+  add('Master of Business Administration (MBA) — IDRAC Business School, Montpellier, 2010',8.5,false,12);
+  add('Bachelor of Business Administration — IUT University of Technology, Montpellier, 2005',8.5,false,12);
+  y+=5;add('LANGUAGES & TOOLS',10,true,15);
+  add('French (Native) | English (Fluent) | German (Elementary)',8.5,false,12);
+  add('Salesforce, Pipedrive, HubSpot, Sales Navigator, Claude, GPT',8.5,false,12);
+  doc.save('Gregory_BUSNEL_'+j.company.replace(/[^a-z0-9]+/gi,'_')+'_'+j.title.replace(/[^a-z0-9]+/gi,'_')+'.pdf');
+}
 async function loadState(){try{const r=await fetch('/api/state?ts='+Date.now(),{cache:'no-store'});if(r.ok)state=await r.json()}catch{}}
 async function fetchScanPayload(useRaw=false){
   const url=useRaw?'https://raw.githubusercontent.com/SE7EN2606/job-radar/main/data/careerops-jobs.json?ts='+Date.now():'data/careerops-jobs.json?ts='+Date.now();

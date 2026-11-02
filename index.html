@@ -156,29 +156,32 @@ async function loadScannedJobs(){
 
 async function scan(e){
   const b=e.currentTarget;
-  const key=prompt('Enter your Job Radar scan key:');
-  if(!key) return;
-
   const before=lastScanGeneratedAt;
+
   b.disabled=true;
   b.textContent='Starting…';
   scanMeta.textContent='Starting scanner…';
 
   try{
-    const res=await fetch('/api/scan',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','X-Scan-Key':key}
-    });
+    const res=await fetch('/api/scan',{method:'POST'});
     const payload=await res.json();
     if(!res.ok) throw new Error(payload.error||payload.details||'Unable to start scan');
 
-    b.textContent='Scanning…';
-    scanMeta.textContent='Scan started · waiting for fresh results';
+    b.textContent=payload.alreadyRunning?'Scanning…':'Scan queued';
+    scanMeta.textContent=payload.message||'Scan started';
 
     let attempts=0;
     const timer=setInterval(async()=>{
       attempts++;
       try{
+        const statusRes=await fetch('/api/scan-status?ts='+Date.now(),{cache:'no-store'});
+        const status=await statusRes.json();
+
+        if(statusRes.ok && status.status==='in_progress'){
+          b.textContent='Scanning…';
+          scanMeta.textContent='Scanning LinkedIn · Indeed · Glassdoor · HelloWork…';
+        }
+
         const fresh=await fetchScanPayload(true);
         if(fresh.generatedAt && fresh.generatedAt!==before){
           clearInterval(timer);
@@ -186,21 +189,26 @@ async function scan(e){
           b.disabled=false;
           b.textContent='Scan now';
           scanMeta.textContent+=' · fresh scan complete';
-        }else if(attempts>=30){
+        }else if(statusRes.ok && status.status==='completed' && status.conclusion && status.conclusion!=='success'){
+          clearInterval(timer);
+          b.disabled=false;
+          b.textContent='Scan now';
+          scanMeta.textContent='Scan finished with '+status.conclusion;
+        }else if(attempts>=36){
           clearInterval(timer);
           b.disabled=false;
           b.textContent='Scan now';
           scanMeta.textContent='Scan is still running. Refresh shortly to load new results.';
         }
       }catch(err){
-        if(attempts>=30){
+        if(attempts>=36){
           clearInterval(timer);
           b.disabled=false;
           b.textContent='Scan now';
           scanMeta.textContent='Scan started, but result polling timed out.';
         }
       }
-    },10000);
+    },5000);
   }catch(err){
     b.disabled=false;
     b.textContent='Scan now';

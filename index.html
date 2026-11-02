@@ -76,6 +76,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
     <div class="kv"><span class="muted">Hunter intensity</span><span id="dHunter"></span></div>
     <div class="kv"><span class="muted">Location</span><span id="dLocation"></span></div>
     <div class="kv"><span class="muted">Date posted</span><span id="dDate"></span></div>
+    <div class="kv"><span class="muted">Salary</span><span id="dSalary"></span></div>
     <div class="kv"><span class="muted">Source</span><span id="dSource"></span></div>
     <div class="kv"><span class="muted">Company domain</span><span id="dDomain"></span></div>
     <div class="kv"><span class="muted">Job ad</span><span id="dLink"></span></div>
@@ -188,6 +189,14 @@ function suggestedApplicationAnswer(label,j){
   if(/fluent in french|currently fluent.*french/.test(q)) return {answer:'Yes',status:'READY'};
   if(/employed by mozilla before/.test(q)) return {answer:'No',status:'CONFIRM'};
   if(/how did you hear/.test(q)) return {answer:source,status:'READY'};
+  if(/salary expectations/.test(q)) return {answer:'Target €90k–€110k base / €130k–€170k+ total, depending on variable structure and scope. Adjust if the employer publishes a range.',status:'REVIEW'};
+  if(/notice period|preferred start date/.test(q)) return {answer:'Needs your current notice period / preferred start date',status:'CONFIRM'};
+  if(/willing to travel/.test(q)) return {answer:'Needs your confirmation',status:'CONFIRM'};
+  if(/experience selling enterprise software/.test(q)) return {answer:'Yes — 10+ years across enterprise software and complex B2B sales, including Insly, Productsup and SoCloz.',status:'READY'};
+  if(/experience.*interacting with clients/.test(q)) return {answer:'10+ years in customer-facing sales and strategic account roles with daily client interaction.',status:'READY'};
+  if(/fluent in both english and french/.test(q)) return {answer:'Yes — French native, English fluent.',status:'READY'};
+  if(/gender do you identify/.test(q)) return {answer:'Select personally',status:'MANUAL'};
+  if(/^address|start typing your address/.test(q)) return {answer:'Enter your current address manually',status:'MANUAL'};
   if(/referred|referral/.test(q)) return {answer:APPLICATION_PROFILE.referralName||'Leave blank unless you were referred',status:'READY'};
   if(/privacy notice/.test(q)) return {answer:'Review the notice and select the acknowledgement yourself',status:'MANUAL'};
   if(/authorized to work|work lawfully/.test(q)) return {answer:'Needs your confirmation',status:'CONFIRM'};
@@ -285,10 +294,35 @@ function updateStats(){
 }
 function switchTab(tab,el){currentTab=tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
 function setFilter(filter,el){currentFilter=filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
+async function enrichJobDetails(j){
+  if(!j || j._detailsLoaded || !j.id.startsWith('careerops-')) return;
+  try{
+    const r=await fetch('/api/job-details?id='+encodeURIComponent(j.id),{cache:'no-store'});
+    if(!r.ok) return;
+    const d=await r.json();
+    j._detailsLoaded=true;
+    j.details=d;
+    if(d.datePosted) j.datePosted=d.datePosted;
+    if(d.location) j.location=d.location;
+    if(d.salaryText) j.salary=d.salaryText;
+    if(d.description) j.description=d.description;
+    if(Array.isArray(d.responsibilities)) j.responsibilities=d.responsibilities;
+    if(Array.isArray(d.requirements)) j.requirements=d.requirements;
+    if(Array.isArray(d.questions)) j.questions=d.questions;
+    if(activeJobId===j.id){
+      dDate.textContent=formatDate(j.datePosted);
+      dLocation.textContent=j.location||'—';
+      dSalary.textContent=j.salary||'Undisclosed';
+      dSource.textContent=j.foundVia||j.sourceDisplay||j.source||d.source||'Unknown';
+      renderCurrent();
+    }
+  }catch{}
+}
+
 function openDrawer(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;activeJobId=id;
   dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dStatus.textContent=isHidden(j)?'Hidden':isApplied(j)?'Applied':j.status;
-  dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSource.textContent=j.foundVia||j.sourceDisplay||j.source||'Unknown';
+  dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSalary.textContent=j.salary||'Undisclosed';dSource.textContent=j.foundVia||j.sourceDisplay||j.source||'Unknown';
   const domain=domainFromJob(j);const companyUrl=safeUrl(j.companyUrl)||(j.domain?'https://'+j.domain:'');dDomain.innerHTML=domain==='—'?'—':(companyUrl?'<a href="'+companyUrl+'" target="_blank" rel="noopener">'+domain+' ↗</a>':domain);
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);dLink.innerHTML=url?'<a href="'+url+'" target="_blank" rel="noopener">Open job ad ↗</a>':'No direct link';
   dPros.innerHTML=(j.pros||[]).map(x=>'• '+x).join('<br>');dCons.innerHTML=(j.cons||[]).map(x=>'• '+x).join('<br>');
@@ -297,6 +331,7 @@ function openDrawer(id){
   applyBtn.textContent=isApplied(j)?'Move back':'Mark applied';
   hideBtn.textContent=isHidden(j)?'Restore':'Not for me';
   drawer.classList.add('open');
+  enrichJobDetails(j);
 }
 function closeDrawer(){drawer.classList.remove('open')}
 function openJobAd(){
@@ -314,14 +349,18 @@ async function tailor(){
   const j=jobs.find(x=>x.id===activeJobId);if(!j||isHidden(j))return;
   tailorBtn.disabled=true;tailorBtn.textContent='Reading full job…';
 
-  let details={description:(j.description||'').trim(),responsibilities:[],requirements:[],questions:[]};
+  let details={description:(j.description||'').trim(),responsibilities:j.responsibilities||[],requirements:j.requirements||[],questions:j.questions||[]};
+  if(j.details) details={...details,...j.details};
   try{
-    if(j.id.startsWith('careerops-')){
+    if(j.id.startsWith('careerops-')&&!j._detailsLoaded){
       const r=await fetch('/api/job-details?id='+encodeURIComponent(j.id),{cache:'no-store'});
       if(r.ok){
         details={...details,...await r.json()};
-        if(details.datePosted){j.datePosted=details.datePosted;dDate.textContent=formatDate(j.datePosted);renderCurrent()}
-        if(details.location) j.parsedLocation=details.location;
+        j.details=details;j._detailsLoaded=true;
+        if(details.datePosted){j.datePosted=details.datePosted;dDate.textContent=formatDate(j.datePosted)}
+        if(details.location){j.location=details.location;dLocation.textContent=j.location}
+        if(details.salaryText){j.salary=details.salaryText;dSalary.textContent=j.salary}
+        renderCurrent();
       }
     }
   }catch{}

@@ -347,69 +347,182 @@ function generateAtsPdf(){
   const contact=getPdfContact();
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({unit:'pt',format:'a4'});
-  const left=48,right=547,width=right-left;
-  let y=48;
-  const add=(text,size=9,bold=false,gap=12)=>{
-    doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(size);
-    const lines=doc.splitTextToSize(String(text),width);
+  const pageW=595.28,pageH=841.89;
+  const left=52,right=543,width=right-left;
+  let y=52;
+
+  const ensure=(need=24)=>{
+    if(y+need>pageH-42){doc.addPage();y=48}
+  };
+  const text=(value,x,size=9,bold=false,align='left')=>{
+    doc.setFont('helvetica',bold?'bold':'normal');
+    doc.setFontSize(size);
+    doc.text(String(value),x,y,{align});
+  };
+  const para=(value,size=8.8,bold=false,gap=12,indent=0)=>{
+    doc.setFont('helvetica',bold?'bold':'normal');
+    doc.setFontSize(size);
+    const lines=doc.splitTextToSize(String(value),width-indent);
+    ensure(lines.length*gap+4);
     for(const line of lines){
-      if(y>790){doc.addPage();y=48}
-      doc.text(line,left,y);y+=gap;
+      doc.text(line,left+indent,y);
+      y+=gap;
     }
   };
-  add('GREGORY BUSNEL',15,true,18);
-  add(j.tailored.headline,10,true,15);
-  const contactLine=[contact.email,contact.linkedin,contact.phone].filter(Boolean).join(' | ');
-  if(contactLine)add(contactLine,8,false,13);
-  y+=4;
-  j.tailored.summary.forEach(s=>add(s,9,false,13));
-  y+=8;add('PROFESSIONAL EXPERIENCE',10,true,16);
+  const bullet=(value,size=8.4)=>{
+    doc.setFont('helvetica','normal');doc.setFontSize(size);
+    const lines=doc.splitTextToSize(String(value),width-14);
+    ensure(lines.length*11+3);
+    doc.text('•',left,y);
+    for(let i=0;i<lines.length;i++){
+      doc.text(lines[i],left+11,y);
+      y+=11;
+    }
+  };
+  const label=(value)=>{
+    ensure(18);doc.setFont('helvetica','bold');doc.setFontSize(8.3);
+    doc.text(value,left,y);doc.line(left,y+2,left+doc.getTextWidth(value),y+2);y+=13;
+  };
+  const band=(value)=>{
+    ensure(30);
+    doc.setFillColor(244,244,244);
+    doc.rect(0,y-12,pageW,28,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(10.4);
+    doc.text(value,pageW/2,y+5,{align:'center'});
+    y+=30;
+  };
+
+  // Header — mirrors the uploaded CV while remaining real selectable text.
+  doc.setFont('helvetica','normal');doc.setFontSize(18.5);
+  doc.text('GREGORY BUSNEL',pageW/2,y,{align:'center'});y+=22;
+  doc.setFont('helvetica','normal');doc.setFontSize(10.2);
+  doc.text(j.tailored.headline.toUpperCase(),pageW/2,y,{align:'center'});y+=26;
+
+  const contactLine=[contact.email,contact.linkedin,contact.phone].filter(Boolean).join('   |   ');
+  if(contactLine){
+    doc.setFillColor(246,246,246);
+    doc.rect(0,y-14,pageW,28,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(8.3);
+    doc.text(contactLine,pageW/2,y+3,{align:'center'});
+    y+=31;
+  }
+
+  j.tailored.summary.forEach(s=>{para(s,8.8,false,12);y+=2});
+  y+=8;
+  doc.setFont('helvetica','bold');doc.setFontSize(9.1);
+  doc.text(
+    j.type.includes('growth')
+      ? 'Enterprise SaaS | Strategic Accounts | Account Growth & Complex Solutions'
+      : 'Enterprise SaaS | Strategic Sales | Consultative & Technical Sales',
+    pageW/2,y,{align:'center'}
+  );
+  y+=25;
+
+  band('PROFESSIONAL EXPERIENCE');
 
   const exp=[
-    ['BUSINESS SOLUTIONS MANAGER — Insly','August 2025 – Present',[
-      'Enterprise SaaS sales across international markets, managing complex opportunities with technical and compliance stakeholders.',
-      'Own the full sales cycle from account development, qualification and discovery through demo, negotiation and close.',
-      'Build relationships with executive, operational and technical stakeholders across complex customer organisations.',
-      'Managed enterprise opportunities with €60k–€120k recurring ACV, plus implementation fees and multi-year commitments.',
-      j.tailored.changes.find(x=>x.section==='Insly · Achievement')?.to||MASTER_CV.insly.expansion
-    ]],
-    ['SENIOR ACCOUNT EXECUTIVE — ProductsUp','March 2022 – July 2025',[
-      j.tailored.changes.find(x=>x.section==='Productsup · Focus')?.to||MASTER_CV.productsup.focus,
-      'Managed complex enterprise sales cycles from prospecting and discovery through negotiation, contracting and close.',
-      j.tailored.changes.find(x=>x.section==='Productsup · Action')?.to||MASTER_CV.productsup.needs,
-      'Achieved 115 percent of target in year one and 138 percent in year two.',
-      'Secured enterprise projects with LVMH and L’Oréal through complex, multi-stakeholder SaaS sales.',
-      MASTER_CV.productsup.results
-    ]],
-    ['SALES EXECUTIVE — SoCloz','January 2021 – March 2022',[
-      MASTER_CV.socloz.focus,
-      'Led discovery across IT, operations, finance and leadership to align platform capabilities with business priorities.',
-      'Exceeded sales targets by 35 percent through complex enterprise software sales.'
-    ]],
-    ['STRATEGIC ACCOUNT MANAGER — Air Group Holding','March 2017 – January 2021',[
-      j.tailored.changes.find(x=>x.section==='Air Group · Focus')?.to||MASTER_CV.airgroup.focus,
-      MASTER_CV.airgroup.relationships,
-      MASTER_CV.airgroup.result
-    ]],
-    ['SALES EXECUTIVE — Nosto','December 2015 – March 2017',[
-      MASTER_CV.nosto.focus,
-      'Expanded the client base in the assigned territory by 30 percent during the first year.',
-      'Increased average deal size by 15 percent through upselling and cross selling.'
-    ]]
+    {
+      role:'BUSINESS SOLUTIONS MANAGER',company:'Insly',date:'August 2025 - Present',
+      focus:['Enterprise SaaS sales across international markets, managing complex opportunities with technical and compliance stakeholders.'],
+      actions:[
+        'Own the full sales cycle from account development, qualification and discovery through demo, negotiation and close.',
+        'Build relationships with executive, operational and technical stakeholders across complex customer organisations.',
+        'Coordinate tailored demos, technical validation and commercial proposals with Product, technical and delivery teams.',
+        'Develop multi-year SaaS agreements combining recurring revenue with implementation and deployment requirements.'
+      ],
+      achievements:[
+        'Managed enterprise opportunities with €60k–€120k recurring ACV, plus implementation fees and multi-year commitments.',
+        'Built qualified international pipeline and progressed complex multi-stakeholder opportunities through the sales cycle.',
+        j.tailored.changes.find(x=>x.section==='Insly · Achievement')?.to||MASTER_CV.insly.expansion
+      ]
+    },
+    {
+      role:'SENIOR ACCOUNT EXECUTIVE',company:'ProductsUp',date:'March 2022 - July 2025',
+      focus:[j.tailored.changes.find(x=>x.section==='Productsup · Focus')?.to||MASTER_CV.productsup.focus],
+      actions:[
+        'Built the French pipeline from scratch and adapted the existing go-to-market approach to local market requirements.',
+        'Managed complex enterprise sales cycles from prospecting and discovery through negotiation, contracting and close.',
+        j.tailored.changes.find(x=>x.section==='Productsup · Action')?.to||MASTER_CV.productsup.needs,
+        'Worked closely with technical, product and customer-facing teams throughout enterprise sales processes.'
+      ],
+      achievements:[
+        'Achieved 115 percent of target in year one and 138 percent in year two.',
+        'Secured enterprise projects with LVMH and L’Oréal through complex, multi-stakeholder SaaS sales.',
+        MASTER_CV.productsup.results
+      ]
+    },
+    {
+      role:'SALES EXECUTIVE',company:'SoCloz',date:'January 2021 - March 2022',
+      focus:[MASTER_CV.socloz.focus],
+      actions:[
+        'Led discovery across IT, operations, finance and leadership to align platform capabilities with business priorities.',
+        'Coordinated demos, technical validation and commercial discussions with Pre-Sales and implementation teams.',
+        'Negotiated complex commercial agreements and secured multi-year customer commitments.'
+      ],
+      achievements:[
+        'Exceeded sales targets by 35 percent through complex enterprise software sales.',
+        'Secured strategic customers through consultative, multi-stakeholder enterprise sales cycles.',
+        'Expanded SoCloz’s presence among leading French retail brands and supported long-term account growth.'
+      ]
+    },
+    {
+      role:'STRATEGIC ACCOUNT MANAGER',company:'Air Group Holding',date:'March 2017 - January 2021',
+      focus:[j.tailored.changes.find(x=>x.section==='Air Group · Focus')?.to||MASTER_CV.airgroup.focus],
+      actions:[
+        MASTER_CV.airgroup.relationships,
+        'Coordinated with marketing, product, and operations teams to improve distribution, visibility, and online performance.'
+      ],
+      achievements:[
+        MASTER_CV.airgroup.result,
+        'Expanded distribution and commercial visibility across major retail and ecommerce accounts.'
+      ]
+    },
+    {
+      role:'SALES EXECUTIVE',company:'Nosto',date:'December 2015 - March 2017',
+      focus:[MASTER_CV.nosto.focus],
+      actions:[
+        'Managed the full sales cycle from prospecting and discovery to negotiation and onboarding.',
+        'Positioned the platform around conversion, customer experience, revenue growth, and product adoption.'
+      ],
+      achievements:[
+        'Expanded the client base in the assigned territory by 30 percent during the first year.',
+        'Increased average deal size by 15 percent through upselling and cross selling.',
+        'Improved customer service ratings by 25 percent within one year.'
+      ]
+    }
   ];
-  for(const [role,date,bullets] of exp){
-    add(role,9,true,13);add(date,8,false,12);
-    bullets.forEach(b=>add('• '+b,8.5,false,12));
-    y+=5;
+
+  for(const e of exp){
+    ensure(52);
+    doc.setFont('helvetica','bold');doc.setFontSize(9.4);doc.text(e.role,left,y);y+=15;
+    doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.text(e.company+',',left,y);
+    const cw=doc.getTextWidth(e.company+',');
+    doc.setFont('helvetica','italic');doc.text(' '+e.date,left+cw,y);y+=17;
+    label('Focus:');e.focus.forEach(x=>bullet(x));y+=3;
+    label('Actions:');e.actions.forEach(x=>bullet(x));y+=3;
+    label('Achievements:');e.achievements.forEach(x=>bullet(x));y+=10;
   }
-  add('EDUCATION',10,true,15);
-  add('Master of Business Administration (MBA) — IDRAC Business School, Montpellier, 2010',8.5,false,12);
-  add('Bachelor of Business Administration — IUT University of Technology, Montpellier, 2005',8.5,false,12);
-  y+=5;add('LANGUAGES & TOOLS',10,true,15);
-  add('French (Native) | English (Fluent) | German (Elementary)',8.5,false,12);
-  add('Salesforce, Pipedrive, HubSpot, Sales Navigator, Claude, GPT',8.5,false,12);
+
+  band('EDUCATION');
+  doc.setFont('helvetica','bold');doc.setFontSize(8.8);doc.text('MASTER OF BUSINESS ADMINISTRATION (MBA)',left,y);y+=13;
+  doc.setFont('helvetica','normal');doc.setFontSize(8.3);doc.text('IDRAC Business School, Montpellier (FR)',left,y);doc.text('2008-2010',right,y,{align:'right'});y+=20;
+  doc.setFont('helvetica','bold');doc.setFontSize(8.8);doc.text('BACHELOR OF BUSINESS ADMINISTRATION (BBA)',left,y);y+=13;
+  doc.setFont('helvetica','normal');doc.setFontSize(8.3);doc.text('IUT University of Technology, Montpellier (FR)',left,y);doc.text('2005-2010',right,y,{align:'right'});y+=24;
+
+  band('SKILLS & INTERESTS');
+  // Keep this section linear in the PDF content stream even though it visually
+  // echoes the original three-column footer.
+  doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.text('Tools & Software:',left,y);
+  doc.text('Languages:',340,y);y+=13;
+  doc.setFont('helvetica','normal');doc.setFontSize(8.1);
+  doc.text('Salesforce, Pipedrive, HubSpot, Office, Teams, GSuite',left,y);
+  doc.text('French (Native) | English (Fluent)',340,y);y+=12;
+  doc.text('Sales Navigator, Claude, GPT',left,y);
+  doc.text('German (Elementary)',340,y);
+
   doc.save('Gregory_BUSNEL_'+j.company.replace(/[^a-z0-9]+/gi,'_')+'_'+j.title.replace(/[^a-z0-9]+/gi,'_')+'.pdf');
 }
+
 async function loadState(){try{const r=await fetch('/api/state?ts='+Date.now(),{cache:'no-store'});if(r.ok)state=await r.json()}catch{}}
 async function fetchScanPayload(useRaw=false){
   const url=useRaw?'https://raw.githubusercontent.com/SE7EN2606/job-radar/main/data/careerops-jobs.json?ts='+Date.now():'data/careerops-jobs.json?ts='+Date.now();

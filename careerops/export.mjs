@@ -36,6 +36,27 @@ function typeFor(title,location){
   if(/remote/i.test(location||'')) types.push('remote');
   return types.join(' ');
 }
+function allowedLocation(location){
+  const l=String(location||'').toLowerCase().trim();
+  if(!l) return false;
+
+  // Explicitly eligible countries/cities. Italy is north-only; Czech=Prague only; Poland=Warsaw only.
+  const allowed=[
+    'france','paris','lyon','montpellier','toulouse','bordeaux','lille','nantes','nice',
+    'estonia','tallinn',
+    'sweden','stockholm','gothenburg','malmö','malmo',
+    'switzerland','zurich','zürich','geneva','lausanne','romandy',
+    'milan','milano','turin','torino','bologna','verona','venice','venezia',
+    'prague','praha',
+    'slovenia','ljubljana',
+    'warsaw','warszawa',
+    'portugal','lisbon','lisboa','porto',
+    'luxembourg','monaco',
+    'remote europe','europe remote','remote - europe','remote, europe','eu remote','remote eu','emea remote','remote emea'
+  ];
+  return allowed.some(x=>l.includes(x));
+}
+
 function score(title, location){
   const s=(title+' '+location).toLowerCase();
   let domainFit=60;
@@ -78,6 +99,7 @@ const jobs=[];
 for(const row of byUrl.values()){
   const id=idFor(row);
   if(hidden.has(id)) continue;
+  if(!allowedLocation(row.location)) continue;
   const {practical,domainFit}=score(row.title,row.location);
   const isApplied=applied.has(id);
   jobs.push({

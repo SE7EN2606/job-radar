@@ -73,7 +73,13 @@ export default async function handler(req,res){
 
     if(!put.ok){
       const body=await put.text();
-      return res.status(put.status).json({error:"Unable to persist state",details:body.slice(0,800)});
+      const needsContentsWrite = put.status===403 || put.status===404;
+      return res.status(put.status).json({
+        error: needsContentsWrite
+          ? "GitHub token cannot write Job Radar state. Add Contents: Read and write permission to the fine-grained token used by Vercel."
+          : "Unable to persist state",
+        details: body.slice(0,800)
+      });
     }
     return res.status(200).json(state);
   }catch(error){

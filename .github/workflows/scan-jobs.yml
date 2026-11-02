@@ -19,14 +19,16 @@ concurrency:
 
 jobs:
   scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: "pip"
@@ -39,12 +41,32 @@ jobs:
 
       - name: Commit refreshed jobs
         run: |
+          set -e
           git config user.name "job-radar-bot"
           git config user.email "job-radar-bot@users.noreply.github.com"
           git add data/jobs.json
           if git diff --cached --quiet; then
             echo "No job changes"
-          else
-            git commit -m "Refresh scanned jobs"
-            git push
+            exit 0
           fi
+
+          git commit -m "Refresh scanned jobs"
+
+          # State changes (Hidden / Applied) can be committed while a scan runs.
+          # Rebase the scan commit onto the newest main branch before pushing.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+            else
+              git rebase --abort || true
+            fi
+
+            echo "Push attempt $attempt failed because main changed; retrying..."
+            sleep $((attempt * 2))
+          done
+
+          echo "Unable to push refreshed jobs after 3 attempts."
+          exit 1

@@ -70,12 +70,13 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 
   <div class="section"><h3>Decision</h3>
     <div class="kv"><span class="muted">Recommendation</span><b id="dRec"></b></div>
-    <div class="kv"><span class="muted">Application status</span><span id="dStatus"></span></div>
+    <div class="kv"><span class="muted">Application status</span><span><span id="dStatus"></span> <button id="applyBtn" class="btn ghost small" style="margin-left:8px" onclick="markApplied()">Mark applied</button></span></div>
     <div class="kv"><span class="muted">Practical fit</span><span id="dFit"></span></div>
     <div class="kv"><span class="muted">Domain fit</span><span id="dDomainFit"></span></div>
     <div class="kv"><span class="muted">Hunter intensity</span><span id="dHunter"></span></div>
     <div class="kv"><span class="muted">Location</span><span id="dLocation"></span></div>
     <div class="kv"><span class="muted">Date posted</span><span id="dDate"></span></div>
+    <div class="kv"><span class="muted">Source</span><span id="dSource"></span></div>
     <div class="kv"><span class="muted">Company domain</span><span id="dDomain"></span></div>
     <div class="kv"><span class="muted">Job ad</span><span id="dLink"></span></div>
   </div>
@@ -94,7 +95,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
   </div>
 
   <div class="drawer-actions">
-    <button id="applyBtn" class="btn primary" onclick="markApplied()">Mark applied</button>
+    <button id="viewJobBtn" class="btn primary" onclick="openJobAd()">View job ad ↗</button>
     <button id="tailorBtn" class="btn ghost" onclick="tailor()">Tailor application</button>
     <button id="hideBtn" class="btn danger" onclick="hideJob()">Not for me</button>
   </div>
@@ -118,6 +119,7 @@ const MASTER_CV={
     'Strong background in enterprise account growth, new-market development, executive engagement and cross-functional collaboration with product and technical teams.'
   ],
   insly:{
+    title:'Enterprise Account Executive',
     expansion:'Developed tailored commercial solutions supporting long-term platform adoption, account growth and expansion opportunities.'
   },
   productsup:{
@@ -210,7 +212,8 @@ function renderCurrent(){
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');
     const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
     const domain=domainFromJob(j);
-    r.innerHTML='<div><div class="company">'+j.company+'</div><div class="title">'+j.title+'</div><div class="meta"><span>'+domain+'</span>'+(url?'<a href="'+url+'" target="_blank" rel="noopener">Job ad ↗</a>':'')+'</div></div>'+
+    const sourceLabel=j.foundVia||j.sourceDisplay||j.source||'Unknown source';
+    r.innerHTML='<div><div class="company">'+j.company+'</div><div class="title">'+j.title+'</div><div class="meta"><span>'+domain+'</span><span class="pill info">'+sourceLabel+'</span>'+(url?'<a href="'+url+'" target="_blank" rel="noopener">Job ad ↗</a>':'')+'</div></div>'+
       '<div class="score">'+practicalFit(j)+'</div>'+
       '<div><span class="pill '+(j.hunter==='Low'?'good':j.hunter==='High'?'bad':'warn')+'">'+j.hunter+'</span></div>'+
       '<div>'+j.location+'</div><div>'+formatDate(j.datePosted)+'</div><div class="salary">'+j.salary+'</div><div>'+j.rating+'</div><div>'+statusPill(j)+'</div>'+
@@ -229,17 +232,22 @@ function setFilter(filter,el){currentFilter=filter;document.querySelectorAll('[d
 function openDrawer(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;activeJobId=id;
   dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dStatus.textContent=isHidden(j)?'Hidden':isApplied(j)?'Applied':j.status;
-  dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);
+  dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSource.textContent=j.foundVia||j.sourceDisplay||j.source||'Unknown';
   const domain=domainFromJob(j);const companyUrl=safeUrl(j.companyUrl)||(j.domain?'https://'+j.domain:'');dDomain.innerHTML=domain==='—'?'—':(companyUrl?'<a href="'+companyUrl+'" target="_blank" rel="noopener">'+domain+' ↗</a>':domain);
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);dLink.innerHTML=url?'<a href="'+url+'" target="_blank" rel="noopener">Open job ad ↗</a>':'No direct link';
   dPros.innerHTML=(j.pros||[]).map(x=>'• '+x).join('<br>');dCons.innerHTML=(j.cons||[]).map(x=>'• '+x).join('<br>');
   dDiff.textContent=j.diff||'No CV changes generated yet.';dCover.textContent=j.cover||'No cover-letter angle generated yet.';
   tailorOutput.style.display='none';
-  applyBtn.textContent=isApplied(j)?'Move back to opportunities':'Mark applied';
+  applyBtn.textContent=isApplied(j)?'Move back':'Mark applied';
   hideBtn.textContent=isHidden(j)?'Restore':'Not for me';
   drawer.classList.add('open');
 }
 function closeDrawer(){drawer.classList.remove('open')}
+function openJobAd(){
+  const j=jobs.find(x=>x.id===activeJobId);if(!j)return;
+  const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
+  if(url) window.open(url,'_blank','noopener');
+}
 async function persistState(action,id){
   const res=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,id})});
   const data=await res.json();if(!res.ok)throw new Error(data.error||'Unable to save state');state=data;updateStats();renderCurrent();
@@ -417,7 +425,7 @@ function generateAtsPdf(){
 
   const exp=[
     {
-      role:'BUSINESS SOLUTIONS MANAGER',company:'Insly',date:'August 2025 - Present',
+      role:MASTER_CV.insly.title.toUpperCase(),company:'Insly',date:'August 2025 - Present',
       focus:['Enterprise SaaS sales across international markets, managing complex opportunities with technical and compliance stakeholders.'],
       actions:[
         'Own the full sales cycle from account development, qualification and discovery through demo, negotiation and close.',

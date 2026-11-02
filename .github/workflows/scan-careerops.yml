@@ -6,7 +6,8 @@ on:
     - cron: "15 6 * * 1-5"
   push:
     paths:
-      - "careerops/**"
+      - "careerops/portals.yml"
+      - "careerops/export.mjs"
       - ".github/workflows/scan-careerops.yml"
 
 permissions:
@@ -38,7 +39,7 @@ jobs:
           git clone --filter=blob:none https://github.com/career-ops-hq/career-ops.git /tmp/career-ops
           cd /tmp/career-ops
           git checkout "$CAREER_OPS_SHA"
-          npm ci --ignore-scripts
+          npm install --ignore-scripts --no-audit --no-fund
 
       - name: Prepare Career Ops data root
         run: |
@@ -47,7 +48,6 @@ jobs:
 
       - name: Run Career Ops scanner
         id: scan
-        continue-on-error: true
         env:
           CAREER_OPS_ROOT: ${{ github.workspace }}/careerops/runtime
           CAREER_OPS_PORTALS: ${{ github.workspace }}/careerops/portals.yml

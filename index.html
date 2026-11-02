@@ -220,14 +220,14 @@ function tailor(){
 async function copyTailor(){await navigator.clipboard.writeText(tailorText.textContent)}
 async function loadState(){try{const r=await fetch('/api/state?ts='+Date.now(),{cache:'no-store'});if(r.ok)state=await r.json()}catch{}}
 async function fetchScanPayload(useRaw=false){
-  const url=useRaw?'https://raw.githubusercontent.com/SE7EN2606/job-radar/main/data/jobs.json?ts='+Date.now():'data/jobs.json?ts='+Date.now();
-  const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('Unable to load scan data');return res.json();
+  const url=useRaw?'https://raw.githubusercontent.com/SE7EN2606/job-radar/main/data/careerops-jobs.json?ts='+Date.now():'data/careerops-jobs.json?ts='+Date.now();
+  const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('Unable to load Career Ops scan data');return res.json();
 }
 function mergeScannedJobs(payload){
   const existing=new Set(jobs.map(j=>j.id));(payload.jobs||[]).forEach(j=>{if(!existing.has(j.id)){j.type=(j.type||'')+' scanned';jobs.push(j);existing.add(j.id)}});
   lastScanGeneratedAt=payload.generatedAt||lastScanGeneratedAt;
   const when=payload.generatedAt?new Date(payload.generatedAt).toLocaleString():'not run yet';
-  scanMeta.textContent='Scanner: LinkedIn · Indeed · Glassdoor · HelloWork · last scan '+when+' · '+(payload.count||0)+' matches';
+  scanMeta.textContent='Scanner: Career Ops ATS engine · last scan '+when+' · '+(payload.count||0)+' matches';
 }
 async function loadScannedJobs(){try{mergeScannedJobs(await fetchScanPayload(false))}catch{scanMeta.textContent='Curated roles loaded · scanner data unavailable'}}
 async function scan(e){
@@ -237,7 +237,7 @@ async function scan(e){
     b.textContent=payload.alreadyRunning?'Scanning…':'Scan queued';scanMeta.textContent=payload.message||'Scan started';
     let attempts=0;const timer=setInterval(async()=>{attempts++;try{
       const sr=await fetch('/api/scan-status?ts='+Date.now(),{cache:'no-store'}),st=await sr.json();
-      if(sr.ok&&st.status==='in_progress'){b.textContent='Scanning…';scanMeta.textContent='Scanning LinkedIn · Indeed · Glassdoor · HelloWork…'}
+      if(sr.ok&&st.status==='in_progress'){b.textContent='Scanning…';scanMeta.textContent='Scanning company career pages and ATS feeds via Career Ops…'}
       const fresh=await fetchScanPayload(true);
       if(fresh.generatedAt&&fresh.generatedAt!==before){clearInterval(timer);mergeScannedJobs(fresh);b.disabled=false;b.textContent='Scan now';updateStats();renderCurrent()}
       else if(sr.ok&&st.status==='completed'&&st.conclusion&&st.conclusion!=='success'){clearInterval(timer);b.disabled=false;b.textContent='Scan now';scanMeta.textContent='Scan finished with '+st.conclusion}

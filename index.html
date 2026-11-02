@@ -329,16 +329,11 @@ async function tailor(){
 
 async function copyTailor(){await navigator.clipboard.writeText(tailorText.textContent)}
 function getPdfContact(){
-  let saved={};
-  try{saved=JSON.parse(localStorage.getItem('jobRadarContact')||'{}')}catch{}
-  if(!saved.email){
-    const email=prompt('Email for the CV PDF (saved only in this browser):','')||'';
-    const phone=prompt('Phone for the CV PDF (saved only in this browser):','')||'';
-    const linkedin=prompt('LinkedIn URL for the CV PDF (saved only in this browser):','')||'';
-    saved={email,phone,linkedin};
-    localStorage.setItem('jobRadarContact',JSON.stringify(saved));
-  }
-  return saved;
+  return {
+    email:'greg.busnel@icloud.com',
+    phone:'+33.7.81.70.88.72',
+    linkedin:'https://www.linkedin.com/in/greg-b'
+  };
 }
 function generateAtsPdf(){
   const j=jobs.find(x=>x.id===activeJobId);
@@ -348,11 +343,11 @@ function generateAtsPdf(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({unit:'pt',format:'a4'});
   const pageW=595.28,pageH=841.89;
-  const left=52,right=543,width=right-left;
-  let y=52;
+  const left=54,right=541,width=right-left;
+  let y=58;
 
   const ensure=(need=24)=>{
-    if(y+need>pageH-42){doc.addPage();y=48}
+    if(y+need>pageH-46){doc.addPage();y=54}
   };
   const text=(value,x,size=9,bold=false,align='left')=>{
     doc.setFont('helvetica',bold?'bold':'normal');
@@ -393,22 +388,22 @@ function generateAtsPdf(){
   };
 
   // Header — mirrors the uploaded CV while remaining real selectable text.
-  doc.setFont('helvetica','normal');doc.setFontSize(18.5);
-  doc.text('GREGORY BUSNEL',pageW/2,y,{align:'center'});y+=22;
-  doc.setFont('helvetica','normal');doc.setFontSize(10.2);
-  doc.text(j.tailored.headline.toUpperCase(),pageW/2,y,{align:'center'});y+=26;
+  doc.setFont('helvetica','normal');doc.setFontSize(18.8);
+  doc.text('GREGORY BUSNEL',pageW/2,y,{align:'center'});y+=24;
+  doc.setFont('helvetica','normal');doc.setFontSize(10.4);
+  doc.text(j.tailored.headline.toUpperCase(),pageW/2,y,{align:'center'});y+=31;
 
   const contactLine=[contact.email,contact.linkedin,contact.phone].filter(Boolean).join('   |   ');
   if(contactLine){
-    doc.setFillColor(246,246,246);
-    doc.rect(0,y-14,pageW,28,'F');
-    doc.setFont('helvetica','normal');doc.setFontSize(8.3);
+    doc.setFillColor(242,242,242);
+    doc.rect(0,y-15,pageW,29,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(8.5);
     doc.text(contactLine,pageW/2,y+3,{align:'center'});
-    y+=31;
+    y+=35;
   }
 
-  j.tailored.summary.forEach(s=>{para(s,8.8,false,12);y+=2});
-  y+=8;
+  j.tailored.summary.forEach(s=>{para(s,8.8,false,12.5);y+=4});
+  y+=10;
   doc.setFont('helvetica','bold');doc.setFontSize(9.1);
   doc.text(
     j.type.includes('growth')
@@ -416,7 +411,7 @@ function generateAtsPdf(){
       : 'Enterprise SaaS | Strategic Sales | Consultative & Technical Sales',
     pageW/2,y,{align:'center'}
   );
-  y+=25;
+  y+=30;
 
   band('PROFESSIONAL EXPERIENCE');
 
@@ -492,15 +487,17 @@ function generateAtsPdf(){
     }
   ];
 
-  for(const e of exp){
+  for(let idx=0; idx<exp.length; idx++){
+    const e=exp[idx];
+    if(idx===2 && doc.getNumberOfPages()===1){doc.addPage();y=56}
     ensure(52);
     doc.setFont('helvetica','bold');doc.setFontSize(9.4);doc.text(e.role,left,y);y+=15;
     doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.text(e.company+',',left,y);
     const cw=doc.getTextWidth(e.company+',');
     doc.setFont('helvetica','italic');doc.text(' '+e.date,left+cw,y);y+=17;
-    label('Focus:');e.focus.forEach(x=>bullet(x));y+=3;
-    label('Actions:');e.actions.forEach(x=>bullet(x));y+=3;
-    label('Achievements:');e.achievements.forEach(x=>bullet(x));y+=10;
+    label('Focus:');e.focus.forEach(x=>bullet(x));y+=5;
+    label('Actions:');e.actions.forEach(x=>bullet(x));y+=5;
+    label('Achievements:');e.achievements.forEach(x=>bullet(x));y+=15;
   }
 
   band('EDUCATION');
@@ -510,15 +507,21 @@ function generateAtsPdf(){
   doc.setFont('helvetica','normal');doc.setFontSize(8.3);doc.text('IUT University of Technology, Montpellier (FR)',left,y);doc.text('2005-2010',right,y,{align:'right'});y+=24;
 
   band('SKILLS & INTERESTS');
-  // Keep this section linear in the PDF content stream even though it visually
-  // echoes the original three-column footer.
-  doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.text('Tools & Software:',left,y);
-  doc.text('Languages:',340,y);y+=13;
-  doc.setFont('helvetica','normal');doc.setFontSize(8.1);
-  doc.text('Salesforce, Pipedrive, HubSpot, Office, Teams, GSuite',left,y);
-  doc.text('French (Native) | English (Fluent)',340,y);y+=12;
-  doc.text('Sales Navigator, Claude, GPT',left,y);
-  doc.text('German (Elementary)',340,y);
+  const col1=left,col2=225,col3=392;
+  doc.setFont('helvetica','bold');doc.setFontSize(8.3);
+  doc.text('Tools & Software:',col1,y);
+  doc.text('Sports & Hobbies:',col2,y);
+  doc.text('Languages:',col3,y);y+=13;
+  doc.setFont('helvetica','normal');doc.setFontSize(7.9);
+  doc.text('Salesforce, Pipedrive, HubSpot',col1,y);
+  doc.text('Badminton, Squash, Padel',col2,y);
+  doc.text('French (Native)',col3,y);y+=11;
+  doc.text('Office, Teams, GSuite',col1,y);
+  doc.text('Skiing, Snowboarding',col2,y);
+  doc.text('English (Fluent)',col3,y);y+=11;
+  doc.text('Sales Navigator, Claude, GPT',col1,y);
+  doc.text('Cooking, Baking, Pub Quiz',col2,y);
+  doc.text('German (Elementary)',col3,y);
 
   doc.save('Gregory_BUSNEL_'+j.company.replace(/[^a-z0-9]+/gi,'_')+'_'+j.title.replace(/[^a-z0-9]+/gi,'_')+'.pdf');
 }

@@ -302,12 +302,56 @@ function formatDate(value){
   if(Number.isNaN(d.getTime())) return String(value).slice(0,10)||'—';
   return d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
 }
+async function enrichListJob(j){
+  if(!j || !j.id.startsWith('careerops-')) return;
+  if(j._detailsLoaded || j._salaryLoading) return;
+  if(j.salary && j.salary!=='Undisclosed') return;
+
+  j._salaryLoading=true;
+  try{
+    const r=await fetch('/api/job-details?id='+encodeURIComponent(j.id),{cache:'no-store'});
+    if(!r.ok) return;
+    const d=await r.json();
+    j._detailsLoaded=true;
+    j.details=d;
+    if(d.datePosted) j.datePosted=d.datePosted;
+    if(d.location) j.location=d.location;
+    if(d.salaryText) j.salary=d.salaryText;
+    if(d.description) j.description=d.description;
+    if(Array.isArray(d.responsibilities)) j.responsibilities=d.responsibilities;
+    if(Array.isArray(d.requirements)) j.requirements=d.requirements;
+    if(Array.isArray(d.questions)) j.questions=d.questions;
+  }catch{}
+  finally{j._salaryLoading=false}
+}
+
+let listEnrichmentRunning=false;
+async function enrichVisibleJobs(){
+  if(listEnrichmentRunning) return;
+  listEnrichmentRunning=true;
+  try{
+    const targets=filteredJobs().filter(j=>j.id.startsWith('careerops-') && (!j.salary || j.salary==='Undisclosed') && !j._detailsLoaded).slice(0,24);
+    const queue=[...targets];
+    const workers=Array.from({length:4},async()=>{
+      while(queue.length){
+        const j=queue.shift();
+        await enrichListJob(j);
+        const row=document.querySelector('[data-job-id="'+CSS.escape(j.id)+'"] .salary');
+        if(row) row.textContent=j.salary||'Undisclosed';
+      }
+    });
+    await Promise.all(workers);
+  }finally{
+    listEnrichmentRunning=false;
+  }
+}
+
 function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
   const items=filteredJobs();
   if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='No jobs in this folder.';host.appendChild(e);return}
   items.forEach(j=>{
-    const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');
+    const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;
     const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
     const domain=domainFromJob(j);
     const sourceLabel=j.foundVia||j.sourceDisplay||j.source||'Unknown source';
@@ -319,6 +363,7 @@ function renderCurrent(){
     host.appendChild(r);
   });
   updateBulkBar();
+  enrichVisibleJobs();
 }
 function updateBulkBar(){
   const n=selectedJobs.size;
@@ -359,7 +404,15 @@ function updateStats(){
 function switchTab(tab,el){currentTab=tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
 function setFilter(filter,el){currentFilter=filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
 async function enrichJobDetails(j){
-  if(!j || j._detailsLoaded || !j.id.startsWith('careerops-')) return;
+  if(!j || !j.id.startsWith('careerops-')) return;
+  if(j._detailsLoaded){
+    if(activeJobId===j.id){
+      dDate.textContent=formatDate(j.datePosted);
+      dLocation.textContent=j.location||'—';
+      dSalary.textContent=j.salary||'Undisclosed';
+    }
+    return;
+  }
   try{
     const r=await fetch('/api/job-details?id='+encodeURIComponent(j.id),{cache:'no-store'});
     if(!r.ok) return;

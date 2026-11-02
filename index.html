@@ -117,10 +117,14 @@ let lastScanGeneratedAt=null;
 function safeUrl(url){try{return url&&/^https?:\/\//i.test(url)?url:''}catch{return''}}
 function domainFromJob(j){
   if(j.domain) return j.domain;
+  const companyUrl=safeUrl(j.companyUrl);
+  if(companyUrl){
+    try{return new URL(companyUrl).hostname.replace(/^www\./,'')}catch{}
+  }
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
   try{
     const h=new URL(url).hostname.replace(/^www\./,'');
-    if(['linkedin.com','indeed.com','glassdoor.com','hellowork.com'].some(x=>h.includes(x))) return j.company?j.company.toLowerCase().replace(/[^a-z0-9]+/g,'')+'.com':h;
+    if(['linkedin.com','indeed.com','glassdoor.com','hellowork.com'].some(x=>h.includes(x))) return '—';
     return h;
   }catch{return '—'}
 }
@@ -183,7 +187,7 @@ function openDrawer(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;activeJobId=id;
   dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dStatus.textContent=isHidden(j)?'Hidden':isApplied(j)?'Applied':j.status;
   dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;
-  const domain=domainFromJob(j);dDomain.innerHTML=domain==='—'?'—':'<a href="https://'+domain+'" target="_blank" rel="noopener">'+domain+' ↗</a>';
+  const domain=domainFromJob(j);const companyUrl=safeUrl(j.companyUrl)||(j.domain?'https://'+j.domain:'');dDomain.innerHTML=domain==='—'?'—':(companyUrl?'<a href="'+companyUrl+'" target="_blank" rel="noopener">'+domain+' ↗</a>':domain);
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);dLink.innerHTML=url?'<a href="'+url+'" target="_blank" rel="noopener">Open job ad ↗</a>':'No direct link';
   dPros.innerHTML=(j.pros||[]).map(x=>'• '+x).join('<br>');dCons.innerHTML=(j.cons||[]).map(x=>'• '+x).join('<br>');
   dDiff.textContent=j.diff||'No CV changes generated yet.';dCover.textContent=j.cover||'No cover-letter angle generated yet.';
@@ -209,7 +213,8 @@ function tailor(){
   const summary='Senior SaaS sales professional with 10+ years of experience in enterprise software, complex B2B sales and strategic account development across Europe. Experienced in multi-stakeholder sales cycles, executive engagement, account growth and cross-functional collaboration. Native French speaker, fluent in English.';
   const why='I am interested in '+j.company+' because the '+role+' role aligns with my background in enterprise SaaS, complex solution selling and strategic customer development. My experience across ecommerce, retail technology, product data and operational SaaS gives me a strong foundation for understanding complex customer environments and translating them into measurable business value.';
   const fit='My strongest relevant experience includes developing the French market at Productsup, managing complex enterprise sales cycles, working with brands such as LVMH and L’Oréal, and collaborating closely with product, technical and customer-facing teams. I would bring a consultative approach focused on strong discovery, executive relationships and long-term commercial value.';
-  tailorText.textContent='HEADLINE\n'+headline+'\n\nSUMMARY\n'+summary+'\n\nCV CHANGES\n'+(j.diff||'Keep changes light and role-specific.')+'\n\nCOVER LETTER / WHY THIS ROLE\n'+why+'\n\nWHY ME\n'+fit;
+  const cover='Dear Hiring Team,\n\nI am applying for the '+role+' position at '+j.company+'. '+why+'\n\n'+fit+'\n\nI would welcome the opportunity to discuss how my experience in enterprise SaaS and strategic customer development could contribute to '+j.company+'.\n\nBest regards,\nGregory Busnel';
+  tailorText.textContent='HEADLINE\n'+headline+'\n\nSUMMARY\n'+summary+'\n\nCV CHANGES\n'+(j.diff||'Keep changes light and role-specific.')+'\n\nCOVER LETTER\n'+cover+'\n\nAPPLICATION ANSWER — WHY THIS ROLE?\n'+why+'\n\nAPPLICATION ANSWER — WHY YOU?\n'+fit;
   tailorOutput.style.display='block';
 }
 async function copyTailor(){await navigator.clipboard.writeText(tailorText.textContent)}

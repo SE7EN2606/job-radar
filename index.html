@@ -119,30 +119,93 @@ function filterRows(kind,el){
   document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); el.classList.add('active');
   render(kind==='all'?jobs:jobs.filter(j=>j.type.includes(kind)));
 }
+let lastScanGeneratedAt=null;
+
+async function fetchScanPayload(useRaw=false){
+  const url=useRaw
+    ? 'https://raw.githubusercontent.com/SE7EN2606/job-radar/main/data/jobs.json?ts='+Date.now()
+    : 'data/jobs.json?ts='+Date.now();
+  const res=await fetch(url,{cache:'no-store'});
+  if(!res.ok) throw new Error('Unable to load scan data');
+  return res.json();
+}
+
+function mergeScannedJobs(payload){
+  const existing=new Set(jobs.map(j=>j.id));
+  (payload.jobs||[]).forEach(j=>{
+    if(!existing.has(j.id)){
+      j.type=(j.type||'')+' scanned';
+      jobs.push(j);
+      existing.add(j.id);
+    }
+  });
+  lastScanGeneratedAt=payload.generatedAt||lastScanGeneratedAt;
+  const when=payload.generatedAt?new Date(payload.generatedAt).toLocaleString():'not run yet';
+  scanMeta.textContent='Scanner: LinkedIn · Indeed · Glassdoor · HelloWork · last scan '+when+' · '+(payload.count||0)+' raw matches';
+  updateStats();
+  render();
+}
+
 async function loadScannedJobs(){
   try{
-    const res=await fetch('data/jobs.json?ts='+Date.now(),{cache:'no-store'});
-    if(!res.ok) return;
-    const payload=await res.json();
-    const existing=new Set(jobs.map(j=>j.id));
-    (payload.jobs||[]).forEach(j=>{
-      if(!existing.has(j.id)){
-        j.type=(j.type||'')+' scanned';
-        jobs.push(j);
-        existing.add(j.id);
-      }
-    });
-    const when=payload.generatedAt?new Date(payload.generatedAt).toLocaleString():'not run yet';
-    scanMeta.textContent='Scanner: LinkedIn · Indeed · Glassdoor · HelloWork · last scan '+when+' · '+(payload.count||0)+' raw matches';
-    updateStats();
-    render();
+    mergeScannedJobs(await fetchScanPayload(false));
   }catch(err){
     scanMeta.textContent='Curated roles loaded · scanner data unavailable';
   }
 }
-function scan(e){
-  const url='https://github.com/SE7EN2606/job-radar/actions/workflows/scan-jobs.yml';
-  window.open(url,'_blank','noopener');
+
+async function scan(e){
+  const b=e.currentTarget;
+  const key=prompt('Enter your Job Radar scan key:');
+  if(!key) return;
+
+  const before=lastScanGeneratedAt;
+  b.disabled=true;
+  b.textContent='Starting…';
+  scanMeta.textContent='Starting scanner…';
+
+  try{
+    const res=await fetch('/api/scan',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Scan-Key':key}
+    });
+    const payload=await res.json();
+    if(!res.ok) throw new Error(payload.error||payload.details||'Unable to start scan');
+
+    b.textContent='Scanning…';
+    scanMeta.textContent='Scan started · waiting for fresh results';
+
+    let attempts=0;
+    const timer=setInterval(async()=>{
+      attempts++;
+      try{
+        const fresh=await fetchScanPayload(true);
+        if(fresh.generatedAt && fresh.generatedAt!==before){
+          clearInterval(timer);
+          mergeScannedJobs(fresh);
+          b.disabled=false;
+          b.textContent='Scan now';
+          scanMeta.textContent+=' · fresh scan complete';
+        }else if(attempts>=30){
+          clearInterval(timer);
+          b.disabled=false;
+          b.textContent='Scan now';
+          scanMeta.textContent='Scan is still running. Refresh shortly to load new results.';
+        }
+      }catch(err){
+        if(attempts>=30){
+          clearInterval(timer);
+          b.disabled=false;
+          b.textContent='Scan now';
+          scanMeta.textContent='Scan started, but result polling timed out.';
+        }
+      }
+    },10000);
+  }catch(err){
+    b.disabled=false;
+    b.textContent='Scan now';
+    scanMeta.textContent='Scan failed: '+err.message;
+  }
 }
 function tailor(){alert('Next phase: generate controlled CV changes + cover letter + application answers.')}
 updateStats();

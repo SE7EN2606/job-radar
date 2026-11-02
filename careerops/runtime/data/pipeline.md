@@ -196,4 +196,10 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/dagobert/jobs/directeur-de-clientele-h-f_paris | Dagobert | Directeur de Clientèle H/F | Paris, France | 40000-55000 EUR | posted: 2026-10-05
 - [ ] https://www.welcometothejungle.com/en/companies/diot-siaci/jobs/directeur-de-clientele-h-f_paris_DS_20Zw6lG | Diot Siaci | Directeur de Clientèle H/F | Paris, France | posted: 2026-10-03
 
+- [ ] https://www.welcometothejungle.com/en/companies/mayday/jobs/customer-success-manager-smb_paris | Mayday | Customer Success Manager - Mid-Market/Enterprise | Paris, France | 50000-56000 EUR | posted: 2026-10-22
+- [ ] https://www.welcometothejungle.com/en/companies/thales/jobs/key-account-manager-f-h_rungis | Thales | Key Account Manager F/H | Rungis, France | posted: 2026-11-02
+- [ ] https://www.welcometothejungle.com/en/companies/hager-group/jobs/key-account-manager-energy-management-h-f-x_paris | Hager | Key Account Manager - Energy Management H/f/x | Saverne, France | posted: 2026-11-02
+- [ ] https://www.welcometothejungle.com/en/companies/bump-charge/jobs/customer-success-manager_paris_BUMP_MKNKPWJ | Bump | Customer Success Manager | Paris, France | 43000-50000 EUR | posted: 2026-11-02
+- [ ] https://www.welcometothejungle.com/en/companies/cellance/jobs/customer-success-manager_lyon_CELLA_ONpm7AD | CELLANCE | Customer Success Manager | Lyon, France | 40000-45000 EUR | posted: 2026-11-02
+
 ## Processed

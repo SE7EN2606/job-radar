@@ -13,6 +13,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: job-radar-state-updates
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-24.04
@@ -32,5 +36,16 @@ jobs:
           git add data/user-state.json
           git diff --cached --quiet && exit 0
           git commit -m "Update job state"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+            else
+              git rebase --abort || true
+            fi
+            sleep $((attempt * 2))
+          done
+          echo "Unable to persist job state after 5 attempts."
+          exit 1

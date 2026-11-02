@@ -1,0 +1,98 @@
+name: Scan jobs with Career Ops
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 6 * * 1-5"
+  push:
+    paths:
+      - "careerops/**"
+      - ".github/workflows/scan-careerops.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: careerops-job-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      CAREER_OPS_SHA: 20b9fd3a9c86d28c847e021f4dbbe93ce9a39a00
+    steps:
+      - name: Checkout Job Radar
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Checkout pinned Career Ops engine
+        run: |
+          git clone --filter=blob:none https://github.com/career-ops-hq/career-ops.git /tmp/career-ops
+          cd /tmp/career-ops
+          git checkout "$CAREER_OPS_SHA"
+          npm ci --ignore-scripts
+
+      - name: Prepare Career Ops data root
+        run: |
+          mkdir -p careerops/runtime/data
+          touch careerops/runtime/data/.gitkeep
+
+      - name: Run Career Ops scanner
+        id: scan
+        continue-on-error: true
+        env:
+          CAREER_OPS_ROOT: ${{ github.workspace }}/careerops/runtime
+          CAREER_OPS_PORTALS: ${{ github.workspace }}/careerops/portals.yml
+          CAREER_OPS_SCAN_HISTORY: ${{ github.workspace }}/careerops/runtime/data/scan-history.tsv
+          CAREER_OPS_PIPELINE: ${{ github.workspace }}/careerops/runtime/data/pipeline.md
+        run: |
+          set +e
+          cd /tmp/career-ops
+          node scan.mjs --json --since 30 > "$GITHUB_WORKSPACE/careerops/runtime/receipt.json"
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+            exit "$code"
+          fi
+          exit 0
+
+      - name: Export Career Ops jobs for Job Radar
+        run: |
+          node careerops/export.mjs careerops/runtime data/careerops-jobs.json
+
+      - name: Commit Career Ops results
+        run: |
+          set -e
+          git config user.name "job-radar-bot"
+          git config user.email "job-radar-bot@users.noreply.github.com"
+          git add data/careerops-jobs.json careerops/runtime/data/scan-history.tsv careerops/runtime/data/pipeline.md careerops/runtime/receipt.json 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No Career Ops changes"
+            exit 0
+          fi
+
+          git commit -m "Refresh Career Ops jobs"
+
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+            else
+              git rebase --abort || true
+            fi
+            sleep $((attempt * 2))
+          done
+
+          echo "Unable to push Career Ops results after 3 attempts."
+          exit 1

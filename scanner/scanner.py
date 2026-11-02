@@ -226,6 +226,7 @@ def normalize(df: pd.DataFrame, search_term: str, site: str) -> list[dict]:
             "source": site,
             "sourceUrl": clean(raw.get("job_url")),
             "applyUrl": url,
+            "companyUrl": clean(raw.get("company_url_direct")) or clean(raw.get("company_url")),
             "datePosted": clean(raw.get("date_posted")),
             "description": clean(raw.get("description"))[:4000],
         })

@@ -1,0 +1,36 @@
+name: Update job state
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        required: true
+        type: string
+      id:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Update state
+        env:
+          ACTION_NAME: ${{ inputs.action }}
+          JOB_ID: ${{ inputs.id }}
+        run: node scripts/update-state.mjs
+      - name: Commit state
+        run: |
+          git config user.name job-radar-bot
+          git config user.email job-radar-bot@users.noreply.github.com
+          git add data/user-state.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Update job state"
+          git pull --rebase origin main
+          git push origin HEAD:main

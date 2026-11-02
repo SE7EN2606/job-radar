@@ -146,6 +146,62 @@ const BASE_COVER={
   close:'I would welcome the opportunity to discuss how my experience could contribute to your team.'
 };
 
+const APPLICATION_PROFILE={
+  currentEmployer:'Insly',
+  currentJobTitle:'Enterprise Account Executive',
+  linkedin:'https://www.linkedin.com/in/greg-b',
+  french:'Native',
+  english:'Fluent',
+  previousMozilla:false,
+  workAuthorizationFrance:null,
+  sponsorshipFrance:null,
+  locatedInFranceFuture:null,
+  franceRelocationAssistance:null,
+  canTravelFrance:null,
+  canWorkUSHours:null,
+  referralName:''
+};
+
+function requirementEvidence(text){
+  const t=String(text||'').toLowerCase();
+  if(/renewal|retention/.test(t)) return {status:'PARTIAL',evidence:'Strong account-growth and long-term relationship evidence, but your CV does not explicitly state ownership of SaaS renewals/retention. Do not claim direct renewal ownership unless true.'};
+  if(/expansion|upsell|cross-sell|additional seats|new use cases/.test(t)) return {status:'STRONG',evidence:'Productsup: +25% average deal size through solution selling and account expansion. Insly: account growth and expansion opportunities. Nosto: upselling and cross selling.'};
+  if(/adoption|engagement|satisfaction/.test(t)) return {status:'STRONG',evidence:'Insly: long-term platform adoption and customer growth; Nosto: product adoption and customer experience positioning.'};
+  if(/business review|success planning|regular check-in|performance review/.test(t)) return {status:'STRONG',evidence:'Air Group: senior relationships through account planning, commercial development and regular performance reviews.'};
+  if(/account health|usage|performance metrics|forecast/.test(t)) return {status:'PARTIAL',evidence:'Air Group includes performance reviews and commercial portfolio management, but usage/account-health metrics and retention forecasting are not explicit in the master CV.'};
+  if(/relationship|trust|credibility/.test(t)) return {status:'STRONG',evidence:'Air Group: senior account relationships; Insly: executive, operational and technical stakeholder relationships across complex customer organisations.'};
+  if(/sales.*support.*product|solution engineering|cross-functional|internal teams/.test(t)) return {status:'STRONG',evidence:'Insly, Productsup and SoCloz all show cross-functional work with Product, technical, delivery, Pre-Sales and customer-facing teams.'};
+  if(/enterprise saas|platform account|customer facing|enterprise.*sales/.test(t)) return {status:'STRONG',evidence:'10+ years across enterprise SaaS, complex B2B sales and strategic account development.'};
+  if(/french|english/.test(t)) return {status:'STRONG',evidence:'French native; English fluent.'};
+  if(/travel/.test(t)) return {status:'CONFIRM',evidence:'Travel availability is not a CV fact. Confirm before submitting.'};
+  if(/u\.s\.|us business hours|united states.*hours/.test(t)) return {status:'CONFIRM',evidence:'Availability for U.S.-aligned meetings should be confirmed by you.'};
+  if(/paris|located in france|france/.test(t)) return {status:'CONFIRM',evidence:'The role is France-based. Your application should answer the location question explicitly; do not infer this from work eligibility.'};
+  return {status:'REVIEW',evidence:'No direct evidence mapping rule yet; review the requirement against the master CV.'};
+}
+
+function suggestedApplicationAnswer(label,j){
+  const q=String(label||'').toLowerCase();
+  const source=j.foundVia||j.sourceDisplay||j.source||'Company career site';
+  if(/linkedin/.test(q)) return {answer:APPLICATION_PROFILE.linkedin,status:'READY'};
+  if(/current employer/.test(q)) return {answer:APPLICATION_PROFILE.currentEmployer,status:'READY'};
+  if(/current job title/.test(q)) return {answer:APPLICATION_PROFILE.currentJobTitle,status:'READY'};
+  if(/fluent in french|currently fluent.*french/.test(q)) return {answer:'Yes',status:'READY'};
+  if(/employed by mozilla before/.test(q)) return {answer:'No',status:'CONFIRM'};
+  if(/how did you hear/.test(q)) return {answer:source,status:'READY'};
+  if(/referred|referral/.test(q)) return {answer:APPLICATION_PROFILE.referralName||'Leave blank unless you were referred',status:'READY'};
+  if(/privacy notice/.test(q)) return {answer:'Review the notice and select the acknowledgement yourself',status:'MANUAL'};
+  if(/authorized to work|work lawfully/.test(q)) return {answer:'Needs your confirmation',status:'CONFIRM'};
+  if(/sponsorship/.test(q)) return {answer:'Needs your confirmation',status:'CONFIRM'};
+  if(/located in france|future located in france/.test(q)) return {answer:'Needs your confirmation',status:'CONFIRM'};
+  if(/relocation assistance/.test(q)) return {answer:'Needs your confirmation',status:'CONFIRM'};
+  if(/website/.test(q)) return {answer:'Optional — leave blank unless you want to add a personal site',status:'OPTIONAL'};
+  if(/first name/.test(q)) return {answer:'Gregory',status:'READY'};
+  if(/last name/.test(q)) return {answer:'Busnel',status:'READY'};
+  if(/^email/.test(q)) return {answer:'greg.busnel@icloud.com',status:'READY'};
+  if(/^phone/.test(q)) return {answer:'+33.7.81.70.88.72',status:'READY'};
+  return {answer:'Review manually',status:'REVIEW'};
+}
+
 const jobs=[...curatedJobs];
 let state={hidden:[],applied:['duvo']};
 let currentTab='opportunities';
@@ -256,71 +312,93 @@ async function markApplied(){if(!activeJobId)return;const j=jobs.find(x=>x.id===
 async function hideJob(){if(!activeJobId)return;const j=jobs.find(x=>x.id===activeJobId);try{await persistState(isHidden(j)?'unhide':'hide',activeJobId);closeDrawer();}catch(e){alert(e.message)}}
 async function tailor(){
   const j=jobs.find(x=>x.id===activeJobId);if(!j||isHidden(j))return;
-  tailorBtn.disabled=true;tailorBtn.textContent='Reading job…';
-  let jd=(j.description||'').trim();
+  tailorBtn.disabled=true;tailorBtn.textContent='Reading full job…';
+
+  let details={description:(j.description||'').trim(),responsibilities:[],requirements:[],questions:[]};
   try{
     if(j.id.startsWith('careerops-')){
       const r=await fetch('/api/job-details?id='+encodeURIComponent(j.id),{cache:'no-store'});
       if(r.ok){
-        const details=await r.json();
-        jd=details.description||jd;
+        details={...details,...await r.json()};
         if(details.datePosted){j.datePosted=details.datePosted;dDate.textContent=formatDate(j.datePosted);renderCurrent()}
+        if(details.location) j.parsedLocation=details.location;
       }
     }
   }catch{}
   tailorBtn.disabled=false;tailorBtn.textContent='Tailor application';
 
-  const text=(j.title+' '+jd).toLowerCase();
-  const isGrowth=/account manager|customer success|renewal|retention|expansion|portfolio|existing accounts/.test(text);
+  const jd=details.description||'';
+  const responsibilities=Array.isArray(details.responsibilities)?details.responsibilities:[];
+  const requirements=Array.isArray(details.requirements)?details.requirements:[];
+  const text=(j.title+' '+jd+' '+responsibilities.join(' ')+' '+requirements.join(' ')).toLowerCase();
+
+  const isGrowth=/account manager|customer success|renewal|retention|expansion|adoption|portfolio|existing accounts/.test(text);
   const isRetail=/ecommerce|e-commerce|retail|commerce|product data|marketplace/.test(text);
   const isStrategic=/strategic|enterprise|key account|major account|global account/.test(text);
-  const isTechnical=/integration|api|technical|platform|workflow|data/.test(text);
+  const isTechnical=/integration|api|technical|platform|workflow|data|infrastructure|security/.test(text);
+  const hasRenewal=/renewal|retention/.test(text);
+  const hasAdoption=/adoption|engagement|satisfaction/.test(text);
+  const hasReviews=/business review|success planning|regular check-in|performance review/.test(text);
 
   const changes=[];
   const headline=isGrowth
-    ? 'Strategic Enterprise Account Manager | B2B SaaS | Account Growth & Complex Solutions'
+    ? 'Strategic Enterprise Account Manager | B2B SaaS | Account Growth & Customer Expansion'
     : (isStrategic
       ? 'Senior Strategic Account Executive | B2B SaaS | Enterprise Growth & Complex Sales'
       : 'Senior Enterprise Account Executive | B2B SaaS | Complex & Consultative Sales');
-  if(headline!==MASTER_CV.headline) changes.push({section:'Headline',from:MASTER_CV.headline,to:headline,why:'Align the headline with the role archetype without changing your actual seniority or experience.'});
+  if(headline!==MASTER_CV.headline) changes.push({section:'Headline',from:MASTER_CV.headline,to:headline,why:'Aligns the headline with the actual role archetype and keeps the wording supported by your experience.'});
 
   let s1=MASTER_CV.summary[0];
   if(isGrowth) s1='Senior SaaS sales professional with 10+ years of experience in enterprise software, strategic account development, account growth and complex B2B sales across European markets.';
-  if(s1!==MASTER_CV.summary[0]) changes.push({section:'Summary · line 1',from:MASTER_CV.summary[0],to:s1,why:'Moves account growth and strategic account development earlier for an installed-base / AM role.'});
+  if(s1!==MASTER_CV.summary[0]) changes.push({section:'Summary · line 1',from:MASTER_CV.summary[0],to:s1,why:'Brings strategic account growth forward because the role is primarily installed-base/customer-account ownership.'});
 
   let s3=MASTER_CV.summary[2];
-  if(isGrowth) s3='Strong background in enterprise account growth, executive engagement, long-term commercial development and cross-functional collaboration with product and technical teams.';
-  else if(isTechnical) s3='Strong background in enterprise sales, executive engagement and cross-functional collaboration with product and technical teams on complex platform and integration-led opportunities.';
-  if(s3!==MASTER_CV.summary[2]) changes.push({section:'Summary · line 3',from:MASTER_CV.summary[2],to:s3,why:'Mirrors the job emphasis using facts already present in your CV.'});
+  if(isGrowth && (hasRenewal||hasAdoption||hasReviews)) {
+    s3='Strong background in strategic account growth, customer adoption, executive engagement, long-term commercial development and cross-functional collaboration with product and technical teams.';
+  } else if(isGrowth) {
+    s3='Strong background in enterprise account growth, executive engagement, long-term commercial development and cross-functional collaboration with product and technical teams.';
+  } else if(isTechnical) {
+    s3='Strong background in enterprise sales, executive engagement and cross-functional collaboration with product and technical teams on complex platform and integration-led opportunities.';
+  }
+  if(s3!==MASTER_CV.summary[2]) changes.push({section:'Summary · line 3',from:MASTER_CV.summary[2],to:s3,why:'Reflects the JD emphasis while staying inside facts supported by the master CV.'});
 
   if(isGrowth){
-    changes.push({section:'Air Group · Focus',from:MASTER_CV.airgroup.focus,to:'Managed and grew a multi brand portfolio across major retail and ecommerce accounts, combining account planning, commercial development and long-term relationship growth.',why:'Makes your strongest true account-management evidence more explicit.'});
-    changes.push({section:'Insly · Achievement',from:MASTER_CV.insly.expansion,to:'Developed tailored commercial solutions supporting long-term platform adoption, account growth and expansion opportunities across complex enterprise accounts.',why:'Strengthens the expansion/retention angle without inventing metrics.'});
+    changes.push({section:'Air Group · Focus',from:MASTER_CV.airgroup.focus,to:'Managed and grew a multi brand portfolio across major retail and ecommerce accounts, combining account planning, commercial development and long-term relationship growth.',why:'Directly supports strategic account ownership, long-term relationships and commercial growth.'});
+    changes.push({section:'Insly · Achievement',from:MASTER_CV.insly.expansion,to:'Developed tailored commercial solutions supporting long-term platform adoption, account growth and expansion opportunities across complex enterprise accounts.',why:'Supports adoption and expansion. It deliberately does not claim direct renewal ownership.'});
   }
-
+  if(hasReviews){
+    changes.push({section:'Air Group · Action',from:MASTER_CV.airgroup.relationships,to:'Built senior customer relationships through account planning, commercial development and regular performance reviews.',why:'Maps directly to the JD requirement for recurring customer reviews and success planning.'});
+  }
   if(isRetail){
     changes.push({section:'Productsup · Focus',from:MASTER_CV.productsup.focus,to:'Enterprise SaaS sales and French market development for a complex ecommerce and product-data technology platform serving large brands.',why:'Surfaces the ecommerce/product-data relevance earlier.'});
   }
-
   if(isTechnical){
-    changes.push({section:'Productsup · Action',from:MASTER_CV.productsup.needs,to:'Translated complex customer needs into tailored SaaS solutions across integrations, data flows, channels, markets and platform usage.',why:'Makes the technical/integration dimension easier for ATS and recruiters to see.'});
+    changes.push({section:'Productsup · Action',from:MASTER_CV.productsup.needs,to:'Translated complex customer needs into tailored SaaS solutions across integrations, data flows, channels, markets and platform usage.',why:'Makes the platform/integration dimension explicit without claiming domain expertise you do not have.'});
   }
 
-  // Keep the change set controlled rather than rewriting the whole CV.
-  const unique=[];
-  const seen=new Set();
+  const unique=[];const seen=new Set();
   for(const ch of changes){const k=ch.section+'|'+ch.to;if(!seen.has(k)){seen.add(k);unique.push(ch)}}
-  const selected=unique.slice(0,5);
+  const selected=unique.slice(0,6);
 
-  const coverOpening='I am applying for the '+j.title+' role at '+j.company+' because it closely aligns with my background in enterprise SaaS, '+(isGrowth?'strategic account growth':'complex B2B sales')+' and multi-stakeholder commercial development across European markets.';
+  const reqLines=[...responsibilities,...requirements].slice(0,24);
+  const reqMap=reqLines.length
+    ? reqLines.map((r,i)=>{const ev=requirementEvidence(r);return (i+1)+'. ['+ev.status+'] '+r+'\n   Evidence: '+ev.evidence}).join('\n\n')
+    : 'Structured requirement extraction was unavailable for this posting. Review the full JD manually.';
+
+  const questions=Array.isArray(details.questions)?details.questions:[];
+  const answerLines=questions.length
+    ? questions.map((q,i)=>{const a=suggestedApplicationAnswer(q.label,j);return (i+1)+'. '+q.label+'\n   Suggested: '+a.answer+'\n   Status: '+a.status}).join('\n\n')
+    : 'No structured application questions were returned by the source.';
+
+  const coverOpening='I am applying for the '+j.title+' role at '+j.company+' because it closely aligns with my background in enterprise SaaS, '+(isGrowth?'strategic account growth and customer expansion':'complex B2B sales')+' across European markets.';
   const coverEvidence=isGrowth
-    ? 'My experience includes managing and growing strategic account portfolios, building senior customer relationships, developing expansion opportunities, and working cross-functionally with product and technical teams. At Air Group, I helped grow a major retail and ecommerce portfolio from approximately €160,000 to €4 million, while my SaaS roles at Productsup and Insly strengthened my experience with complex enterprise customers and technology-led buying cycles.'
+    ? 'My experience combines strategic account development, enterprise SaaS and long-term commercial growth. At Air Group, I managed and grew a major retail and ecommerce portfolio from approximately €160,000 to €4 million while building senior relationships through account planning and regular performance reviews. In SaaS, Productsup and Insly strengthened my experience with complex enterprise customers, platform adoption, expansion opportunities and cross-functional work with product and technical teams.'
     : 'Across Insly, Productsup and SoCloz, I have managed complex enterprise sales cycles from discovery through negotiation and close, working with executive, operational and technical stakeholders. At Productsup, I achieved 115 percent of target in year one and 138 percent in year two, secured enterprise projects with LVMH and L’Oréal, and increased average deal size by 25 percent through solution selling and account expansion.';
-  const coverClose='I would welcome the opportunity to discuss how this combination of enterprise SaaS experience, '+(isGrowth?'strategic account development':'consultative selling')+' and French-market expertise could contribute to '+j.company+'.';
+  const coverClose='I would welcome the opportunity to discuss how this combination of enterprise SaaS experience, '+(isGrowth?'strategic account development and customer growth':'consultative selling')+' and French-market expertise could contribute to '+j.company+'.';
 
   const diffText=selected.length
     ? selected.map((x,i)=>(i+1)+'. '+x.section+'\nCURRENT\n'+x.from+'\n\nREPLACE WITH\n'+x.to+'\n\nWHY\n'+x.why).join('\n\n------------------------------\n\n')
-    : 'No material CV wording change recommended. Keep the master CV and tailor only the cover letter for this role.';
+    : 'No material CV wording change recommended. Keep the master CV and tailor only the cover letter.';
 
   const coverDiff=[
     'OPENING PARAGRAPH\nBASE\n'+BASE_COVER.opening+'\n\nREPLACE WITH\n'+coverOpening,
@@ -330,8 +408,15 @@ async function tailor(){
 
   const fullCover='Dear Hiring Team,\n\n'+coverOpening+'\n\n'+coverEvidence+'\n\n'+coverClose+'\n\nBest regards,\nGregory Busnel';
 
-  j.tailored={headline,summary:[s1,MASTER_CV.summary[1],s3],changes:selected,cover:fullCover};
-  tailorText.textContent='CV — EXACT CHANGES\n\n'+diffText+'\n\n================================\n\nCOVER LETTER — EXACT CHANGES\n\n'+coverDiff+'\n\n================================\n\nFINAL COVER LETTER\n\n'+fullCover;
+  j.tailored={headline,summary:[s1,MASTER_CV.summary[1],s3],changes:selected,cover:fullCover,details,reqMap,answerLines};
+
+  tailorText.textContent=
+    'JOB REQUIREMENTS — EVIDENCE MAP\n\n'+reqMap+
+    '\n\n================================\n\nCV — EXACT CHANGES\n\n'+diffText+
+    '\n\n================================\n\nCOVER LETTER — EXACT CHANGES\n\n'+coverDiff+
+    '\n\n================================\n\nAPPLICATION FORM — SUGGESTED ANSWERS\n\n'+answerLines+
+    '\n\n================================\n\nFINAL COVER LETTER\n\n'+fullCover;
+
   tailorOutput.style.display='block';
 }
 

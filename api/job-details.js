@@ -74,6 +74,75 @@ function normalizeQuestion(q){
   return {label,type,required};
 }
 
+
+function formatMoney(value,currency="EUR"){
+  const n=Number(value);
+  if(!Number.isFinite(n)||n<=0) return "";
+  const symbol=currency==="EUR"?"€":currency==="GBP"?"£":currency==="USD"?"$":currency+" ";
+  return symbol+Math.round(n).toLocaleString("en-US");
+}
+
+function salaryFromJsonLd(ld){
+  const base=ld?.baseSalary;
+  if(!base) return "";
+  const currency=base.currency||base.value?.currency||"EUR";
+  const v=base.value||base;
+  const min=Number(v.minValue||v.value||0);
+  const max=Number(v.maxValue||0);
+  if(min&&max) return formatMoney(min,currency)+"–"+formatMoney(max,currency);
+  if(min) return formatMoney(min,currency);
+  return "";
+}
+
+function salaryFromText(text){
+  const s=String(text||"").replace(/\u00a0/g," ");
+  const patterns=[
+    /€\s*([0-9]{2,3}(?:[.,][0-9]{3})?)\s*[-–—]\s*€?\s*([0-9]{2,3}(?:[.,][0-9]{3})?)/i,
+    /([0-9]{2,3}(?:[.,][0-9]{3})?)\s*[-–—]\s*([0-9]{2,3}(?:[.,][0-9]{3})?)\s*EUR/i,
+    /EUR\s*([0-9]{2,3}(?:[.,][0-9]{3})?)\s*[-–—]\s*([0-9]{2,3}(?:[.,][0-9]{3})?)/i,
+    /£\s*([0-9]{2,3}(?:[.,][0-9]{3})?)\s*[-–—]\s*£?\s*([0-9]{2,3}(?:[.,][0-9]{3})?)/i,
+    /\$\s*([0-9]{2,3}(?:[.,][0-9]{3})?)\s*[-–—]\s*\$?\s*([0-9]{2,3}(?:[.,][0-9]{3})?)/i
+  ];
+  for(const p of patterns){
+    const m=s.match(p);
+    if(m){
+      const symbol=p.source.startsWith("£")?"£":p.source.startsWith("\\$")?"$":"€";
+      return symbol+m[1].replace(",",",")+"–"+symbol+m[2].replace(",",",");
+    }
+  }
+  return "";
+}
+
+function genericQuestions(lines){
+  const out=[];
+  const seen=new Set();
+  const questionish=[
+    /salary expectations/i,
+    /notice period|preferred start date/i,
+    /authorized to work|work lawfully/i,
+    /how did you hear/i,
+    /referred by|referral/i,
+    /gender do you identify/i,
+    /willing to travel/i,
+    /experience selling enterprise software/i,
+    /experience.*interacting with clients/i,
+    /fluent in both english and french|fluent.*french.*english/i,
+    /first name/i,/last name/i,/^email/i,/^phone/i,/^address/i,
+    /cover letter/i,/resume\/cv|upload resume/i,
+    /personal data.*stored|privacy notice|consent/i,
+    /current employer/i,/current job title/i,
+    /located in france/i,/require sponsorship/i
+  ];
+  for(const raw of lines){
+    const line=raw.replace(/\*?required$/i,"").replace(/\*$/,"").trim();
+    if(line.length<3||line.length>260) continue;
+    if(questionish.some(r=>r.test(line))){
+      const key=line.toLowerCase();
+      if(!seen.has(key)){seen.add(key);out.push({label:line,type:"text",required:/required/i.test(raw)})}
+    }
+  }
+  return out;
+}
 async function loadKnownJob(id){
   const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/main/data/careerops-jobs.json?ts=${Date.now()}`;
   const r=await fetch(url,{headers:{"User-Agent":"job-radar-vercel"}});
@@ -106,7 +175,7 @@ async function readGreenhouse(url,job){
     ...(Array.isArray(data.demographic_questions)?data.demographic_questions.map(normalizeQuestion):[])
   ].filter(q=>q.label);
 
-  const salaryText=lines.find(x=>/€\s*\d|\d[\d.,]*\s*[-–]\s*€?\s*\d|hiring range/i.test(x))||"";
+  const salaryText=salaryFromText(stripHtml(data.content||"")) || "";
   return {
     id:job.id,
     url:data.absolute_url||url,
@@ -148,7 +217,9 @@ export default async function handler(req,res){
     const html=await response.text();
     const ld=parseJsonLd(html);
     const description=ld?.description ? stripHtml(String(ld.description)) : stripHtml(html).slice(0,24000);
-    const lines=description.split("\n").map(x=>x.trim()).filter(Boolean);
+    const fullText=stripHtml(html).slice(0,50000);
+    const lines=fullText.split("\n").map(x=>x.trim()).filter(Boolean);
+    const salaryText=salaryFromJsonLd(ld)||salaryFromText(fullText)||"";
 
     return res.status(200).json({
       id,
@@ -159,9 +230,10 @@ export default async function handler(req,res){
       datePosted:ld?.datePosted||job.datePosted||"",
       validThrough:ld?.validThrough||"",
       description:description.slice(0,24000),
-      responsibilities:extractSection(lines,[/^what you.?ll do/i,/^responsibilities/i],[/^what you.?ll bring/i,/^requirements/i,/^qualifications/i]),
-      requirements:extractSection(lines,[/^what you.?ll bring/i,/^requirements/i,/^qualifications/i],[/^benefits/i,/^about /i]),
-      questions:[]
+      responsibilities:extractSection(lines,[/^what you.?ll do/i,/^what you will do/i,/^responsibilities/i],[/^what you.?ll bring/i,/^requirements/i,/^qualifications/i,/^what we offer/i]),
+      requirements:extractSection(lines,[/^what you.?ll bring/i,/^requirements/i,/^qualifications/i],[/^benefits/i,/^what we offer/i,/^about /i]),
+      questions:genericQuestions(lines),
+      salaryText
     });
   }catch(error){
     return res.status(500).json({error:"Unable to read job posting",details:String(error?.message||error)});

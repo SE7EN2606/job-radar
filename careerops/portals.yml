@@ -28,7 +28,8 @@ title_filter:
 # Keep the scanner broad enough for remote roles but reject countries Greg has
 # explicitly excluded from physical work/relocation.
 location_filter:
-  always_allow:
+  strict: true
+  allow:
     - "France"
     - "Paris"
     - "Estonia"
@@ -39,23 +40,40 @@ location_filter:
     - "Zurich"
     - "Zürich"
     - "Geneva"
-    - "Italy"
+    - "Lausanne"
+    - "Romandy"
     - "Milan"
     - "Milano"
+    - "Turin"
+    - "Torino"
+    - "Bologna"
+    - "Verona"
+    - "Venice"
+    - "Venezia"
     - "Prague"
-    - "Czech"
+    - "Praha"
     - "Slovenia"
     - "Ljubljana"
     - "Warsaw"
-    - "Poland"
+    - "Warszawa"
     - "Portugal"
     - "Lisbon"
+    - "Lisboa"
     - "Porto"
     - "Luxembourg"
     - "Monaco"
-    - "Remote"
+    - "Remote Europe"
+    - "Europe Remote"
+    - "Remote - Europe"
+    - "Remote, Europe"
+    - "EU Remote"
+    - "Remote EU"
+    - "EMEA Remote"
+    - "Remote EMEA"
   block_hard:
     - "United Kingdom"
+    - "UK"
+    - "England"
     - "London"
     - "Germany"
     - "Austria"
@@ -69,7 +87,7 @@ location_filter:
     - "Norway"
     - "Finland"
     - "Slovakia"
-  remote_title_fallback: true
+  remote_title_fallback: false
 
 max_posting_age_days: 30
 preferred_languages: [en, fr]

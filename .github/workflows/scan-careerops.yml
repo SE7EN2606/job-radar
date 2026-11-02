@@ -40,6 +40,7 @@ jobs:
           cd /tmp/career-ops
           git checkout "$CAREER_OPS_SHA"
           npm install --ignore-scripts --no-audit --no-fund
+          npx playwright install --with-deps chromium
 
       - name: Prepare Career Ops data root
         run: |

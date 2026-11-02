@@ -90,3 +90,23 @@ tracked_companies:
   - name: Akeneo
     careers_url: https://careers.akeneo.com/jobs
     provider: teamtailor
+
+
+job_boards:
+  - name: Welcome to the Jungle
+    provider: wttj
+    wttj:
+      filters: 'offices.country_code:FR AND contract_type:full_time'
+      queries:
+        - "enterprise account manager"
+        - "strategic account manager"
+        - "key account manager"
+        - "account director"
+        - "enterprise account executive"
+        - "strategic account executive"
+        - "customer success manager"
+        - "responsable grands comptes"
+        - "comptes stratégiques"
+        - "directeur de clientèle"
+      max_hits: 200
+    enabled: true

@@ -1,6 +1,6 @@
 const OWNER = "SE7EN2606";
 const REPO = "job-radar";
-const WORKFLOW = "scan-jobs.yml";
+const WORKFLOW = "scan-careerops.yml";
 
 async function latestRun(headers) {
   const response = await fetch(

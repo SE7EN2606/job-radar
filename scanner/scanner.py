@@ -9,6 +9,7 @@ import pandas as pd
 from jobspy import scrape_jobs
 
 OUT = Path("data/jobs.json")
+STATE = Path("data/user-state.json")
 
 SEARCHES = [
     "Enterprise Account Manager",
@@ -67,6 +68,13 @@ BLOCKED_LOCATIONS = [
     "norway", "finland", "slovakia",
 ]
 
+APPROVED_LOCATION_TERMS = [
+    "france", "paris", "estonia", "tallinn", "sweden", "stockholm",
+    "switzerland", "zurich", "zürich", "geneva", "italy", "milan", "milano",
+    "prague", "czech", "slovenia", "ljubljana", "warsaw", "poland",
+    "portugal", "lisbon", "porto", "luxembourg", "monaco",
+]
+
 
 def clean(value):
     if value is None:
@@ -76,7 +84,38 @@ def clean(value):
     return str(value).strip()
 
 
-def score_job(row: dict) -> tuple[int, str]:
+def is_location_blocked(row: dict) -> bool:
+    location = clean(row.get("location")).lower()
+    description = clean(row.get("description")).lower()
+
+    # Explicit remote-from-excluded-country statements are blockers even when a board
+    # result is surfaced through a France search.
+    text = f"{location} {description}"
+
+    blocked = any(term in text for term in BLOCKED_LOCATIONS)
+    approved = any(term in text for term in APPROVED_LOCATION_TERMS)
+
+    # When a description says remote "anywhere in Germany", etc., do not let a
+    # generic France board location override the real employment restriction.
+    explicit_excluded_remote = any(
+        phrase in text
+        for phrase in [
+            "anywhere in germany",
+            "based in germany",
+            "remote in germany",
+            "germany only",
+            "uk based",
+            "uk-based",
+            "based in the uk",
+            "london hybrid",
+            "based in london",
+        ]
+    )
+
+    return explicit_excluded_remote or (blocked and not approved)
+
+
+def score_job(row: dict) -> tuple[int, int, str, bool]:
     text = " ".join([
         clean(row.get("title")),
         clean(row.get("company")),
@@ -84,37 +123,44 @@ def score_job(row: dict) -> tuple[int, str]:
         clean(row.get("location")),
     ]).lower()
 
-    score = 52
+    domain = 52
     for term, value in POSITIVE.items():
         if term in text:
-            score += value
+            domain += value
     for term, value in NEGATIVE.items():
         if term in text:
-            score += value
+            domain += value
 
-    location = clean(row.get("location")).lower()
-    remote = bool(row.get("is_remote"))
-    if remote:
-        score += 8
-    if any(term in location for term in BLOCKED_LOCATIONS):
-        score -= 25
-
-    # Prefer senior commercial roles, penalize obvious junior/transactional roles.
     title = clean(row.get("title")).lower()
     if any(x in title for x in ["senior", "strategic", "enterprise", "director", "lead", "head"]):
-        score += 8
+        domain += 8
     if any(x in title for x in ["junior", "inside sales", "sales development", "business development representative"]):
-        score -= 20
+        domain -= 20
 
-    score = max(0, min(99, score))
+    domain = max(0, min(99, domain))
+
+    practical = domain
+    remote = bool(row.get("is_remote"))
+    if remote:
+        practical += 5
+
+    blocked = is_location_blocked(row)
+    if blocked:
+        # Geography is a hard practical constraint. A perfect domain match cannot
+        # appear as a 99 practical fit when the job cannot be taken.
+        practical = min(practical, 45)
+
+    practical = max(0, min(99, practical))
 
     hunter = "Medium"
     if any(x in text for x in ["cold call", "cold calling", "hunter", "self-sourced", "self sourced", "build pipeline from scratch"]):
         hunter = "High"
+        practical = max(0, practical - 10)
     elif any(x in text for x in ["renewal", "retention", "existing customers", "existing accounts", "portfolio", "upsell", "expansion"]):
         hunter = "Low"
+        practical = min(99, practical + 5)
 
-    return score, hunter
+    return practical, domain, hunter, blocked
 
 
 def salary_label(row: dict) -> str:
@@ -137,7 +183,7 @@ def salary_label(row: dict) -> str:
 def normalize(df: pd.DataFrame, search_term: str, site: str) -> list[dict]:
     rows = []
     for raw in df.to_dict(orient="records"):
-        fit, hunter = score_job(raw)
+        fit, domain_fit, hunter, blocked = score_job(raw)
         location = clean(raw.get("location"))
         url = clean(raw.get("job_url_direct")) or clean(raw.get("job_url"))
         title = clean(raw.get("title"))
@@ -145,33 +191,36 @@ def normalize(df: pd.DataFrame, search_term: str, site: str) -> list[dict]:
         if not title or not company or not url:
             continue
 
+        job_id = re.sub(r"[^a-z0-9]+", "-", f"{site}-{company}-{title}".lower()).strip("-")[:120]
+
         status = "Review"
         tone = "good"
         rec = "INVESTIGATE"
-        if fit >= 80:
+        if blocked:
+            status, tone, rec = "LOCATION BLOCKED", "bad", "SKIP UNLESS LOCATION CHANGES"
+        elif fit >= 80:
             status, rec = "Strong match", "APPLY / REVIEW"
         elif fit < 60:
             status, tone, rec = "Low fit", "warn", "SKIP / REVIEW"
 
-        if any(x in location.lower() for x in BLOCKED_LOCATIONS):
-            status, tone, rec = "LOCATION CHECK", "bad", "SKIP UNLESS FLEXIBLE"
-
         rows.append({
-            "id": re.sub(r"[^a-z0-9]+", "-", f"{site}-{company}-{title}".lower()).strip("-")[:120],
+            "id": job_id,
             "company": company,
             "title": title,
             "fit": fit,
-            "domainFit": fit,
+            "domainFit": domain_fit,
             "hunter": hunter,
             "location": location or ("Remote" if raw.get("is_remote") else "Unspecified"),
             "salary": salary_label(raw),
             "rating": "—",
             "status": status,
             "statusTone": tone,
-            "type": "scanned remote" if raw.get("is_remote") else "scanned",
+            "type": ("scanned remote" if raw.get("is_remote") else "scanned") + (" blocked" if blocked else ""),
             "rec": rec,
             "pros": [f"Found via {site}", f"Matched search: {search_term}"],
-            "cons": ["Automated first-pass score; employer-site verification still required"],
+            "cons": (["Location conflicts with your approved work/relocation geography"] if blocked else []) + [
+                "Automated first-pass score; employer-site verification still required"
+            ],
             "diff": "CV tailoring is generated only after this role passes live-status and geographic verification.",
             "cover": "Generate only after verification.",
             "source": site,
@@ -181,6 +230,19 @@ def normalize(df: pd.DataFrame, search_term: str, site: str) -> list[dict]:
             "description": clean(raw.get("description"))[:4000],
         })
     return rows
+
+
+def read_state():
+    if not STATE.exists():
+        return {"hidden": [], "applied": []}
+    try:
+        data = json.loads(STATE.read_text(encoding="utf-8"))
+        return {
+            "hidden": data.get("hidden") or [],
+            "applied": data.get("applied") or [],
+        }
+    except Exception:
+        return {"hidden": [], "applied": []}
 
 
 def run():
@@ -207,14 +269,20 @@ def run():
             except Exception as exc:
                 errors.append({"site": site, "search": search_term, "error": str(exc)[:500]})
 
-    # De-duplicate on apply URL first, then company/title/location.
     unique = {}
     for job in collected:
         key = job["applyUrl"] or f'{job["company"]}|{job["title"]}|{job["location"]}'
         if key not in unique or job["fit"] > unique[key]["fit"]:
             unique[key] = job
 
-    jobs = sorted(unique.values(), key=lambda j: (-j["fit"], j["company"].lower(), j["title"].lower()))
+    state = read_state()
+    hidden = set(state["hidden"])
+
+    jobs = [
+        job for job in unique.values()
+        if job["id"] not in hidden
+    ]
+    jobs = sorted(jobs, key=lambda j: (-j["fit"], j["company"].lower(), j["title"].lower()))
 
     payload = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),

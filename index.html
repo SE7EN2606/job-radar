@@ -335,7 +335,17 @@ async function bulkAction(action){
   const ids=[...selectedJobs];if(!ids.length)return;
   ids.forEach(id=>{applyStateActionLocal(action,id);pendingState[id]=action});
   savePendingState();selectedJobs.clear();updateStats();renderCurrent();
-  await Promise.allSettled(ids.map(id=>fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,id})})));
+
+  // Persist sequentially so GitHub state workflows do not race each other.
+  for(const id of ids){
+    try{
+      await fetch('/api/state',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action,id})
+      });
+    }catch{}
+  }
 }
 async function bulkApply(){await bulkAction('applied')}
 async function bulkHide(){await bulkAction('hide')}

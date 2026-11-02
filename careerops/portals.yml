@@ -1,0 +1,92 @@
+# Job Radar profile for the Career Ops scanning engine.
+# Engine source is pinned in .github/workflows/scan-careerops.yml.
+
+title_filter:
+  positive:
+    - "Enterprise Account Manager"
+    - "Strategic Account Manager"
+    - "Key Account Manager"
+    - "Global Account Manager"
+    - "Account Director"
+    - "Customer Success Manager"
+    - "Customer Success"
+    - "Expansion"
+    - "Enterprise Account Executive"
+    - "Strategic Account Executive"
+    - "Major Account Executive"
+    - "Responsable Grands Comptes"
+    - "Comptes Stratégiques"
+    - "Directeur de Clientèle"
+  negative:
+    - "Business Development Representative"
+    - "Sales Development Representative"
+    - "SDR"
+    - "BDR"
+    - "Inside Sales"
+    - "Junior"
+
+# Keep the scanner broad enough for remote roles but reject countries Greg has
+# explicitly excluded from physical work/relocation.
+location_filter:
+  always_allow:
+    - "France"
+    - "Paris"
+    - "Estonia"
+    - "Tallinn"
+    - "Sweden"
+    - "Stockholm"
+    - "Switzerland"
+    - "Zurich"
+    - "Zürich"
+    - "Geneva"
+    - "Italy"
+    - "Milan"
+    - "Milano"
+    - "Prague"
+    - "Czech"
+    - "Slovenia"
+    - "Ljubljana"
+    - "Warsaw"
+    - "Poland"
+    - "Portugal"
+    - "Lisbon"
+    - "Porto"
+    - "Luxembourg"
+    - "Monaco"
+    - "Remote"
+  block_hard:
+    - "United Kingdom"
+    - "London"
+    - "Germany"
+    - "Austria"
+    - "Spain"
+    - "Netherlands"
+    - "Belgium"
+    - "Ireland"
+    - "Malta"
+    - "Cyprus"
+    - "Denmark"
+    - "Norway"
+    - "Finland"
+    - "Slovakia"
+  remote_title_fallback: true
+
+max_posting_age_days: 30
+preferred_languages: [en, fr]
+
+scan_history:
+  dedup_include_location: true
+  recheck_after_days: 30
+
+tracked_companies:
+  - name: GitLab
+    careers_url: https://job-boards.greenhouse.io/gitlab
+    provider: greenhouse
+
+  - name: TeamViewer
+    careers_url: https://careers.teamviewer.com/jobs
+    provider: teamtailor
+
+  - name: Akeneo
+    careers_url: https://careers.akeneo.com/jobs
+    provider: teamtailor

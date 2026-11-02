@@ -56,7 +56,7 @@ jobs:
         run: |
           set +e
           cd /tmp/career-ops
-          node scan.mjs --json --since 30 > "$GITHUB_WORKSPACE/careerops/runtime/receipt.json"
+          node scan.mjs --json --verify --since 30 > "$GITHUB_WORKSPACE/careerops/runtime/receipt.json"
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then

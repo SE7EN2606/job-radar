@@ -202,4 +202,9 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/bump-charge/jobs/customer-success-manager_paris_BUMP_MKNKPWJ | Bump | Customer Success Manager | Paris, France | 43000-50000 EUR | posted: 2026-11-02
 - [ ] https://www.welcometothejungle.com/en/companies/cellance/jobs/customer-success-manager_lyon_CELLA_ONpm7AD | CELLANCE | Customer Success Manager | Lyon, France | 40000-45000 EUR | posted: 2026-11-02
 
+- [ ] https://www.welcometothejungle.com/en/companies/najar/jobs/senior-customer-success-manager-f-m_paris_ghcej3g7 | Najar | Senior Customer Success Manager (F/M) | Paris, France | posted: 2026-11-03
+- [ ] https://www.welcometothejungle.com/en/companies/bloomco/jobs/senior-business-manager-ingenieur-d-affaires-conseil-lille_lille | Bloomco | Key Account Manager (consulting) - Lille | Lille, France | 74000-96000 EUR | posted: 2026-11-03
+- [ ] https://www.welcometothejungle.com/en/companies/siteflow/jobs/customer-success-manager-h-f_paris_SITEF_xxyJ5a1 | Siteflow | Customer Success Manager (H/F) | Paris, France | 55000-60000 EUR | posted: 2026-11-03
+- [ ] https://www.welcometothejungle.com/en/companies/steeple/jobs/customer-success-manager_saint-jacques-de-la-lande_STEEP_77y2qoA | Steeple | Customer Success Manager | Saint-Jacques-de-la-Lande, France | 35000-50000 EUR | posted: 2026-11-03
+
 ## Processed

@@ -317,7 +317,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
  <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Full search instructions (optional)<textarea id="pPrompt" rows="9" placeholder="Personalized search prompt for this profile"></textarea></label></div><h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
  <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="saveAndScanProfile()">Save &amp; run scan</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
- <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">This version stores additional profiles in your current browser only. It does not create a login, invite a friend, synchronize data between devices, or launch an independent job scan. A secure multi-user backend is still required for that.</p>
+ <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Profiles and application history are saved only in this browser, not synced across devices. Candidate-specific discovery scans can be triggered through the Vercel API or GitHub Actions; on this static GitHub Pages site, use the GitHub Actions fallback link. Results are unverified until employer-site checks. Private accounts still require a secure backend.</p>
  </div>
 </section>
 </main>
@@ -490,7 +490,7 @@ function renderProfileSettings(){
  for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt'})) document.getElementById(id).value=profile()[k]||'';
  renderMissingQuestions();
  document.getElementById('deleteProfile').disabled=activeProfileId==='owner';
- document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate local preferences and status. Independent job discovery and private sign-in are not connected yet.';
+ document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate search preferences and job results. Scans run through Vercel API or GitHub Actions. Private sign-in and cross-device sync are not yet implemented.';
 }
 function updateProfileUI(){
  document.getElementById('activeProfileLabel').textContent=profile().name;

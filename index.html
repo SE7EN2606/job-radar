@@ -316,7 +316,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  <label>Excluded work locations<textarea id="pExcluded" rows="3"></textarea></label>
  <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
  <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Full search instructions (optional)<textarea id="pPrompt" rows="9" placeholder="Personalized search prompt for this profile"></textarea></label></div><h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
- <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
+ <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="saveAndScanProfile()">Save &amp; run scan</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
  <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">This version stores additional profiles in your current browser only. It does not create a login, invite a friend, synchronize data between devices, or launch an independent job scan. A secure multi-user backend is still required for that.</p>
  </div>
 </section>
@@ -511,7 +511,8 @@ async function switchProfile(id){
 }
 function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
 function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt'}))p[k]=document.getElementById(id).value.trim();
- saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return}if(storeProfiles()){renderProfileSettings();updateProfileUI();profileFeedback('✓ Saved '+p.name+' in this browser. You can now run its discovery scan.')} }
+ saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return false}if(storeProfiles()){renderProfileSettings();updateProfileUI();profileFeedback('✓ Saved '+p.name+' in this browser. You can now run its discovery scan.');return true}return false}
+async function saveAndScanProfile(){if(!saveProfile())return;closeSettings();await scan({currentTarget:document.getElementById('scanBtn')})}
 function removeProfile(){if(activeProfileId==='owner')return;if(!confirm('Delete this browser-only profile?'))return;localStorage.removeItem('jobRadarProfileState_'+activeProfileId);profiles.list=profiles.list.filter(p=>p.id!==activeProfileId);switchProfile('owner')}
 function exportProfile(){const b=new Blob([JSON.stringify(profile(),null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='jobradar-profile.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 function renderMissingQuestions(){

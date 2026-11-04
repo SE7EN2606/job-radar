@@ -31,6 +31,23 @@ export default async function handler(req, res) {
   };
 
   try {
+    const selected = req.body?.profile;
+    if (selected && selected.id && selected.id !== "owner") {
+      const id = String(selected.id);
+      const roles = String(selected.roles || "").trim().slice(0, 900);
+      const locations = String(selected.locations || "France").trim().slice(0, 500);
+      if (!/^[a-zA-Z0-9_-]{4,90}$/.test(id) || !roles) {
+        return res.status(400).json({error:"Profile ID and search roles are required."});
+      }
+      const response = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/scan-profile.yml/dispatches`,
+        {method:"POST",headers,body:JSON.stringify({ref:"main",inputs:{profile_id:id,roles,locations}})}
+      );
+      if (!response.ok) {
+        return res.status(response.status).json({error:"Unable to trigger profile scan.",details:(await response.text()).slice(0,700)});
+      }
+      return res.status(202).json({ok:true,profileId:id,message:"A candidate-specific discovery scan has been queued. Results are unverified until checked against employer pages."});
+    }
     const run = await latestRun(headers);
     if (run) {
       const started = new Date(run.run_started_at || run.created_at).getTime();

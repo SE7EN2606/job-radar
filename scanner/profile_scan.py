@@ -17,7 +17,7 @@ from urllib.parse import urlsplit, urlunsplit
 
 from jobspy import scrape_jobs
 
-RESULTS_PER_QUERY = 35
+RESULTS_PER_QUERY = 60
 MAX_SEARCH_TITLES = 10
 SITES = ("indeed", "linkedin")
 
@@ -73,7 +73,7 @@ def expanded_titles(roles):
             if key not in seen:
                 seen.add(key)
                 variants.append(term)
-    return variants[:18]
+    return variants[:12]
 
 def search_locations(raw):
     value = fold(raw)
@@ -171,6 +171,14 @@ def main():
                             continue
                         where = clean(raw.get("location")) or "Unspecified"
                         region_bonus, region_label = region_quality(where)
+                        # Foreign office locations are ineligible; unknown locations
+                        # remain unverified rather than being called confirmed.
+                        place_folded = fold(where)
+                        foreign_terms = ("belgium", "belgique", "germany", "allemagne",
+                                         "spain", "espagne", "united kingdom", "switzerland",
+                                         "suisse", "italy", "italie", "portugal", "poland")
+                        if region_bonus == 0 and any(term in place_folded for term in foreign_terms):
+                            continue
                         fit = min(99, max(50, quality - 7 + region_bonus))
                         dedup = normalized_url(url)
                         jid = "profile-" + hashlib.sha1(dedup.encode()).hexdigest()[:20]

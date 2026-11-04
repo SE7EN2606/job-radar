@@ -14,6 +14,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 .table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.row{display:grid;grid-template-columns:34px 2.05fr .55fr .68fr .8fr .76fr .82fr .62fr .95fr .72fr;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}.row.head{border-top:0;background:#10182a;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}.row.blocked{background:rgba(255,107,107,.035)}.company{font-weight:800}.title{font-size:13px;color:var(--muted);margin-top:4px}.meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.info{color:var(--accent)}.score{font-size:22px;font-weight:900}.salary{font-weight:700}.actions{display:flex;gap:6px;justify-content:flex-end}.small{padding:7px 9px;font-size:12px}
 .drawer{display:none;position:fixed;right:0;top:0;width:min(680px,96vw);height:100vh;background:#0f1728;border-left:1px solid var(--line);padding:24px;overflow:auto;box-shadow:-20px 0 60px rgba(0,0,0,.35);z-index:20}.drawer.open{display:block}.drawer h2{margin:0 0 6px}.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.section h3{margin:0 0 10px;font-size:15px}.kv{display:grid;grid-template-columns:145px 1fr;gap:8px;font-size:14px;margin:6px 0}.diff,.copybox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;background:#0a1120;border-radius:10px;padding:12px;line-height:1.5}.drawer-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}.empty{padding:40px;text-align:center;color:var(--muted)}.bulkbar{display:none;align-items:center;gap:8px;margin:10px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.bulkbar.show{display:flex}.bulkbar .spacer{flex:1}.row input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 @media(max-width:1100px){.app{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1.8fr .6fr .7fr .9fr 1fr .7fr}.row>*:nth-child(3),.row>*:nth-child(6){display:none}}
+.profileFields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.profileFields label{display:flex;flex-direction:column;gap:7px;color:var(--muted);font-size:13px}.profileFields textarea,.profileFields input{background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px;font:inherit;width:100%}.profileFields label:not(:first-child){grid-column:1/-1}@media(max-width:700px){.profileFields{grid-template-columns:1fr}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -21,10 +22,11 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 <div class="app">
 <aside class="side">
   <div class="brand">Job<span>Radar</span></div>
-  <nav class="nav"><a class="active" href="#">Opportunities</a><a href="#">Applications</a><a href="#">CV Master</a><a href="#">Companies</a><a href="#">Settings</a></nav>
+  <nav class="nav"><a class="active" href="#">Opportunities</a><a href="#">Applications</a><a href="#">CV Master</a><a href="#">Companies</a><a href="#" onclick="showSettings(event)" id="settingsNav">Settings</a></nav>
 </aside>
 <main class="main">
-  <div class="top">
+<div id="radarView">
+  <div class="top"><div class="muted" id="activeProfileLabel" style="font-size:12px"></div>
     <div><h1>Opportunity radar</h1><div class="muted">Strategic account growth first. Hunters downranked.</div><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div></div>
     <button id="scanBtn" class="btn primary" onclick="scan(event)">Scan now</button>
   </div>
@@ -69,9 +71,24 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
   <div class="table" id="jobs">
     <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div>Fit</div><div>Hunter</div><div>Location</div><div>Posted</div><div>Salary</div><div>Rating</div><div>Status</div><div></div></div>
   </div>
+</div>
+<section id="settingsView" style="display:none;max-width:840px">
+ <div class="top"><div><h1>Settings</h1><p class="muted">Manage search profiles</p></div><button class="btn ghost" onclick="closeSettings()">Back to jobs</button></div>
+ <div class="section"><h3>Active profile</h3><div class="toolbar"><select id="profileSelect" onchange="switchProfile(this.value)"></select><button class="btn ghost" onclick="addProfile()">+ Add user profile</button></div><p class="muted" id="profileNotice"></p></div>
+ <div class="section"><h3>Search settings</h3><div class="profileFields">
+ <label>Profile name<input id="pName" maxlength="90"></label>
+ <label>Target job titles<textarea id="pRoles" rows="3"></textarea></label>
+ <label>Relevant experience / industries<textarea id="pExperience" rows="3"></textarea></label>
+ <label>Accepted work locations<textarea id="pLocations" rows="3"></textarea></label>
+ <label>Excluded work locations<textarea id="pExcluded" rows="3"></textarea></label>
+ <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
+ <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label></div>
+ <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
+ <p class="muted" style="font-size:12px">This version stores additional profiles in your current browser only. It does not create a login, invite a friend, synchronize data between devices, or launch an independent job scan. A secure multi-user backend is still required for that.</p>
+ </div>
+</section>
 </main>
 </div>
-
 <div class="drawer" id="drawer">
   <button class="btn ghost small" style="float:right" onclick="closeDrawer()">Close</button>
   <h2 id="dCompany"></h2><div class="muted" id="dTitle"></div>
@@ -219,6 +236,45 @@ function suggestedApplicationAnswer(label,j){
   return {answer:'Review manually',status:'REVIEW'};
 }
 
+
+const PROFILE_STORAGE='jobRadarLocalProfilesV1';
+const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manager; Enterprise Account Manager; Key Account Manager; Enterprise Customer Growth',experience:'10+ years enterprise SaaS; ecommerce, retail, strategic relationships, French and English',locations:'France; Estonia; Sweden; Switzerland; northern Italy; Prague; Slovenia; Warsaw; Portugal; Luxembourg; Monaco',excluded:'Finland; Norway; Denmark; Netherlands; Slovakia; Balkans except Slovenia; Spain; Austria; Germany; UK; Ireland; Malta; Cyprus; Belgium',salary:'90000',rules:'Prioritize renewals and account expansion; exclude mandatory consulting experience and hunter-only roles'};
+function getProfileStore(){try{const o=JSON.parse(localStorage.getItem(PROFILE_STORAGE)||'{}');return {list:[defaultOwner,...(Array.isArray(o.list)?o.list:[]).filter(x=>x.id!=='owner')],active:o.active||'owner'}}catch{return {list:[defaultOwner],active:'owner'}}}
+let profiles=getProfileStore();
+let activeProfileId=profiles.list.some(x=>x.id===profiles.active)?profiles.active:'owner';
+function storeProfiles(){localStorage.setItem(PROFILE_STORAGE,JSON.stringify(profiles))}
+function profile(){return profiles.list.find(p=>p.id===activeProfileId)||profiles.list[0]}
+function localProfileState(){try{const p=JSON.parse(localStorage.getItem('jobRadarProfileState_'+activeProfileId)||'{}');return {hidden:Array.isArray(p.hidden)?p.hidden:[],applied:Array.isArray(p.applied)?p.applied:[]}}catch{return {hidden:[],applied:[]}}}
+function saveLocalProfileState(){localStorage.setItem('jobRadarProfileState_'+activeProfileId,JSON.stringify(state))}
+function renderProfileSettings(){
+ const el=document.getElementById('profileSelect');el.replaceChildren();
+ profiles.list.forEach(p=>{const opt=document.createElement('option');opt.value=p.id;opt.textContent=p.name;el.append(opt)});
+ el.value=activeProfileId;
+ for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules'})) document.getElementById(id).value=profile()[k]||'';
+ document.getElementById('deleteProfile').disabled=activeProfileId==='owner';
+ document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate local preferences and status. Independent job discovery and private sign-in are not connected yet.';
+}
+function updateProfileUI(){
+ document.getElementById('activeProfileLabel').textContent='Profile: '+profile().name;
+ const b=document.getElementById('scanBtn');b.disabled=activeProfileId!=='owner';
+ b.title=activeProfileId==='owner'?'Run job scan':'Independent scan not yet configured';
+ if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent='Independent scanner not yet connected for this profile';
+}
+function showSettings(e){if(e)e.preventDefault();document.getElementById('radarView').style.display='none';document.getElementById('settingsView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.getElementById('settingsNav').classList.add('active');renderProfileSettings()}
+function closeSettings(){document.getElementById('settingsView').style.display='none';document.getElementById('radarView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.querySelector('.nav a').classList.add('active')}
+async function switchProfile(id){
+ if(!profiles.list.some(p=>p.id===id))return;
+ if(activeProfileId!=='owner')saveLocalProfileState();
+ activeProfileId=id;profiles.active=id;storeProfiles();selectedJobs.clear();closeDrawer();
+ state=id==='owner'?{hidden:[],applied:['duvo']}:localProfileState();
+ if(id==='owner')await loadState();
+ renderProfileSettings();updateProfileUI();updateStats();renderCurrent();
+}
+function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
+function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules'}))p[k]=document.getElementById(id).value.trim();if(!p.name){alert('Please enter a profile name');return}storeProfiles();renderProfileSettings();updateProfileUI()}
+function removeProfile(){if(activeProfileId==='owner')return;if(!confirm('Delete this browser-only profile?'))return;localStorage.removeItem('jobRadarProfileState_'+activeProfileId);profiles.list=profiles.list.filter(p=>p.id!==activeProfileId);switchProfile('owner')}
+function exportProfile(){const b=new Blob([JSON.stringify(profile(),null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='jobradar-profile.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+
 const jobs=[...curatedJobs];
 let state={hidden:[],applied:['duvo']};
 let currentTab='opportunities';
@@ -266,7 +322,7 @@ function reconcilePending(server){
   savePendingState();
 }
 function isHidden(j){return state.hidden.includes(j.id)}
-function isApplied(j){return state.applied.includes(j.id)||j.type.includes('applied')}
+function isApplied(j){return state.applied.includes(j.id)||(activeProfileId==='owner'&&j.type.includes('applied'))}
 function statusPill(j){
   let label=j.status||'Review',tone=j.statusTone||'good';
   if(isHidden(j)){label='HIDDEN';tone='bad'}
@@ -281,6 +337,7 @@ function practicalFit(j){
 }
 function filteredJobs(){
   let list=jobs.filter(j=>{
+    if(activeProfileId!=='owner')return false; // Don't leak CV-specific job scores and curated matches
     if(currentTab==='hidden') return isHidden(j);
     if(currentTab==='applied') return isApplied(j)&&!isHidden(j);
     return !isHidden(j)&&!isApplied(j);
@@ -396,6 +453,7 @@ async function bulkApply(){await bulkAction('applied')}
 async function bulkHide(){await bulkAction('hide')}
 
 function updateStats(){
+  if(activeProfileId!=='owner'){strong.textContent='—';lowHunter.textContent='—';applied.textContent=state.applied.length;hiddenCount.textContent=state.hidden.length;return}
   strong.textContent=jobs.filter(j=>!isHidden(j)&&!isApplied(j)&&practicalFit(j)>=80).length;
   lowHunter.textContent=jobs.filter(j=>!isHidden(j)&&j.hunter==='Low').length;
   applied.textContent=jobs.filter(j=>isApplied(j)&&!isHidden(j)).length;
@@ -458,6 +516,7 @@ function openJobAd(){
 }
 async function persistState(action,id){
   applyStateActionLocal(action,id);
+  if(activeProfileId!=='owner'){saveLocalProfileState();updateStats();renderCurrent();return}
   pendingState[id]=action;savePendingState();
   updateStats();renderCurrent();
   const res=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,id})});
@@ -466,6 +525,7 @@ async function persistState(action,id){
 async function markApplied(){if(!activeJobId)return;const j=jobs.find(x=>x.id===activeJobId);try{await persistState(isApplied(j)?'unapply':'applied',activeJobId);openDrawer(activeJobId)}catch(e){alert(e.message)}}
 async function hideJob(){if(!activeJobId)return;const j=jobs.find(x=>x.id===activeJobId);try{await persistState(isHidden(j)?'unhide':'hide',activeJobId);closeDrawer();}catch(e){alert(e.message)}}
 async function tailor(){
+  if(activeProfileId!=='owner'){alert('A separate CV must be set up for this profile before tailoring.');return}
   const j=jobs.find(x=>x.id===activeJobId);if(!j||isHidden(j))return;
   tailorBtn.disabled=true;tailorBtn.textContent='Reading full job…';
 
@@ -778,7 +838,7 @@ function generateAtsPdf(){
   doc.save('Gregory_BUSNEL_'+j.company.replace(/[^a-z0-9]+/gi,'_')+'_'+j.title.replace(/[^a-z0-9]+/gi,'_')+'.pdf');
 }
 
-async function loadState(){try{const r=await fetch('/api/state?ts='+Date.now(),{cache:'no-store'});if(r.ok){const server=await r.json();reconcilePending(server);state=server;applyPendingState()}}catch{applyPendingState()}}
+async function loadState(){if(activeProfileId!=='owner'){state=localProfileState();return}try{const r=await fetch('/api/state?ts='+Date.now(),{cache:'no-store'});if(r.ok){const server=await r.json();reconcilePending(server);state=server;applyPendingState()}}catch{applyPendingState()}}
 async function fetchScanPayload(useRaw=false){
   const url=useRaw?'https://raw.githubusercontent.com/SE7EN2606/job-radar/main/data/careerops-jobs.json?ts='+Date.now():'data/careerops-jobs.json?ts='+Date.now();
   const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('Unable to load Career Ops scan data');return res.json();
@@ -797,6 +857,7 @@ function mergeScannedJobs(payload){
 }
 async function loadScannedJobs(){try{mergeScannedJobs(await fetchScanPayload(false))}catch{scanMeta.textContent='Curated roles loaded · scanner data unavailable'}}
 async function scan(e){
+  if(activeProfileId!=='owner'){alert('An independent job scanner has not been set up for this profile yet.');return}
   const b=e.currentTarget,before=lastScanGeneratedAt;b.disabled=true;b.textContent='Starting…';scanMeta.textContent='Starting scanner…';
   try{
     const res=await fetch('/api/scan',{method:'POST'}),payload=await res.json();if(!res.ok)throw new Error(payload.error||payload.details||'Unable to start scan');
@@ -811,7 +872,7 @@ async function scan(e){
     }catch{}},5000);
   }catch(err){b.disabled=false;b.textContent='Scan now';scanMeta.textContent='Scan failed: '+err.message}
 }
-async function init(){await Promise.all([loadState(),loadScannedJobs()]);updateStats();renderCurrent()}
+async function init(){renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);updateProfileUI();updateStats();renderCurrent()}
 init();
 </script>
 </body>

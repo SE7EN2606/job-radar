@@ -28,7 +28,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 <div id="radarView">
   <div class="top"><div class="muted" id="activeProfileLabel" style="font-size:12px"></div>
     <div><h1>Opportunity radar</h1><div class="muted">Strategic account growth first. Hunters downranked.</div><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div></div>
-    <button id="scanBtn" class="btn primary" onclick="scan(event)">Scan now</button>
+    <div style="display:flex;gap:8px;align-items:center"><button class="btn ghost" onclick="showSettings(event)" aria-label="Manage profiles">Profiles / Settings</button><button id="scanBtn" class="btn primary" onclick="scan(event)">Scan now</button></div>
   </div>
   <div class="grid">
     <div class="stat"><span class="muted">Strong matches</span><b id="strong">0</b></div>
@@ -239,7 +239,7 @@ function suggestedApplicationAnswer(label,j){
 
 const PROFILE_STORAGE='jobRadarLocalProfilesV1';
 const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manager; Enterprise Account Manager; Key Account Manager; Enterprise Customer Growth',experience:'10+ years enterprise SaaS; ecommerce, retail, strategic relationships, French and English',locations:'France; Estonia; Sweden; Switzerland; northern Italy; Prague; Slovenia; Warsaw; Portugal; Luxembourg; Monaco',excluded:'Finland; Norway; Denmark; Netherlands; Slovakia; Balkans except Slovenia; Spain; Austria; Germany; UK; Ireland; Malta; Cyprus; Belgium',salary:'90000',rules:'Prioritize renewals and account expansion; exclude mandatory consulting experience and hunter-only roles'};
-function getProfileStore(){try{const o=JSON.parse(localStorage.getItem(PROFILE_STORAGE)||'{}');return {list:[defaultOwner,...(Array.isArray(o.list)?o.list:[]).filter(x=>x.id!=='owner')],active:o.active||'owner'}}catch{return {list:[defaultOwner],active:'owner'}}}
+function getProfileStore(){try{const o=JSON.parse(localStorage.getItem(PROFILE_STORAGE)||'{}');const list=Array.isArray(o.list)?o.list:[];const savedOwner=list.find(x=>x.id==='owner')||{};return {list:[{...defaultOwner,...savedOwner,id:'owner'},...list.filter(x=>x.id!=='owner')],active:o.active||'owner'}}catch{return {list:[defaultOwner],active:'owner'}}}
 let profiles=getProfileStore();
 let activeProfileId=profiles.list.some(x=>x.id===profiles.active)?profiles.active:'owner';
 function storeProfiles(){localStorage.setItem(PROFILE_STORAGE,JSON.stringify(profiles))}

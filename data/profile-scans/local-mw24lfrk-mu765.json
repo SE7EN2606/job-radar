@@ -1,6 +1,6 @@
 {
   "profileId": "local-mw24lfrk-mu765",
-  "generatedAt": "2026-11-04T15:29:46.673095+00:00",
+  "generatedAt": "2026-11-04T21:32:40.575300+00:00",
   "source": "jobspy-discovery",
   "verifiedLive": false,
   "strategy": "title-and-location-first-v2",
@@ -20,9 +20,9 @@
     "France"
   ],
   "queriesAttempted": 16,
-  "elapsedSeconds": 64.3,
-  "count": 153,
-  "highRelevanceCount": 153,
+  "elapsedSeconds": 62.1,
+  "count": 145,
+  "highRelevanceCount": 145,
   "jobs": [
     {
       "id": "profile-c7a8096b5109693584f9",
@@ -122,39 +122,6 @@
       "verificationStatus": "unverified",
       "locationCategory": "Bretagne",
       "matchedSearchTerm": "Directeur général de filiale"
-    },
-    {
-      "id": "profile-ba477b53bd1b0e2800e4",
-      "company": "AXIONE",
-      "title": "DIRECTEUR COMMERCIAL",
-      "fit": 97,
-      "domainFit": 100,
-      "hunter": "Unknown",
-      "location": "Toulouse, O, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://axionecarrieres.csod.com/ux/ats/careersite/1/home/requisition/161?c=axionecarrieres&lang=fr-FR&source=IndeedATSSync&jbid=-19",
-      "applyUrl": "https://axionecarrieres.csod.com/ux/ats/careersite/1/home/requisition/161?c=axionecarrieres&lang=fr-FR&source=IndeedATSSync&jbid=-19",
-      "datePosted": "2026-11-02",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-f716ca9c70a2958be414",
@@ -282,7 +249,7 @@
       "source": "linkedin",
       "sourceUrl": "https://www.linkedin.com/jobs/view/4476678791",
       "applyUrl": "https://www.linkedin.com/jobs/view/4476678791",
-      "datePosted": "2026-10-14",
+      "datePosted": "2026-11-04",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
@@ -454,6 +421,39 @@
       "matchedSearchTerm": "Directeur de Business Unit"
     },
     {
+      "id": "profile-7f1ff0f21d476e95c1b1",
+      "company": "Accor",
+      "title": "FR - Directeur général (H/F/X)",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Vitrolles, B8, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "indeed",
+      "sourceUrl": "https://jobs.smartrecruiters.com/AccorHotel/744000157165959-fr-directeur-general-h-f-x-",
+      "applyUrl": "https://jobs.smartrecruiters.com/AccorHotel/744000157165959-fr-directeur-general-h-f-x-",
+      "datePosted": "2026-10-16",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
+    },
+    {
       "id": "profile-b1190df627961b6d608d",
       "company": "ADH Groupe",
       "title": "Directeur commercial/Directrice commerciale",
@@ -553,39 +553,6 @@
       "matchedSearchTerm": "Directeur commercial"
     },
     {
-      "id": "profile-b60994ee0a81b8c036b4",
-      "company": "Arthrex GmbH",
-      "title": "Directeur Commercial Régional F/H Sud-Ouest",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Toulouse, Occitanie, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "linkedin",
-      "sourceUrl": "https://www.linkedin.com/jobs/view/4442779448",
-      "applyUrl": "https://www.linkedin.com/jobs/view/4442779448",
-      "datePosted": "2026-10-14",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
-    },
-    {
       "id": "profile-03626d2383cfc82dfa46",
       "company": "ASSOCIATION LYONNAISE NOUVELLE D ECOUTE",
       "title": "DIRECTEUR GENERAL - Association Alynea Samu Social 69 (H/F)",
@@ -613,72 +580,6 @@
       "sourceUrl": "https://www.linkedin.com/jobs/view/4482634928",
       "applyUrl": "https://www.linkedin.com/jobs/view/4482634928",
       "datePosted": "2026-10-23",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
-    },
-    {
-      "id": "profile-6d56bab98d3cbbae36da",
-      "company": "Atos",
-      "title": "Directeur de business unit - Clermont Ferrand F/H",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Clermont-Ferrand, Auvergne-Rhône-Alpes, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "linkedin",
-      "sourceUrl": "https://www.linkedin.com/jobs/view/4441569917",
-      "applyUrl": "https://www.linkedin.com/jobs/view/4441569917",
-      "datePosted": "2026-10-27",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur de Business Unit"
-    },
-    {
-      "id": "profile-74d5f8f78943ee8ef2cf",
-      "company": "BASTIDE LE CONFORT MEDICAL",
-      "title": "Directeur Général de Filiale H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Sartrouville, A8, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://recrutement.bastidemedical.fr/jobs/8641013-directeur-general-de-filiale-h-f",
-      "applyUrl": "https://recrutement.bastidemedical.fr/jobs/8641013-directeur-general-de-filiale-h-f",
-      "datePosted": "2026-10-30",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
@@ -716,39 +617,6 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur de Business Unit"
-    },
-    {
-      "id": "profile-f35ba22dd8517f89ae8d",
-      "company": "Beauvallon Collection",
-      "title": "Directeur Général Adjoint H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Lyon, ARA, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://taleez.com/apply/directeur-general-adjoint-h-f-lyon-beauvallon-collection-cdi?utm_source=Indeed",
-      "applyUrl": "https://taleez.com/apply/directeur-general-adjoint-h-f-lyon-beauvallon-collection-cdi?utm_source=Indeed",
-      "datePosted": "2026-11-02",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-df98e4d0a92ef092545e",
@@ -883,39 +751,6 @@
       "matchedSearchTerm": "Directeur général"
     },
     {
-      "id": "profile-e1c59ee29a6ede6f3cc1",
-      "company": "CarOnSale",
-      "title": "Directeur Commercial France (H/F/D)",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Strasbourg, GE, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://grnh.se/1herf7p2teu",
-      "applyUrl": "https://grnh.se/1herf7p2teu",
-      "datePosted": "2026-10-28",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
-    },
-    {
       "id": "profile-e701dd8948817b85cecb",
       "company": "CarOnSale",
       "title": "Directeur Commercial France (H/F/D)",
@@ -1015,6 +850,72 @@
       "matchedSearchTerm": "Directeur de BU"
     },
     {
+      "id": "profile-183e1eb0b5bd59a831f8",
+      "company": "Communauté de Communes du Genevois",
+      "title": "Directeur général adjoint territoire durable H/F PT 2402",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Archamps, ARA, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "indeed",
+      "sourceUrl": "https://jobs.layan.eu/fr/offer-of-communaute-de-communes-du-genevois-no-115060/1",
+      "applyUrl": "https://jobs.layan.eu/fr/offer-of-communaute-de-communes-du-genevois-no-115060/1",
+      "datePosted": "2026-10-15",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
+    },
+    {
+      "id": "profile-1db78c57b399160b642f",
+      "company": "Conseil départemental des Hauts-de-Seine",
+      "title": "Assistant(e) du Directeur général adjoint (F/H)",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Nanterre, A8, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "indeed",
+      "sourceUrl": "https://recrutement.hauts-de-seine.fr/nos-offres-demploi/detail/assistante-dga",
+      "applyUrl": "https://recrutement.hauts-de-seine.fr/nos-offres-demploi/detail/assistante-dga",
+      "datePosted": "2026-10-23",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
+    },
+    {
       "id": "profile-907dcec52ca13c6a455b",
       "company": "CROIX-MARINE AUVERGNE-RHONE-ALPES",
       "title": "Directeur Général (H/F)",
@@ -1081,6 +982,39 @@
       "matchedSearchTerm": "Directeur de Business Unit"
     },
     {
+      "id": "profile-40dd8b210298652acf0c",
+      "company": "Dellen",
+      "title": "DIRECTEUR GENERAL - VENTILATION",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Marchélepot, Hauts-de-France, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4472640485",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4472640485",
+      "datePosted": "2026-10-29",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
+    },
+    {
       "id": "profile-45ec56a6774c72124901",
       "company": "Dellen",
       "title": "DIRECTEUR GENERAL EDITION LOGICIEL CONSTRUCTION/IMMOBILIER",
@@ -1112,72 +1046,6 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur général"
-    },
-    {
-      "id": "profile-40dd8b210298652acf0c",
-      "company": "Dellen",
-      "title": "DIRECTEUR GENERAL - VENTILATION",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Marchélepot, Hauts-de-France, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "linkedin",
-      "sourceUrl": "https://www.linkedin.com/jobs/view/4472640485",
-      "applyUrl": "https://www.linkedin.com/jobs/view/4472640485",
-      "datePosted": "2026-10-29",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général de filiale"
-    },
-    {
-      "id": "profile-be1390b0ddaa25c03951",
-      "company": "DHL",
-      "title": "Directeur Commercial et Marketing (F/H)",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Lognes, A8, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://careers.dhl.com/global/en/job/DPDHGLOBALAV382368ENGLOBALEXTERNAL/Directeur-Commercial-et-Marketing-F-H?utm_source=indeed&utm_medium=phenom-feeds&utm_campaign=organic_indeed",
-      "applyUrl": "https://careers.dhl.com/global/en/job/DPDHGLOBALAV382368ENGLOBALEXTERNAL/Directeur-Commercial-et-Marketing-F-H?utm_source=indeed&utm_medium=phenom-feeds&utm_campaign=organic_indeed",
-      "datePosted": "2026-10-16",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
     },
     {
       "id": "profile-12728cc49f33c0bb67c0",
@@ -1246,6 +1114,39 @@
       "matchedSearchTerm": "Directeur commercial"
     },
     {
+      "id": "profile-df1594c28d1bc365800c",
+      "company": "Enerlis",
+      "title": "Directeur Général BtoC (H/F)",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Boulogne-Billancourt, A8, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "indeed",
+      "sourceUrl": "https://enerlis.teamtailor.com/jobs/8613934-directeur-general-btoc-h-f",
+      "applyUrl": "https://enerlis.teamtailor.com/jobs/8613934-directeur-general-btoc-h-f",
+      "datePosted": "2026-10-26",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
+    },
+    {
       "id": "profile-caacbf9e3d74d780728d",
       "company": "ENERLIS",
       "title": "Directeur Général BtoC (H/F)",
@@ -1309,7 +1210,7 @@
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
+      "matchedSearchTerm": "Directeur de BU"
     },
     {
       "id": "profile-65cc9bf46d18e8e09bd2",
@@ -1376,72 +1277,6 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur commercial"
-    },
-    {
-      "id": "profile-4dc4b30993f9d4a8194a",
-      "company": "FAYAT",
-      "title": "Directeur Commercial Métier H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Cuincy, HDF, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://jobs.fayat.com/offer/9868-MTM1MTE",
-      "applyUrl": "https://jobs.fayat.com/offer/9868-MTM1MTE",
-      "datePosted": "2026-10-08",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
-    },
-    {
-      "id": "profile-5abba319501369fb46ad",
-      "company": "Foncia",
-      "title": "Directeur des ventes F/H",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Tours, CVL, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://recrutement.foncia.com/fr/annonce/4672129-directeur-des-ventes-fh-45000-orleans?s_o=indeed&s_b=DigitalRecruiters",
-      "applyUrl": "https://recrutement.foncia.com/fr/annonce/4672129-directeur-des-ventes-fh-45000-orleans?s_o=indeed&s_b=DigitalRecruiters",
-      "datePosted": "2026-11-02",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur des ventes"
     },
     {
       "id": "profile-6de306e7d571b2bca4dc",
@@ -1543,39 +1378,6 @@
       "matchedSearchTerm": "Directeur général"
     },
     {
-      "id": "profile-40b8bffdef5a61e13b10",
-      "company": "Groupe IGENSIA Education",
-      "title": "Directeur Commercial Relations Entreprises et Insertion (H/F)",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Nanterre, A8, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://recrutement.igensia-education.fr/fr/annonce/4665239-directeur-commercial-relations-entreprises-et-insertion-hf-92000-nanterre?s_o=indeed&s_b=DigitalRecruiters",
-      "applyUrl": "https://recrutement.igensia-education.fr/fr/annonce/4665239-directeur-commercial-relations-entreprises-et-insertion-hf-92000-nanterre?s_o=indeed&s_b=DigitalRecruiters",
-      "datePosted": "2026-10-27",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
-    },
-    {
       "id": "profile-d869dd114f0f82b15013",
       "company": "Groupe Luminess",
       "title": "Directeur commercial/Directrice commerciale",
@@ -1609,46 +1411,13 @@
       "matchedSearchTerm": "Directeur commercial"
     },
     {
-      "id": "profile-48b28a44cb10feb94ead",
-      "company": "Groupe Léon Grosse",
-      "title": "Directeur commercial H/F",
+      "id": "profile-5d067d54c71b0c018544",
+      "company": "Gynea",
+      "title": "Directeur général par intérim",
       "fit": 92,
       "domainFit": 95,
       "hunter": "Unknown",
-      "location": "Nantes, Pays de la Loire, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "linkedin",
-      "sourceUrl": "https://www.linkedin.com/jobs/view/4437433945",
-      "applyUrl": "https://www.linkedin.com/jobs/view/4437433945",
-      "datePosted": "2026-10-22",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
-    },
-    {
-      "id": "profile-6b316e59e846e7087bd2",
-      "company": "Groupe Ortec",
-      "title": "Directeur commercial grands comptes h/f",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Chasseneuil-du-Poitou, NA, France",
+      "location": "Clichy, A8, France",
       "salary": "Undisclosed",
       "rating": "—",
       "status": "Unverified vacancy",
@@ -1666,9 +1435,9 @@
       "diff": "Confirm employer status and requirements before CV tailoring.",
       "cover": "Not generated until verification.",
       "source": "indeed",
-      "sourceUrl": "https://jobs.ortec-group.com/html/job/uys3rj8100",
-      "applyUrl": "https://jobs.ortec-group.com/html/job/uys3rj8100",
-      "datePosted": "2026-10-29",
+      "sourceUrl": "https://gynea.teamtailor.com/jobs/8505221-directeur-general-par-interim",
+      "applyUrl": "https://gynea.teamtailor.com/jobs/8505221-directeur-general-par-interim",
+      "datePosted": "2026-10-06",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
@@ -1906,6 +1675,39 @@
       "matchedSearchTerm": "Directeur commercial"
     },
     {
+      "id": "profile-1525615f2fc4eb2455b5",
+      "company": "ISG International Service Group",
+      "title": "Directeur Général m/w/d",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Lyon, Auvergne-Rhône-Alpes, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4479536814",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4479536814",
+      "datePosted": "2026-11-04",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
+    },
+    {
       "id": "profile-0e2e582c37158d987b56",
       "company": "JM CATHALA CONSEILS",
       "title": "Directeur Général Coopérative H/F",
@@ -1970,72 +1772,6 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur de Business Unit"
-    },
-    {
-      "id": "profile-c54f21d4a3c1fbbc90be",
-      "company": "Kairo RH",
-      "title": "Directeur de BU H/F | Ouverture d'Agence [Strasbourg]",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Strasbourg, GE, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://careers.marvins.ai/kairo-rh/jobs/cc137d2e-a14e-44a2-bc86-8e7048571841",
-      "applyUrl": "https://careers.marvins.ai/kairo-rh/jobs/cc137d2e-a14e-44a2-bc86-8e7048571841",
-      "datePosted": "2026-10-13",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur de BU"
-    },
-    {
-      "id": "profile-95fb8b55451bbee42ce7",
-      "company": "KLUBB",
-      "title": "Directeur commercial Algérie H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Ferrières-en-Brie, A8, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://taleez.com/apply/directeur-commercial-algerie-h-f-ferrieres-en-brie-klubb-cdi?utm_source=Indeed",
-      "applyUrl": "https://taleez.com/apply/directeur-commercial-algerie-h-f-ferrieres-en-brie-klubb-cdi?utm_source=Indeed",
-      "datePosted": "2026-10-07",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
     },
     {
       "id": "profile-6a1f60ed2d79da26f7b2",
@@ -2203,6 +1939,39 @@
       "matchedSearchTerm": "Directeur général"
     },
     {
+      "id": "profile-410238f400ab66024545",
+      "company": "La Martiniquaise-Bardinet",
+      "title": "Directrice commerciale / Directeur commercial MDD",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Saint-Apollinaire, Bourgogne-Franche-Comté, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4485531402",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4485531402",
+      "datePosted": "2026-11-04",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur commercial"
+    },
+    {
       "id": "profile-f40e6aa1705e9970d9e9",
       "company": "La Martiniquaise-Bardinet",
       "title": "Directrice commerciale / Directeur commercial MDD",
@@ -2236,42 +2005,9 @@
       "matchedSearchTerm": "Directeur commercial"
     },
     {
-      "id": "profile-7998b12115974f2d44b1",
-      "company": "Maxi Zoo",
-      "title": "Directeur des Ventes H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Vaulx-Milieu, ARA, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://carriere.maxizoo.fr/siege/offer-redirect/?offerApiId=MTEyMjk=&showApplicationForm=false",
-      "applyUrl": "https://carriere.maxizoo.fr/siege/offer-redirect/?offerApiId=MTEyMjk=&showApplicationForm=false",
-      "datePosted": "2026-10-19",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur des ventes"
-    },
-    {
       "id": "profile-145f9627a1fd21ee8f16",
       "company": "Meent",
-      "title": "Directeur Général (F/H)",
+      "title": "Directeur Général Adjoint (F/H)",
       "fit": 92,
       "domainFit": 95,
       "hunter": "Unknown",
@@ -2293,13 +2029,46 @@
       "diff": "Confirm employer status and requirements before CV tailoring.",
       "cover": "Not generated until verification.",
       "source": "indeed",
-      "sourceUrl": "https://inrecruitingfr.intervieweb.it/annunci.php?l=directeur-general-fh-146528&lang=fr&d=indeed&LAC=sportcarriere",
-      "applyUrl": "https://inrecruitingfr.intervieweb.it/annunci.php?l=directeur-general-fh-146528&lang=fr&d=indeed&LAC=sportcarriere",
-      "datePosted": "2026-11-03",
+      "sourceUrl": "https://inrecruitingfr.intervieweb.it/annunci.php?l=directeur-general-adjoint-fh-145924&lang=fr&d=indeed&LAC=sportcarriere",
+      "applyUrl": "https://inrecruitingfr.intervieweb.it/annunci.php?l=directeur-general-adjoint-fh-145924&lang=fr&d=indeed&LAC=sportcarriere",
+      "datePosted": "2026-10-19",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur général"
+    },
+    {
+      "id": "profile-3616dbdac3a0b9a16bdb",
+      "company": "METEO FRANCE",
+      "title": "Directeur Commercial Grands Comptes & Stratégie",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Toulouse, Occitanie, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4485526347",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4485526347",
+      "datePosted": "2026-11-04",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur commercial"
     },
     {
       "id": "profile-153b3d090045c24bb827",
@@ -2333,6 +2102,39 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur commercial"
+    },
+    {
+      "id": "profile-4e6cbcdd7c4c67a284cc",
+      "company": "Moreno Consulting",
+      "title": "Directeur général H/F",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Nancy, GE, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "indeed",
+      "sourceUrl": "https://fundraisers.fr/poste/moreno-consulting-nancy-cdi-directeur-general-h-f/",
+      "applyUrl": "https://fundraisers.fr/poste/moreno-consulting-nancy-cdi-directeur-general-h-f/",
+      "datePosted": "2026-10-12",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-6118e2c0750afb9ed771",
@@ -2399,6 +2201,39 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur de Business Unit"
+    },
+    {
+      "id": "profile-852b824f76dea799ed7e",
+      "company": "Métropole de Lyon",
+      "title": "Directeur général adjoint en charge des Ressources Humaines et des Moyens Généraux (H/F)",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Lyon, ARA, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "indeed",
+      "sourceUrl": "https://www.grandlyon.com/offre-emploi/2026-15730-directeur-general-adjoint-en-charge-des-ressources-humaines-et-des-moyens-generaux-h-f/fiche",
+      "applyUrl": "https://www.grandlyon.com/offre-emploi/2026-15730-directeur-general-adjoint-en-charge-des-ressources-humaines-et-des-moyens-generaux-h-f/fiche",
+      "datePosted": "2026-10-13",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-6d46d774727757d7095d",
@@ -2533,105 +2368,6 @@
       "matchedSearchTerm": "Directeur général"
     },
     {
-      "id": "profile-08e2ad23788f0e9f74ee",
-      "company": "PEPITe",
-      "title": "Directeur commercial France ️Smart Watering (H/F)",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Marseille, B8, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://taleez.com/apply/directeur-commercial-france-smart-watering-h-f-marseille-pepite-cdi?utm_source=Indeed",
-      "applyUrl": "https://taleez.com/apply/directeur-commercial-france-smart-watering-h-f-marseille-pepite-cdi?utm_source=Indeed",
-      "datePosted": "2026-10-27",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
-    },
-    {
-      "id": "profile-d67cad56d35252efaa85",
-      "company": "PERSUADERS RH",
-      "title": "Directeur Général H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "La Rochelle, Nouvelle-Aquitaine, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "linkedin",
-      "sourceUrl": "https://www.linkedin.com/jobs/view/4483490889",
-      "applyUrl": "https://www.linkedin.com/jobs/view/4483490889",
-      "datePosted": "2026-10-30",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
-    },
-    {
-      "id": "profile-5fa266c22790b484590f",
-      "company": "Pluxee",
-      "title": "Directeur des Ventes Grands Comptes",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Paris, A8, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://pluxee.wd3.myworkdayjobs.com/en-US/Pluxee_Career_Site/job/Paris/Directeur-des-Ventes-Grands-Comptes_R6042",
-      "applyUrl": "https://pluxee.wd3.myworkdayjobs.com/en-US/Pluxee_Career_Site/job/Paris/Directeur-des-Ventes-Grands-Comptes_R6042",
-      "datePosted": "2026-10-27",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur des ventes"
-    },
-    {
       "id": "profile-d2796c88a07842a7cce1",
       "company": "POMONA",
       "title": "DIRECTEUR COMMERCIAL- H/F",
@@ -2762,6 +2498,39 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur de BU"
+    },
+    {
+      "id": "profile-986e7f456dfbb9f757b6",
+      "company": "Ressources Conseil",
+      "title": "Directeur Général H/F - SPSTI Service de Prévention et de Santé au Travail Interentreprises",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Le Puy, Auvergne-Rhône-Alpes, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4483038116",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4483038116",
+      "datePosted": "2026-10-29",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-ad4a925d2cde5a2aad23",
@@ -3028,13 +2797,13 @@
       "matchedSearchTerm": "Directeur commercial"
     },
     {
-      "id": "profile-3f1379102a29fe586861",
-      "company": "SIACI SAINT HONORÉ",
-      "title": "Directeur Commercial IARD H/F",
+      "id": "profile-40418e9ae15d4c703104",
+      "company": "Signature Talents",
+      "title": "Directeur Général (H/F)",
       "fit": 92,
       "domainFit": 95,
       "hunter": "Unknown",
-      "location": "Strasbourg, GE, France",
+      "location": "Avignon, B8, France",
       "salary": "Undisclosed",
       "rating": "—",
       "status": "Unverified vacancy",
@@ -3052,13 +2821,13 @@
       "diff": "Confirm employer status and requirements before CV tailoring.",
       "cover": "Not generated until verification.",
       "source": "indeed",
-      "sourceUrl": "https://diot-siaci-cand.talent-soft.com/offre-de-emploi/emploi-directeur-commercial-iard-h-f_2082.aspx",
-      "applyUrl": "https://diot-siaci-cand.talent-soft.com/offre-de-emploi/emploi-directeur-commercial-iard-h-f_2082.aspx",
-      "datePosted": "2026-10-14",
+      "sourceUrl": "https://apply.wink-lab.com/apply/f4bc3898-fe3d-441b-afa5-703be562778c?utm_source=indeedbasic",
+      "applyUrl": "https://apply.wink-lab.com/apply/f4bc3898-fe3d-441b-afa5-703be562778c?utm_source=indeedbasic",
+      "datePosted": "2026-10-16",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
+      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-7aa087a8474abc40beff",
@@ -3157,40 +2926,7 @@
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général"
-    },
-    {
-      "id": "profile-7f78caec909013030141",
-      "company": "Talentup",
-      "title": "DIRECTEUR DES VENTES EUROPE H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Cognac, NA, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://talentup.com/Offre-Emploi/Vb16858C/Origine-142/directeur-des-ventes-europe-h-f.html",
-      "applyUrl": "https://talentup.com/Offre-Emploi/Vb16858C/Origine-142/directeur-des-ventes-europe-h-f.html",
-      "datePosted": "2026-10-27",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur des ventes"
+      "matchedSearchTerm": "Directeur commercial"
     },
     {
       "id": "profile-acd0e8e91516570615bb",
@@ -3292,6 +3028,39 @@
       "matchedSearchTerm": "Directeur de Business Unit"
     },
     {
+      "id": "profile-aad51e59d76d3ba9489a",
+      "company": "UPTOO",
+      "title": "Directeur Commercial - Secteur Eau (H/F)",
+      "fit": 92,
+      "domainFit": 95,
+      "hunter": "Unknown",
+      "location": "Meaux, Île-de-France, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: France"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4468798609",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4468798609",
+      "datePosted": "2026-11-04",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "France",
+      "matchedSearchTerm": "Directeur commercial"
+    },
+    {
       "id": "profile-d2e9e37cac1cc966b2f8",
       "company": "UPTOO",
       "title": "Directeur Commercial - Secteur Eau (H/F)",
@@ -3319,39 +3088,6 @@
       "sourceUrl": "https://www.linkedin.com/jobs/view/4480471352",
       "applyUrl": "https://www.linkedin.com/jobs/view/4480471352",
       "datePosted": "2026-10-20",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
-    },
-    {
-      "id": "profile-aad51e59d76d3ba9489a",
-      "company": "UPTOO",
-      "title": "Directeur Commercial - Secteur Eau (H/F)",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Meaux, Île-de-France, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "linkedin",
-      "sourceUrl": "https://www.linkedin.com/jobs/view/4468798609",
-      "applyUrl": "https://www.linkedin.com/jobs/view/4468798609",
-      "datePosted": "2026-10-13",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
@@ -3391,13 +3127,13 @@
       "matchedSearchTerm": "Directeur commercial"
     },
     {
-      "id": "profile-317eceea59ac16cd5147",
-      "company": "VATINEL",
-      "title": "Directeur commercial (H/F)",
+      "id": "profile-9700841970bba3b4dd85",
+      "company": "VERTICAL-RH",
+      "title": "Directeur Général H/F",
       "fit": 92,
       "domainFit": 95,
       "hunter": "Unknown",
-      "location": "Le Havre, N, France",
+      "location": "Pays de la Loire, France",
       "salary": "Undisclosed",
       "rating": "—",
       "status": "Unverified vacancy",
@@ -3414,14 +3150,14 @@
       ],
       "diff": "Confirm employer status and requirements before CV tailoring.",
       "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://www.clemajob.fr/fr/emploi/11737-emploi-Seine-Maritime-Directeur-commercial-H-F-",
-      "applyUrl": "https://www.clemajob.fr/fr/emploi/11737-emploi-Seine-Maritime-Directeur-commercial-H-F-",
-      "datePosted": "2026-10-09",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4479844732",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4479844732",
+      "datePosted": "2026-10-15",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
-      "matchedSearchTerm": "Directeur commercial"
+      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-cd5e25b5e10658067f78",
@@ -3454,7 +3190,7 @@
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
-      "matchedSearchTerm": "Directeur général de filiale"
+      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-3e207e353a172af2856e",
@@ -3587,39 +3323,6 @@
       "verificationStatus": "unverified",
       "locationCategory": "France",
       "matchedSearchTerm": "Directeur général"
-    },
-    {
-      "id": "profile-6af25a64ed532a932b85",
-      "company": "Âboro Consulting",
-      "title": "DIRECTEUR DES VENTES H/F",
-      "fit": 92,
-      "domainFit": 95,
-      "hunter": "Unknown",
-      "location": "Nouméa, DTM, France",
-      "salary": "Undisclosed",
-      "rating": "—",
-      "status": "Unverified vacancy",
-      "statusTone": "warn",
-      "type": "scanned",
-      "rec": "INVESTIGATE",
-      "pros": [
-        "Executive title is relevant",
-        "Location category: France"
-      ],
-      "cons": [
-        "Verify the current employer-hosted application page",
-        "Check mandatory sector and leadership requirements"
-      ],
-      "diff": "Confirm employer status and requirements before CV tailoring.",
-      "cover": "Not generated until verification.",
-      "source": "indeed",
-      "sourceUrl": "https://www.domemploi.com/job/261073247686366/",
-      "applyUrl": "https://www.domemploi.com/job/261073247686366/",
-      "datePosted": "2026-10-08",
-      "description": "",
-      "verificationStatus": "unverified",
-      "locationCategory": "France",
-      "matchedSearchTerm": "Directeur des ventes"
     },
     {
       "id": "profile-a94132605e3dede51dc2",
@@ -4909,13 +4612,46 @@
       "matchedSearchTerm": "Directeur de Business Unit"
     },
     {
-      "id": "profile-0b1a1f8df091d39813b1",
-      "company": "Citi",
-      "title": "Managing Director, Head of European Financial Institutions Group (FIG), Corporate Banking: Paris, Frankfurt, Milan, Madrid",
+      "id": "profile-a45f41f718ccaa774483",
+      "company": "Uriach",
+      "title": "Regional Sales Director",
+      "fit": 84,
+      "domainFit": 91,
+      "hunter": "Unknown",
+      "location": "Greater Strasbourg Metropolitan Area",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Unverified vacancy",
+      "statusTone": "warn",
+      "type": "scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Executive title is relevant",
+        "Location category: Location needs review"
+      ],
+      "cons": [
+        "Verify the current employer-hosted application page",
+        "Check mandatory sector and leadership requirements"
+      ],
+      "diff": "Confirm employer status and requirements before CV tailoring.",
+      "cover": "Not generated until verification.",
+      "source": "linkedin",
+      "sourceUrl": "https://www.linkedin.com/jobs/view/4487513125",
+      "applyUrl": "https://www.linkedin.com/jobs/view/4487513125",
+      "datePosted": "2026-11-04",
+      "description": "",
+      "verificationStatus": "unverified",
+      "locationCategory": "Location needs review",
+      "matchedSearchTerm": "Directeur commercial"
+    },
+    {
+      "id": "profile-0765073106f77872fc41",
+      "company": "COLLECTIVITÉ DE CORSE",
+      "title": "Directrice Générale Adjointe Enseignement, Formation professionnelle, Patrimoine, Culture, Sport et",
       "fit": 80,
       "domainFit": 83,
       "hunter": "Unknown",
-      "location": "Paris, Île-de-France, France",
+      "location": "Bastia, A5, France",
       "salary": "Undisclosed",
       "rating": "—",
       "status": "Unverified vacancy",
@@ -4932,14 +4668,14 @@
       ],
       "diff": "Confirm employer status and requirements before CV tailoring.",
       "cover": "Not generated until verification.",
-      "source": "linkedin",
-      "sourceUrl": "https://www.linkedin.com/jobs/view/4480488626",
-      "applyUrl": "https://www.linkedin.com/jobs/view/4480488626",
-      "datePosted": "2026-10-20",
+      "source": "indeed",
+      "sourceUrl": "https://impieghi.isula.corsica/769/4/directrice-generale-adjointe-enseignement-formation-professionnelle-patrimoine-culture-sport-et?src=Indeed",
+      "applyUrl": "https://impieghi.isula.corsica/769/4/directrice-generale-adjointe-enseignement-formation-professionnelle-patrimoine-culture-sport-et?src=Indeed",
+      "datePosted": "2026-10-23",
       "description": "",
       "verificationStatus": "unverified",
       "locationCategory": "France",
-      "matchedSearchTerm": "Directeur de BU"
+      "matchedSearchTerm": "Directeur général"
     },
     {
       "id": "profile-f4f8d2a18f6dfba6c668",

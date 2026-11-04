@@ -29,6 +29,14 @@ class SearchTest(unittest.TestCase):
         self.assertEqual(scan.search_locations("Bretagne; France entière"), ["Bretagne, France", "France"])
         self.assertEqual(scan.search_locations("France"), ["France"])
 
+    def test_query_plan_is_bounded(self):
+        roles = scan.titles("Directeur BU; Directeur général; Directeur commercial; Directeur commercial international")
+        plan = scan.build_query_plan(roles, "Bretagne, France")
+        self.assertLessEqual(len(plan), 16)
+        self.assertGreater(len(plan), 0)
+        self.assertTrue(all(site in ("indeed", "linkedin") for _, _, site in plan))
+        self.assertTrue(any(place == "Bretagne" for _, place, _ in plan))
+
     def test_relevance(self):
         roles = ["Directeur commercial", "Directeur général", "Directeur de BU"]
         self.assertGreaterEqual(scan.title_quality("Directeur commercial France et Export", roles), 90)

@@ -181,6 +181,63 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 }
 @media(prefers-reduced-motion:reduce){.drawer.open{animation:none}}
 
+
+/* Direction A: premium professional workspace — structural redesign */
+:root{--jr-ink:#172538;--jr-subtle:#6c7990;--jr-rule:#e3e8f1;--jr-purple:#4b4be2}
+.app{grid-template-columns:238px minmax(0,1fr)}
+.side{display:flex;flex-direction:column;padding:28px 16px;background:#101829}
+.brand{padding:0 12px;margin-bottom:48px;font-size:25px;line-height:1.1}
+.side-label{padding:0 14px;margin-bottom:9px;color:#71839f;font-size:10px;letter-spacing:.16em;font-weight:800}
+.account-label{margin-top:35px}
+.nav a{font-size:13px;letter-spacing:-.01em;line-height:1.3;padding:12px 14px;margin:3px 0;border-radius:9px}
+.nav a.active{background:#26344f;box-shadow:inset 0 0 0 1px rgba(173,191,237,.075)}
+.side-bottom{margin-top:auto;border-top:1px solid #263147;padding:20px 12px 6px;font-size:11px;color:#bac5d9}
+.side-bottom small{display:block;font-size:10px;color:#7f8ea6;line-height:1.4;margin-top:5px}
+.connection-dot,.workspace-dot{display:inline-block;border-radius:50%;width:7px;height:7px;background:#23b985;margin-right:9px;box-shadow:0 0 0 3px rgba(35,185,133,.12)}
+.main{padding:0 36px 70px;max-width:none}
+#radarView,#settingsView{max-width:1600px}
+.workspace-bar{min-height:67px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--jr-rule);font-size:11px;color:#7b879b;letter-spacing:.08em;font-weight:760;margin-bottom:42px}
+.workspace-bar strong{color:#22314a}
+.workspace-slash{padding:0 12px;color:#adb6c4}
+.workspace-dot{background:#6267ed;width:6px;height:6px;box-shadow:none}
+.profile-shortcut{border:1px solid #e1e6f0;background:white;border-radius:10px;display:inline-flex;align-items:center;gap:10px;min-height:37px;padding:5px 11px 5px 5px;font-size:12px;color:#334159;cursor:pointer;letter-spacing:0;font-weight:650}
+#profileAvatar{display:inline-grid;place-items:center;width:27px;height:27px;border-radius:7px;background:#e9ecff;color:#4d4ccf;font-weight:850}
+.profile-shortcut:hover{background:#f8faff}
+.top{margin-bottom:30px;align-items:center}
+.eyebrow{font-size:10px;letter-spacing:.16em;color:#5e6fd4;font-weight:800;margin-bottom:12px}
+.top h1{font-size:44px;letter-spacing:-.065em;margin-bottom:8px}
+.headline-period{color:#5e61e8}
+.page-subtitle{color:#718097;margin:0 0 9px;font-size:13px}
+.top-actions{display:flex;gap:9px;align-items:center}
+.top-actions .btn{min-height:41px;padding:0 17px}
+.grid{gap:12px;margin-bottom:34px}
+.stat{border-radius:11px;box-shadow:none;min-height:105px;border:1px solid #e2e7ef;padding:18px 20px}
+.stat:first-child,.stat:nth-child(2),.stat:nth-child(3),.stat:nth-child(4){border-top:1px solid #e2e7ef}
+.stat b{font-size:30px;margin-top:9px}
+.stat:first-child b{color:#474bcc}
+.opportunity-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:13px}
+.opportunity-heading h2{margin:0 0 2px;color:#202c41;font-size:19px;font-weight:800;letter-spacing:-.035em}
+.opportunity-heading .muted{font-size:11px}
+.job-search{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dce3ee;border-radius:9px;padding:0 12px;min-height:41px;color:#7d8aa3;width:min(340px,100%)}
+.job-search:focus-within{border-color:#7c81f0;box-shadow:0 0 0 3px rgba(95,98,235,.09)}
+.job-search>span{font-size:22px;line-height:1}
+.job-search input{background:transparent;border:0;outline:none;flex:1;min-width:0;color:#2e3f59;font-size:12px;height:38px}
+.job-search input:focus-visible{outline:none}
+.job-search kbd{border:1px solid #e5e9f0;padding:2px 5px;border-radius:4px;font-size:10px;color:#8994a8}
+.toolbar{margin:0 0 14px}
+.tabs .chip{padding:11px 13px;font-weight:720}
+.table{border-radius:11px;box-shadow:none}
+.row.head{background:#f8f9fc;min-height:44px}
+.row{min-height:76px}
+.row.data{transition:background-color 110ms ease}
+.row.data:hover{background:#f6f7ff}
+.score{font-size:20px}
+.filters{margin-bottom:18px}
+.filters .chip{border-radius:8px}
+@media(max-width:1100px){.app{grid-template-columns:1fr}.side{display:flex;flex-direction:row;align-items:center;gap:12px;height:auto;position:relative;padding:12px 18px}.side .brand{margin:0 12px 0 0;padding:0;font-size:20px}.side .nav{display:flex;gap:2px}.side-label,.side-bottom{display:none}.account-label+.nav{margin-left:auto}.nav a{white-space:nowrap;padding:8px 10px;font-size:12px}.main{padding:0 20px 45px}.workspace-bar{margin-bottom:25px}.top h1{font-size:36px}}
+@media(max-width:700px){.side{display:block;padding:12px}.side .brand{margin-bottom:8px}.side .nav{overflow-x:auto}.account-label+.nav{margin-left:0}.main{padding:0 12px 40px}.workspace-bar{min-height:54px;margin-bottom:22px}.top{align-items:flex-start}.top h1{font-size:35px}.top-actions{width:100%}.top-actions .btn{flex:1}.opportunity-heading{align-items:flex-start;flex-direction:column}.job-search{width:100%}.grid{grid-template-columns:repeat(2,1fr)}.row{min-width:420px}}
+@media(prefers-reduced-motion:reduce){.row.data{transition:none}}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -188,13 +245,18 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 <div class="app">
 <aside class="side">
   <div class="brand">Job<span>Radar</span></div>
-  <nav class="nav"><a class="active" href="#">Opportunities</a><a href="#">Applications</a><a href="#">CV Master</a><a href="#">Companies</a><a href="#" onclick="showSettings(event)" id="settingsNav">Settings</a></nav>
+  <div class="side-label">WORKSPACE</div>
+  <nav class="nav"><a class="active" href="#">◫ &nbsp; Opportunities</a><a href="#" onclick="jumpToTab(event,'applied')">✓ &nbsp; Applications</a><a href="#">▤ &nbsp; CV Master</a><a href="#">▦ &nbsp; Companies</a></nav>
+  <div class="side-label account-label">ACCOUNT</div>
+  <nav class="nav"><a href="#" onclick="showSettings(event)" id="settingsNav">⚙ &nbsp; Profiles & settings</a></nav>
+  <div class="side-bottom"><span class="connection-dot"></span> Job discovery workspace <small>Profiles and scans are kept separate</small></div>
 </aside>
 <main class="main">
 <div id="radarView">
-  <div class="top"><div class="muted" id="activeProfileLabel" style="font-size:12px"></div>
-    <div><h1>Opportunity Radar</h1><div class="muted">Strategic account growth first. Hunters downranked.</div><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div></div>
-    <div style="display:flex;gap:8px;align-items:center"><button class="btn ghost" onclick="showSettings(event)" aria-label="Manage profiles">Profiles / Settings</button><button id="scanBtn" class="btn primary" onclick="scan(event)">Scan now</button></div>
+  <div class="workspace-bar"><div><span class="workspace-dot"></span><span>JOBRADAR</span><span class="workspace-slash">/</span><strong>Opportunities</strong></div><button class="profile-shortcut" type="button" onclick="showSettings(event)" aria-label="Open profile settings"><span id="profileAvatar">M</span><span id="activeProfileLabel">My profile</span><span aria-hidden="true">⌄</span></button></div>
+  <div class="top">
+    <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div></div>
+    <div class="top-actions"><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
   </div>
   <div class="grid">
     <div class="stat"><span class="muted">Strong matches</span><b id="strong">0</b></div>
@@ -203,6 +265,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
     <div class="stat"><span class="muted">Hidden</span><b id="hiddenCount">0</b></div>
   </div>
 
+  <div class="opportunity-heading"><div><h2>All opportunities</h2><span id="visibleCount" class="muted">Your reviewed and discovered roles</span></div><label class="job-search"><span aria-hidden="true">⌕</span><input id="jobSearch" type="search" aria-label="Search jobs by company, title or location" placeholder="Search company, role, location…" oninput="renderCurrent()"><kbd>/</kbd></label></div>
   <div class="toolbar">
     <div class="tabs">
       <button class="chip active" data-tab="opportunities" onclick="switchTab('opportunities',this)">Opportunities</button>
@@ -423,7 +486,8 @@ function renderProfileSettings(){
  document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate local preferences and status. Independent job discovery and private sign-in are not connected yet.';
 }
 function updateProfileUI(){
- document.getElementById('activeProfileLabel').textContent='Profile: '+profile().name;
+ document.getElementById('activeProfileLabel').textContent=profile().name;
+ const avatar=document.getElementById('profileAvatar');if(avatar)avatar.textContent=(profile().name||'P').trim().charAt(0).toUpperCase();
  const b=document.getElementById('scanBtn');b.disabled=activeProfileId!=='owner';
  b.title=activeProfileId==='owner'?'Run job scan':'Independent scan not yet configured';
  if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent='Independent scanner not yet connected for this profile';
@@ -550,6 +614,8 @@ function filteredJobs(){
     return !isHidden(j)&&!isApplied(j);
   });
   if(currentFilter!=='all') list=list.filter(j=>j.type.includes(currentFilter));
+  const query=(document.getElementById('jobSearch')?.value||'').trim().toLocaleLowerCase();
+  if(query)list=list.filter(j=>[j.company,j.title,j.location,j.domain,j.salary].some(v=>String(v||'').toLocaleLowerCase().includes(query)));
   const mode=sortBy.value;
   list.sort((a,b)=>{
     if(mode==='fit-asc') return practicalFit(a)-practicalFit(b);
@@ -613,6 +679,7 @@ async function enrichVisibleJobs(){
 function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
   const items=filteredJobs();
+  const counter=document.getElementById('visibleCount');if(counter)counter.textContent=items.length+' role'+(items.length===1?'':'s')+' in this view';
   if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='No jobs in this folder.';host.appendChild(e);return}
   items.forEach(j=>{
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;
@@ -668,6 +735,8 @@ function updateStats(){
 }
 function switchTab(tab,el){currentTab=tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
 function setFilter(filter,el){currentFilter=filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
+function jumpToTab(e,tab){if(e)e.preventDefault();closeSettings();const button=document.querySelector('[data-tab="'+tab+'"]');if(button)switchTab(tab,button)}
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)){if(document.getElementById('radarView').style.display!=='none'){e.preventDefault();document.getElementById('jobSearch').focus();}}});
 async function enrichJobDetails(j){
   if(!j || !j.id.startsWith('careerops-')) return;
   if(j._detailsLoaded){

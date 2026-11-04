@@ -144,91 +144,120 @@ def normalized_url(url):
     except ValueError:
         return url
 
+def build_query_plan(roles, raw_locations):
+    """Bound job-board calls: title search is broad, Bretagne gets a focused pass."""
+    variants = expanded_titles(roles)
+    primary = variants[:6]
+    french_scope = search_locations(raw_locations)
+    # France-wide searches include Bretagne; limit the local second pass to
+    # the most important original titles, on Indeed only.
+    plan = [(role, "France", site) for role in primary for site in SITES]
+    if any("bretagne" in fold(x) for x in french_scope):
+        plan.extend((role, "Bretagne", "indeed") for role in roles[:4])
+    return list(dict.fromkeys(plan))[:16]
+
+
+def collect_query(query):
+    role, location, site = query
+    options = {
+        "site_name": [site],
+        "search_term": role,
+        "location": location,
+        "results_wanted": RESULTS_PER_QUERY,
+        "hours_old": 24 * 30,
+        "fetch_description": False,
+    }
+    if site == "indeed":
+        options["country_indeed"] = "France"
+    # Each call is independently logged; worker threads bound concurrency.
+    dataframe = scrape_jobs(**options)
+    if dataframe is None or dataframe.empty:
+        return query, []
+    return query, dataframe.to_dict(orient="records")
+
+
 def main():
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    from time import monotonic
+
     profile_id = safe_id(sys.argv[1])
     original_roles = titles(sys.argv[2])
     original_locations = clean(sys.argv[3]) or "France"
     if not original_roles:
         raise ValueError("Provide at least one job title")
-    variants = expanded_titles(original_roles)
-    places = search_locations(original_locations)
+
+    plan = build_query_plan(original_roles, original_locations)
     results = {}
     errors = []
-    queries_attempted = 0
-    for role in variants:
-        for location in places:
-            for site in SITES:
-                queries_attempted += 1
-                try:
-                    options = {
-                        "site_name": [site], "search_term": role, "location": location,
-                        "results_wanted": RESULTS_PER_QUERY, "hours_old": 24 * 30,
-                        "fetch_description": True,
-                    }
-                    if site == "indeed":
-                        options["country_indeed"] = "France"
-                    df = scrape_jobs(**options)
-                    if df is None or df.empty:
-                        continue
-                    for raw in df.to_dict(orient="records"):
-                        title, company = clean(raw.get("title")), clean(raw.get("company"))
-                        url = clean(raw.get("job_url_direct")) or clean(raw.get("job_url"))
-                        if not title or not company or not url.startswith(("http://", "https://")):
-                            continue
-                        quality = title_quality(title, original_roles)
-                        if quality == 0:
-                            continue
-                        where = clean(raw.get("location")) or "Unspecified"
-                        region_bonus, region_label = region_quality(where)
-                        # Foreign office locations are ineligible; unknown locations
-                        # remain unverified rather than being called confirmed.
-                        place_folded = fold(where)
-                        foreign_terms = ("belgium", "belgique", "germany", "allemagne",
-                                         "spain", "espagne", "united kingdom", "switzerland",
-                                         "suisse", "italy", "italie", "portugal", "poland")
-                        if region_bonus == 0 and any(term in place_folded for term in foreign_terms):
-                            continue
-                        fit = min(99, max(50, quality - 7 + region_bonus))
-                        dedup = normalized_url(url)
-                        jid = "profile-" + hashlib.sha1(dedup.encode()).hexdigest()[:20]
-                        item = {
-                            "id": jid, "company": company, "title": title,
-                            "fit": fit, "domainFit": quality, "hunter": "Unknown",
-                            "location": where, "salary": "Undisclosed", "rating": "—",
-                            "status": "Unverified vacancy", "statusTone": "warn",
-                            "type": "scanned", "rec": "INVESTIGATE",
-                            "pros": ["Job title matches the search", "Location category: " + region_label],
-                            "cons": [
-                                "Unverified job-board listing: confirm employer application is still open",
-                                "Check mandatory sector and leadership requirements before applying",
-                            ],
-                            "diff": "Review verified requirements before CV tailoring.",
-                            "cover": "Not generated until verification.",
-                            "source": site, "sourceUrl": url, "applyUrl": url,
-                            "datePosted": clean(raw.get("date_posted")),
-                            "description": clean(raw.get("description"))[:4500],
-                            "verificationStatus": "unverified",
-                            "locationCategory": region_label,
-                            "matchedSearchTerm": role,
-                        }
-                        previous = results.get(dedup)
-                        if not previous or fit > previous["fit"]:
-                            results[dedup] = item
-                except Exception as exc:
-                    errors.append({"site": site, "query": role, "location": location,
-                                   "error": str(exc)[:300]})
+    started = monotonic()
+    print(f"Starting {len(plan)} focused job queries in 3 workers for profile {profile_id}", flush=True)
+
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        future_map = {pool.submit(collect_query, query): query for query in plan}
+        for number, future in enumerate(as_completed(future_map), start=1):
+            role, location, site = future_map[future]
+            try:
+                _, rows = future.result()
+                print(f"[{number}/{len(plan)}] {site} {location}: {role} -> {len(rows)} raw", flush=True)
+            except Exception as exc:
+                errors.append({"site": site, "query": role, "location": location,
+                               "error": str(exc)[:300]})
+                print(f"[{number}/{len(plan)}] FAILED {site} {location}: {role}: {exc}", flush=True)
+                continue
+            for raw in rows:
+                title, company = clean(raw.get("title")), clean(raw.get("company"))
+                url = clean(raw.get("job_url_direct")) or clean(raw.get("job_url"))
+                if not title or not company or not url.startswith(("http://", "https://")):
+                    continue
+                quality = title_quality(title, original_roles)
+                if quality == 0:
+                    continue
+                where = clean(raw.get("location")) or "Unspecified"
+                region_bonus, region_label = region_quality(where)
+                place_folded = fold(where)
+                foreign_terms = ("belgium", "belgique", "germany", "allemagne", "spain",
+                                 "espagne", "united kingdom", "switzerland", "suisse",
+                                 "italy", "italie", "portugal", "poland")
+                if region_bonus == 0 and any(term in place_folded for term in foreign_terms):
+                    continue
+                match = min(99, max(50, quality - 7 + region_bonus))
+                dedup = normalized_url(url)
+                jid = "profile-" + hashlib.sha1(dedup.encode()).hexdigest()[:20]
+                item = {
+                    "id": jid, "company": company, "title": title, "fit": match,
+                    "domainFit": quality, "hunter": "Unknown", "location": where,
+                    "salary": "Undisclosed", "rating": "—",
+                    "status": "Unverified vacancy", "statusTone": "warn",
+                    "type": "scanned", "rec": "INVESTIGATE",
+                    "pros": ["Executive title is relevant", "Location category: " + region_label],
+                    "cons": ["Verify the current employer-hosted application page",
+                             "Check mandatory sector and leadership requirements"],
+                    "diff": "Confirm employer status and requirements before CV tailoring.",
+                    "cover": "Not generated until verification.",
+                    "source": site, "sourceUrl": url, "applyUrl": url,
+                    "datePosted": clean(raw.get("date_posted")),
+                    "description": "",
+                    "verificationStatus": "unverified",
+                    "locationCategory": region_label, "matchedSearchTerm": role,
+                }
+                previous = results.get(dedup)
+                if previous is None or match > previous["fit"]:
+                    results[dedup] = item
+
     jobs = sorted(results.values(), key=lambda x: (-x["fit"], x["company"].casefold()))
     output = Path("data/profile-scans") / (profile_id + ".json")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps({
         "profileId": profile_id, "generatedAt": datetime.now(timezone.utc).isoformat(),
         "source": "jobspy-discovery", "verifiedLive": False,
-        "strategy": "title-and-location-first",
-        "roles": original_roles, "locations": places,
-        "queriesAttempted": queries_attempted,
-        "count": len(jobs), "jobs": jobs, "errors": errors
+        "strategy": "title-and-location-first-v2",
+        "roles": original_roles, "locations": search_locations(original_locations),
+        "queriesAttempted": len(plan), "elapsedSeconds": round(monotonic()-started, 1),
+        "count": len(jobs), "highRelevanceCount": sum(j["fit"] >= 80 for j in jobs),
+        "jobs": jobs, "errors": errors
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"{profile_id}: {len(jobs)} unverified job-board results / {queries_attempted} queries / {len(errors)} errors")
+    print(f"Done: {len(jobs)} unverified roles, {len(plan)} queries, "
+          f"{len(errors)} source failures, {round(monotonic()-started)}s", flush=True)
 
 if __name__ == "__main__":
     main()

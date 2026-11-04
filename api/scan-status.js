@@ -17,8 +17,11 @@ export default async function handler(req, res) {
   if (token) headers.Authorization = `Bearer ${token}`;
 
   try {
+    const profileId=String(req.query?.profileId||"");
+    if(profileId&&!/^[a-zA-Z0-9_-]{4,90}$/.test(profileId))return res.status(400).json({error:"Invalid profile ID"});
+    const workflow=profileId&&profileId!=="owner"?"scan-profile.yml":WORKFLOW;
     const response = await fetch(
-      `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/runs?branch=main&per_page=1`,
+      `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${workflow}/runs?branch=main&per_page=50`,
       { headers }
     );
 
@@ -31,7 +34,9 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    const run = data.workflow_runs?.[0];
+    const run = profileId&&profileId!=="owner"
+      ? (data.workflow_runs||[]).find(x=>x.display_title===`Profile scan · ${profileId}`)
+      : data.workflow_runs?.[0];
 
     if (!run) {
       return res.status(200).json({ status: "none", conclusion: null });

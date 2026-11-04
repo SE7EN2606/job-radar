@@ -262,7 +262,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
     <div class="top-actions"><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
   </div>
   <div class="grid">
-    <div class="stat"><span class="muted">Strong matches</span><b id="strong">0</b></div>
+    <div class="stat"><span class="muted" id="strongLabel">Strong matches</span><b id="strong">0</b></div>
     <div class="stat"><span class="muted">Low hunter intensity</span><b id="lowHunter">0</b></div>
     <div class="stat"><span class="muted">Applied</span><b id="applied">0</b></div>
     <div class="stat"><span class="muted">Hidden</span><b id="hiddenCount">0</b></div>
@@ -508,7 +508,8 @@ function updateProfileUI(){
  const avatar=document.getElementById('profileAvatar');if(avatar)avatar.textContent=(profile().name||'P').trim().charAt(0).toUpperCase();
  const b=document.getElementById('scanBtn');b.disabled=false;
  b.title=activeProfileId==='owner'?'Run job scan':'Run a candidate-specific discovery scan';
- if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent='Profile discovery · jobs must be checked on employer career pages';
+ if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent=profileResultMeta[activeProfileId]||'No current results for this profile; run an updated scan.';
+ const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
 }
 function showSettings(e){if(e)e.preventDefault();document.getElementById('radarView').style.display='none';document.getElementById('settingsView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.getElementById('settingsNav').classList.add('active');renderProfileSettings()}
 function closeSettings(){document.getElementById('settingsView').style.display='none';document.getElementById('radarView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.querySelector('.nav a').classList.add('active')}
@@ -594,18 +595,31 @@ async function importProfileJSON(file){
 
 
 const profileJobCache={};
+const profileResultMeta={};
 function allProfileJobs(){return activeProfileId==='owner'?jobs:(profileJobCache[activeProfileId]||[])}
 async function loadProfileJobs(){
  if(activeProfileId==='owner')return;
  const id=activeProfileId;
  try{
   const response=await fetch('data/profile-scans/'+encodeURIComponent(id)+'.json?ts='+Date.now(),{cache:'no-store'});
-  if(!response.ok){profileJobCache[id]=[];return}
+  if(!response.ok)throw Error('No results file exists');
   const result=await response.json();
   if(result.profileId!==id||!Array.isArray(result.jobs))throw Error('Unexpected profile scan data');
-  profileJobCache[id]=result.jobs;
-  scanMeta.textContent='Profile discovery: '+(result.count||0)+' unverified roles · scanned '+new Date(result.generatedAt).toLocaleString();
- }catch(err){profileJobCache[id]=[];scanMeta.textContent='No published scan yet for '+profile().name}
+  // The original 422-result run used a broken 58/100 score for unrelated jobs.
+  // Do not present that legacy dataset as if it were from the corrected scanner.
+  if(result.strategy!=='title-and-location-first-v2'){
+   profileJobCache[id]=[];
+   profileResultMeta[id]='Previous scan: '+(result.count||result.jobs.length)+' obsolete leads (old ranking). A new optimized scan is required. No legacy scores are shown.';
+  }else{
+   profileJobCache[id]=result.jobs;
+   profileResultMeta[id]='Updated scan: '+result.jobs.length+' unverified roles · '+(result.highRelevanceCount??result.jobs.filter(j=>Number(j.fit)>=80).length)+' high title/location matches · '+new Date(result.generatedAt).toLocaleString();
+  }
+  if(activeProfileId===id)scanMeta.textContent=profileResultMeta[id];
+ }catch(err){
+  profileJobCache[id]=[];
+  profileResultMeta[id]='No completed scan for this profile. Run a new title/location scan.';
+  if(activeProfileId===id)scanMeta.textContent=profileResultMeta[id];
+ }
 }
 const jobs=[...curatedJobs];
 let state={hidden:[],applied:['duvo']};
@@ -741,7 +755,7 @@ function renderCurrent(){
   const scoreLabel=document.getElementById('scoreColumnLabel');if(scoreLabel)scoreLabel.textContent=activeProfileId==='owner'?'Fit':'Search match';
   const items=filteredJobs();
   const counter=document.getElementById('visibleCount');if(counter)counter.textContent=items.length+' '+(activeProfileId==='owner'?'role':'unverified lead')+(items.length===1?'':'s')+' in this view';
-  if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent=activeProfileId==='owner'?'No jobs in this folder.':'No scan results for this profile yet. Use Run scan above. Results will be marked unverified until you check the employer careers page.';host.appendChild(e);return}
+  if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent=activeProfileId==='owner'?'No jobs in this folder.':(profileResultMeta[activeProfileId]||'No current results for this profile')+' Use Run scan above to refresh. Employer verification is still required.';host.appendChild(e);return}
   items.forEach(j=>{
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;
     const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);

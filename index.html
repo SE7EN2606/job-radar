@@ -14,7 +14,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 .table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.row{display:grid;grid-template-columns:34px 2.05fr .55fr .68fr .8fr .76fr .82fr .62fr .95fr .72fr;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}.row.head{border-top:0;background:#10182a;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}.row.blocked{background:rgba(255,107,107,.035)}.company{font-weight:800}.title{font-size:13px;color:var(--muted);margin-top:4px}.meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.info{color:var(--accent)}.score{font-size:22px;font-weight:900}.salary{font-weight:700}.actions{display:flex;gap:6px;justify-content:flex-end}.small{padding:7px 9px;font-size:12px}
 .drawer{display:none;position:fixed;right:0;top:0;width:min(680px,96vw);height:100vh;background:#0f1728;border-left:1px solid var(--line);padding:24px;overflow:auto;box-shadow:-20px 0 60px rgba(0,0,0,.35);z-index:20}.drawer.open{display:block}.drawer h2{margin:0 0 6px}.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.section h3{margin:0 0 10px;font-size:15px}.kv{display:grid;grid-template-columns:145px 1fr;gap:8px;font-size:14px;margin:6px 0}.diff,.copybox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;background:#0a1120;border-radius:10px;padding:12px;line-height:1.5}.drawer-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}.empty{padding:40px;text-align:center;color:var(--muted)}.bulkbar{display:none;align-items:center;gap:8px;margin:10px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.bulkbar.show{display:flex}.bulkbar .spacer{flex:1}.row input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 @media(max-width:1100px){.app{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1.8fr .6fr .7fr .9fr 1fr .7fr}.row>*:nth-child(3),.row>*:nth-child(6){display:none}}
-.profileFields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.profileFields label{display:flex;flex-direction:column;gap:7px;color:var(--muted);font-size:13px}.profileFields textarea,.profileFields input{background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px;font:inherit;width:100%}.profileFields label:not(:first-child){grid-column:1/-1}@media(max-width:700px){.profileFields{grid-template-columns:1fr}}
+.profileFields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.profileFields label{display:flex;flex-direction:column;gap:7px;color:var(--muted);font-size:13px}.profileFields textarea,.profileFields input{background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px;font:inherit;width:100%}.profileFields label:not(:first-child){grid-column:1/-1}.questionEntry{padding:12px 0;border-top:1px solid var(--line)}.questionEntry label{font-weight:700;display:block;margin-bottom:5px}.questionEntry textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px;border-radius:9px;margin-top:8px;font:inherit}.questionEntry .muted{font-size:13px}@media(max-width:700px){.profileFields{grid-template-columns:1fr}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -74,6 +74,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 </div>
 <section id="settingsView" style="display:none;max-width:840px">
  <div class="top"><div><h1>Settings</h1><p class="muted">Manage search profiles</p></div><button class="btn ghost" onclick="closeSettings()">Back to jobs</button></div>
+ <div class="section"><h3>Import a profile (JSON)</h3><p class="muted">Upload a previously exported profile or a prepared JobRadar profile JSON. Existing profiles are retained unless you explicitly approve replacement.</p><input type="file" id="profileImportFile" accept=".json,application/json" onchange="importProfileJSON(this.files && this.files[0])"><p class="muted" id="profileImportFeedback" aria-live="polite" style="font-size:12px"></p></div>
  <div class="section"><h3>Active profile</h3><div class="toolbar"><select id="profileSelect" onchange="switchProfile(this.value)"></select><button class="btn ghost" onclick="addProfile()">+ Add user profile</button></div><p class="muted" id="profileNotice"></p></div>
  <div class="section"><h3>Search settings</h3><div class="profileFields">
  <label>Profile name<input id="pName" maxlength="90"></label>
@@ -82,7 +83,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
  <label>Accepted work locations<textarea id="pLocations" rows="3"></textarea></label>
  <label>Excluded work locations<textarea id="pExcluded" rows="3"></textarea></label>
  <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
- <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label></div>
+ <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Full search instructions (optional)<textarea id="pPrompt" rows="9" placeholder="Personalized search prompt for this profile"></textarea></label></div><h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
  <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
  <p class="muted" style="font-size:12px">This version stores additional profiles in your current browser only. It does not create a login, invite a friend, synchronize data between devices, or launch an independent job scan. A secure multi-user backend is still required for that.</p>
  </div>
@@ -250,7 +251,8 @@ function renderProfileSettings(){
  const el=document.getElementById('profileSelect');el.replaceChildren();
  profiles.list.forEach(p=>{const opt=document.createElement('option');opt.value=p.id;opt.textContent=p.name;el.append(opt)});
  el.value=activeProfileId;
- for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules'})) document.getElementById(id).value=profile()[k]||'';
+ for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt'})) document.getElementById(id).value=profile()[k]||'';
+ renderMissingQuestions();
  document.getElementById('deleteProfile').disabled=activeProfileId==='owner';
  document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate local preferences and status. Independent job discovery and private sign-in are not connected yet.';
 }
@@ -271,9 +273,48 @@ async function switchProfile(id){
  renderProfileSettings();updateProfileUI();updateStats();renderCurrent();
 }
 function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
-function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules'}))p[k]=document.getElementById(id).value.trim();if(!p.name){alert('Please enter a profile name');return}storeProfiles();renderProfileSettings();updateProfileUI()}
+function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt'}))p[k]=document.getElementById(id).value.trim();
+ saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return}storeProfiles();renderProfileSettings();updateProfileUI()}
 function removeProfile(){if(activeProfileId==='owner')return;if(!confirm('Delete this browser-only profile?'))return;localStorage.removeItem('jobRadarProfileState_'+activeProfileId);profiles.list=profiles.list.filter(p=>p.id!==activeProfileId);switchProfile('owner')}
 function exportProfile(){const b=new Blob([JSON.stringify(profile(),null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='jobradar-profile.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+function renderMissingQuestions(){
+ const host=document.getElementById('missingQuestions');host.replaceChildren();
+ const qs=Array.isArray(profile().missingFields)?profile().missingFields:[];
+ if(!qs.length){const p=document.createElement('p');p.className='muted';p.textContent='No outstanding questions recorded for this profile.';host.append(p);return}
+ qs.forEach((q,index)=>{
+  const wrapper=document.createElement('div');wrapper.className='questionEntry';
+  const label=document.createElement('label');label.textContent=(q.label||q.key||'Question')+(q.requiredBeforeSearch?' · priority':'');
+  const explanation=document.createElement('div');explanation.className='muted';explanation.textContent=q.question||'Please confirm';
+  const input=document.createElement('textarea');input.rows=2;input.dataset.questionIndex=String(index);input.value=q.answer==null?'':String(q.answer);input.placeholder='Answer from the candidate…';
+  wrapper.append(label,explanation,input);host.append(wrapper);
+ });
+}
+function saveQuestionAnswers(){
+ const qs=profile().missingFields;if(!Array.isArray(qs))return;
+ document.querySelectorAll('[data-question-index]').forEach(el=>{const q=qs[Number(el.dataset.questionIndex)];if(q)q.answer=el.value.trim()||null});
+ profile().profileStatus=qs.some(q=>q.requiredBeforeSearch&&!q.answer)?'needs_user_answers':'ready_for_review';
+}
+async function importProfileJSON(file){
+ const feedback=document.getElementById('profileImportFeedback');
+ if(!file)return;
+ try{
+  if(file.size>256000)throw Error('Profile JSON exceeds 250 KB. Please remove large attachments or CV blobs.');
+  const incoming=JSON.parse(await file.text());
+  if(!incoming||typeof incoming!=='object'||Array.isArray(incoming))throw Error('Expected a JSON profile object.');
+  if(typeof incoming.name!=='string'||!incoming.name.trim())throw Error('Required field missing: name.');
+  if(incoming.id==='owner')throw Error('The original profile cannot be replaced through JSON import.');
+  const id=String(incoming.id||'import-'+Date.now().toString(36));
+  if(!/^[a-zA-Z0-9_-]{4,90}$/.test(id))throw Error('Invalid profile id. Use letters, digits, hyphens or underscores.');
+  const idx=profiles.list.findIndex(p=>p.id===id);
+  if(idx!==-1&&!confirm('Replace the existing profile named "'+profiles.list[idx].name+'"?'))return;
+  const valid={...incoming,id,name:incoming.name.trim()};
+  if(idx!==-1)profiles.list[idx]=valid;else profiles.list.push(valid);
+  storeProfiles();await switchProfile(id);showSettings();
+  feedback.textContent='Imported '+valid.name+'. Review the highlighted unanswered questions, then Save preferences.';
+  document.getElementById('profileImportFile').value='';
+ }catch(err){feedback.textContent='Import failed: '+err.message}
+}
+
 
 const jobs=[...curatedJobs];
 let state={hidden:[],applied:['duvo']};

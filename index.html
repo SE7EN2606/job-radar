@@ -310,12 +310,23 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  <div class="section"><h3>Active profile</h3><div class="toolbar"><select id="profileSelect" onchange="switchProfile(this.value)"></select><button class="btn ghost" onclick="addProfile()">+ Add user profile</button></div><p class="muted" id="profileNotice"></p></div>
  <div class="section"><h3>Search settings</h3><div class="profileFields">
  <label>Profile name<input id="pName" maxlength="90"></label>
- <label>Target job titles<textarea id="pRoles" rows="3"></textarea></label>
- <label>Relevant experience / industries<textarea id="pExperience" rows="3"></textarea></label>
- <label>Accepted work locations<textarea id="pLocations" rows="3"></textarea></label>
+ <label>Target job titles (primary search criteria)<textarea id="pRoles" rows="3"></textarea></label>
+ <label>Professional experience (used only for evaluating results, NOT for discovery)<textarea id="pExperience" rows="3"></textarea></label>
+ <label>Work locations (primary search criteria — e.g. Bretagne; France)<textarea id="pLocations" rows="3"></textarea></label>
  <label>Excluded work locations<textarea id="pExcluded" rows="3"></textarea></label>
  <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
- <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Full search instructions (optional)<textarea id="pPrompt" rows="9" placeholder="Personalized search prompt for this profile"></textarea></label></div><h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
+ <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Full search instructions (optional)<textarea id="pPrompt" rows="9" placeholder="Personalized search prompt for this profile"></textarea></label></div>
+ <div class="section linkedin-import">
+  <h3>LinkedIn candidate profile</h3>
+  <p class="muted">JobSpy searches LinkedIn JOBS, not the candidate's LinkedIn account. Import a LinkedIn profile PDF with permission or paste profile text below. Files are read inside this browser, not uploaded to GitHub.</p>
+  <div class="profileFields">
+   <label>LinkedIn profile URL<input id="pLinkedIn" type="url" placeholder="https://www.linkedin.com/in/..."></label>
+   <label>Professional history / LinkedIn content<textarea id="pLinkedinText" rows="5" placeholder="Paste About and Experience from LinkedIn, or import the profile PDF below"></textarea></label>
+  </div>
+  <div class="toolbar"><label class="btn ghost" for="linkedinPdfFile">Import LinkedIn profile PDF</label><input type="file" id="linkedinPdfFile" accept="application/pdf,.pdf" onchange="readLinkedInPdf(this.files && this.files[0])" style="max-width:240px"></div>
+  <p id="linkedinImportStatus" role="status" class="muted" style="font-size:12px"></p>
+ </div>
+ <h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
  <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="saveAndScanProfile()">Save &amp; run scan</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
  <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Profiles and application history are saved only in this browser, not synced across devices. Candidate-specific discovery scans can be triggered through the Vercel API or GitHub Actions; on this static GitHub Pages site, use the GitHub Actions fallback link. Results are unverified until employer-site checks. Private accounts still require a secure backend.</p>
  </div>
@@ -487,7 +498,7 @@ function renderProfileSettings(){
  const el=document.getElementById('profileSelect');el.replaceChildren();
  profiles.list.forEach(p=>{const opt=document.createElement('option');opt.value=p.id;opt.textContent=p.name;el.append(opt)});
  el.value=activeProfileId;
- for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt'})) document.getElementById(id).value=profile()[k]||'';
+ for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'})) document.getElementById(id).value=profile()[k]||'';
  renderMissingQuestions();
  document.getElementById('deleteProfile').disabled=activeProfileId==='owner';
  document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate search preferences and job results. Scans run through Vercel API or GitHub Actions. Private sign-in and cross-device sync are not yet implemented.';
@@ -510,11 +521,38 @@ async function switchProfile(id){
  renderProfileSettings();updateProfileUI();updateStats();renderCurrent();
 }
 function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
-function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt'}))p[k]=document.getElementById(id).value.trim();
+function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'}))p[k]=document.getElementById(id).value.trim();
  saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return false}if(storeProfiles()){renderProfileSettings();updateProfileUI();profileFeedback('✓ Saved '+p.name+' in this browser. You can now run its discovery scan.');return true}return false}
 async function saveAndScanProfile(){if(!saveProfile())return;closeSettings();await scan({currentTarget:document.getElementById('scanBtn')})}
 function removeProfile(){if(activeProfileId==='owner')return;if(!confirm('Delete this browser-only profile?'))return;localStorage.removeItem('jobRadarProfileState_'+activeProfileId);profiles.list=profiles.list.filter(p=>p.id!==activeProfileId);switchProfile('owner')}
 function exportProfile(){const b=new Blob([JSON.stringify(profile(),null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='jobradar-profile.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+
+async function readLinkedInPdf(file){
+ const status=document.getElementById('linkedinImportStatus');
+ if(!file)return;
+ if(!file.name.toLowerCase().endsWith('.pdf')||file.size>8*1024*1024){status.textContent='Choose a text-based LinkedIn PDF under 8 MB.';return}
+ status.textContent='Reading the PDF locally…';
+ try{
+  if(!window.pdfjsLib){
+   const script=document.createElement('script');
+   script.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+   await new Promise((ok,fail)=>{script.onload=ok;script.onerror=()=>fail(Error('PDF reader unavailable'));document.head.appendChild(script)});
+  }
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const doc=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  const parts=[];
+  for(let n=1;n<=Math.min(doc.numPages,30);n++){
+    const page=await doc.getPage(n);
+    const content=await page.getTextContent();
+    parts.push(content.items.map(item=>item.str||'').join(' '));
+  }
+  const text=parts.join('\n').trim();
+  if(text.length<80)throw Error('PDF has too little selectable text. A scanned image needs manual transcription.');
+  document.getElementById('pLinkedinText').value=text.slice(0,30000);
+  status.textContent='✓ Extracted '+doc.numPages+' page(s) locally. Review the text, then click Save preferences. This will not independently verify LinkedIn employment claims.';
+ }catch(err){status.textContent='Could not import PDF: '+err.message}
+}
+
 function renderMissingQuestions(){
  const host=document.getElementById('missingQuestions');host.replaceChildren();
  const qs=Array.isArray(profile().missingFields)?profile().missingFields:[];

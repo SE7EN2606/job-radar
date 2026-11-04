@@ -15,6 +15,65 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 .drawer{display:none;position:fixed;right:0;top:0;width:min(680px,96vw);height:100vh;background:#0f1728;border-left:1px solid var(--line);padding:24px;overflow:auto;box-shadow:-20px 0 60px rgba(0,0,0,.35);z-index:20}.drawer.open{display:block}.drawer h2{margin:0 0 6px}.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.section h3{margin:0 0 10px;font-size:15px}.kv{display:grid;grid-template-columns:145px 1fr;gap:8px;font-size:14px;margin:6px 0}.diff,.copybox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;background:#0a1120;border-radius:10px;padding:12px;line-height:1.5}.drawer-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}.empty{padding:40px;text-align:center;color:var(--muted)}.bulkbar{display:none;align-items:center;gap:8px;margin:10px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.bulkbar.show{display:flex}.bulkbar .spacer{flex:1}.row input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 @media(max-width:1100px){.app{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1.8fr .6fr .7fr .9fr 1fr .7fr}.row>*:nth-child(3),.row>*:nth-child(6){display:none}}
 .profileFields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.profileFields label{display:flex;flex-direction:column;gap:7px;color:var(--muted);font-size:13px}.profileFields textarea,.profileFields input{background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px;font:inherit;width:100%}.profileFields label:not(:first-child){grid-column:1/-1}.questionEntry{padding:12px 0;border-top:1px solid var(--line)}.questionEntry label{font-weight:700;display:block;margin-bottom:5px}.questionEntry textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px;border-radius:9px;margin-top:8px;font:inherit}.questionEntry .muted{font-size:13px}@media(max-width:700px){.profileFields{grid-template-columns:1fr}}
+
+/* JobRadar design engineering pass — restrained motion and precision */
+:root{
+  --bg:#0b1220;--panel:#131d2e;--panel2:#1b283e;--text:#f3f6fc;
+  --muted:#a7b6d0;--line:#2a3850;--accent:#9bb8ff;
+  --ease-ui:cubic-bezier(0.23,1,0.32,1);
+}
+body{background:radial-gradient(ellipse 950px 560px at 72% -20%,rgba(75,112,203,.13),transparent 72%),var(--bg);line-height:1.5}
+.side{background:rgba(12,19,32,.94);padding-top:33px}
+.brand{font-size:21px;letter-spacing:-.055em;margin:0 12px 34px}
+.nav a{font-size:13px;font-weight:620;padding:11px 13px;margin:4px 0;transition:color 130ms ease,background-color 130ms ease;position:relative}
+.nav a.active{background:rgba(155,184,255,.1);color:var(--text)}
+.nav a.active::before{content:"";position:absolute;left:0;top:24%;height:52%;width:2px;border-radius:4px;background:var(--accent)}
+.main{padding:36px clamp(20px,3.3vw,56px)}
+.top{align-items:flex-start;margin-bottom:26px;flex-wrap:wrap}
+.top h1{font-size:clamp(25px,2.3vw,34px);font-weight:750;line-height:1.15;letter-spacing:-.046em;margin:1px 0 10px}
+#activeProfileLabel{flex-basis:100%;font-size:11px!important;text-transform:uppercase;letter-spacing:.10em;color:var(--accent)!important}
+#scanMeta{font-variant-numeric:tabular-nums}
+.btn{min-height:38px;display:inline-flex;justify-content:center;align-items:center;gap:7px;transition:transform 140ms var(--ease-ui),background-color 140ms ease,border-color 140ms ease;color:var(--text)}
+.btn:active:not(:disabled){transform:scale(.97)}
+.btn:disabled{opacity:.46;filter:saturate(.55)}
+.btn.primary{background:#aac3ff;color:#101b32}
+.btn.primary:hover:not(:disabled){background:#c1d3ff}
+.btn.ghost:hover:not(:disabled){background:#263550;border-color:#405577}
+.btn.danger:hover:not(:disabled){background:rgba(255,107,107,.09)}
+:where(button,a,select,input,textarea):focus-visible{outline:2px solid #b5c9ff;outline-offset:3px}
+.grid{gap:14px;margin-bottom:28px}
+.stat{border-color:rgba(169,189,225,.12);border-radius:15px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.stat .muted{font-size:12px;font-weight:600}
+.stat b{font-variant-numeric:tabular-nums;letter-spacing:-.04em;font-size:30px;margin-top:9px}
+.toolbar{margin:16px 0 20px}
+.tabs{border-bottom:1px solid var(--line);gap:3px}
+.tabs .chip{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;margin-bottom:-1px;padding:11px 15px}
+.tabs .chip.active{border-color:var(--accent);background:transparent}
+.filters{gap:7px;margin-bottom:13px}
+.chip{font-size:12px;font-weight:650;transition:background-color 130ms ease,border-color 130ms ease,color 130ms ease}
+.chip:hover{background:#27364e;color:var(--text)}
+.chip.active{background:rgba(155,184,255,.11);border-color:#5573ac}
+.table{border-color:rgba(169,189,225,.15);border-radius:15px;box-shadow:0 9px 32px rgba(0,0,0,.1)}
+.row{border-top-color:rgba(169,189,225,.095);min-height:76px}
+.row.head{min-height:44px;background:#172237;color:#afbdd3;font-size:10px;font-weight:800}
+.row.data:hover{background:rgba(153,182,240,.045)}
+.company{font-size:13px;letter-spacing:-.012em}
+.title{font-size:12px;line-height:1.45}
+.meta{line-height:1.45}
+.score{font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.pill{font-size:11px;line-height:1.2;padding:5px 9px;background:rgba(147,172,218,.06)}
+.section{border-color:rgba(169,189,225,.13);border-radius:15px;padding:19px}
+.section h3{letter-spacing:-.02em}
+.drawer{background:#101a2a;box-shadow:-18px 0 75px rgba(0,0,0,.5)}
+.drawer.open{animation:jr-drawer-in 220ms cubic-bezier(.32,.72,0,1) both}
+@keyframes jr-drawer-in{from{opacity:.82;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+.profileFields input,.profileFields textarea,.questionEntry textarea,select{min-height:40px;transition:border-color 130ms ease,background-color 130ms ease}
+.profileFields input:focus,.profileFields textarea:focus,.questionEntry textarea:focus{border-color:#7795cf}
+.empty{line-height:1.65}
+@media(max-width:1100px){.main{padding:24px 19px}.grid{gap:10px}.stat{padding:15px}.row{font-size:12px}}
+@media(max-width:650px){.top{gap:13px}.top>div:last-child{display:flex;flex-wrap:wrap;gap:8px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.row{grid-template-columns:minmax(140px,1.7fr) 65px 96px;gap:9px;padding:13px}.row>*{display:none}.row>*:nth-child(2),.row>*:nth-child(3),.row>*:nth-child(9){display:block}.row.head>*:first-child{display:none}.table{overflow-x:auto}.drawer{padding:18px}.kv{grid-template-columns:112px 1fr;gap:8px}.drawer-actions{grid-template-columns:1fr;gap:7px}.stat b{font-size:25px}}
+@media(prefers-reduced-motion:reduce){.drawer.open{animation:none}.btn,.chip,.nav a,.profileFields input,.profileFields textarea,.questionEntry textarea{transition:none}}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>

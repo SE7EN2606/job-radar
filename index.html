@@ -238,6 +238,9 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 @media(max-width:700px){.side{display:block;padding:12px}.side .brand{margin-bottom:8px}.side .nav{overflow-x:auto}.account-label+.nav{margin-left:0}.main{padding:0 12px 40px}.workspace-bar{min-height:54px;margin-bottom:22px}.top{align-items:flex-start}.top h1{font-size:35px}.top-actions{width:100%}.top-actions .btn{flex:1}.opportunity-heading{align-items:flex-start;flex-direction:column}.job-search{width:100%}.grid{grid-template-columns:repeat(2,1fr)}.row{min-width:420px}}
 @media(prefers-reduced-motion:reduce){.row.data{transition:none}}
 
+.profile-feedback{color:#137c5e;font-size:13px;font-weight:650;min-height:16px}
+#manualScanLink{display:block;font-size:12px;color:#3c51c9;margin-top:8px}
+#manualScanLink[hidden]{display:none}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -255,7 +258,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 <div id="radarView">
   <div class="workspace-bar"><div><span class="workspace-dot"></span><span>JOBRADAR</span><span class="workspace-slash">/</span><strong>Opportunities</strong></div><button class="profile-shortcut" type="button" onclick="showSettings(event)" aria-label="Open profile settings"><span id="profileAvatar">M</span><span id="activeProfileLabel">My profile</span><span aria-hidden="true">⌄</span></button></div>
   <div class="top">
-    <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div></div>
+    <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div><a id="manualScanLink" href="https://github.com/SE7EN2606/job-radar/actions/workflows/scan-profile.yml" target="_blank" rel="noopener noreferrer" hidden>Run the profile scan manually on GitHub Actions ↗</a></div>
     <div class="top-actions"><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
   </div>
   <div class="grid">
@@ -314,7 +317,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
  <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Full search instructions (optional)<textarea id="pPrompt" rows="9" placeholder="Personalized search prompt for this profile"></textarea></label></div><h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
  <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
- <p class="muted" style="font-size:12px">This version stores additional profiles in your current browser only. It does not create a login, invite a friend, synchronize data between devices, or launch an independent job scan. A secure multi-user backend is still required for that.</p>
+ <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">This version stores additional profiles in your current browser only. It does not create a login, invite a friend, synchronize data between devices, or launch an independent job scan. A secure multi-user backend is still required for that.</p>
  </div>
 </section>
 </main>
@@ -472,7 +475,11 @@ const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manage
 function getProfileStore(){try{const o=JSON.parse(localStorage.getItem(PROFILE_STORAGE)||'{}');const list=Array.isArray(o.list)?o.list:[];const savedOwner=list.find(x=>x.id==='owner')||{};return {list:[{...defaultOwner,...savedOwner,id:'owner'},...list.filter(x=>x.id!=='owner')],active:o.active||'owner'}}catch{return {list:[defaultOwner],active:'owner'}}}
 let profiles=getProfileStore();
 let activeProfileId=profiles.list.some(x=>x.id===profiles.active)?profiles.active:'owner';
-function storeProfiles(){localStorage.setItem(PROFILE_STORAGE,JSON.stringify(profiles))}
+function storeProfiles(){
+ try{localStorage.setItem(PROFILE_STORAGE,JSON.stringify(profiles));return true}
+ catch(err){const n=document.getElementById('profileSaveFeedback');if(n)n.textContent='Saving failed: browser storage is disabled or full ('+err.message+').';return false}
+}
+function profileFeedback(message){const n=document.getElementById('profileSaveFeedback');if(n)n.textContent=message}
 function profile(){return profiles.list.find(p=>p.id===activeProfileId)||profiles.list[0]}
 function localProfileState(){try{const p=JSON.parse(localStorage.getItem('jobRadarProfileState_'+activeProfileId)||'{}');return {hidden:Array.isArray(p.hidden)?p.hidden:[],applied:Array.isArray(p.applied)?p.applied:[]}}catch{return {hidden:[],applied:[]}}}
 function saveLocalProfileState(){localStorage.setItem('jobRadarProfileState_'+activeProfileId,JSON.stringify(state))}
@@ -488,9 +495,9 @@ function renderProfileSettings(){
 function updateProfileUI(){
  document.getElementById('activeProfileLabel').textContent=profile().name;
  const avatar=document.getElementById('profileAvatar');if(avatar)avatar.textContent=(profile().name||'P').trim().charAt(0).toUpperCase();
- const b=document.getElementById('scanBtn');b.disabled=activeProfileId!=='owner';
- b.title=activeProfileId==='owner'?'Run job scan':'Independent scan not yet configured';
- if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent='Independent scanner not yet connected for this profile';
+ const b=document.getElementById('scanBtn');b.disabled=false;
+ b.title=activeProfileId==='owner'?'Run job scan':'Run a candidate-specific discovery scan';
+ if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent='Profile discovery · jobs must be checked on employer career pages';
 }
 function showSettings(e){if(e)e.preventDefault();document.getElementById('radarView').style.display='none';document.getElementById('settingsView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.getElementById('settingsNav').classList.add('active');renderProfileSettings()}
 function closeSettings(){document.getElementById('settingsView').style.display='none';document.getElementById('radarView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.querySelector('.nav a').classList.add('active')}
@@ -499,12 +506,12 @@ async function switchProfile(id){
  if(activeProfileId!=='owner')saveLocalProfileState();
  activeProfileId=id;profiles.active=id;storeProfiles();selectedJobs.clear();closeDrawer();
  state=id==='owner'?{hidden:[],applied:['duvo']}:localProfileState();
- if(id==='owner')await loadState();
+ if(id==='owner')await loadState();else await loadProfileJobs();
  renderProfileSettings();updateProfileUI();updateStats();renderCurrent();
 }
 function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
 function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt'}))p[k]=document.getElementById(id).value.trim();
- saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return}storeProfiles();renderProfileSettings();updateProfileUI()}
+ saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return}if(storeProfiles()){renderProfileSettings();updateProfileUI();profileFeedback('✓ Saved '+p.name+' in this browser. You can now run its discovery scan.')} }
 function removeProfile(){if(activeProfileId==='owner')return;if(!confirm('Delete this browser-only profile?'))return;localStorage.removeItem('jobRadarProfileState_'+activeProfileId);profiles.list=profiles.list.filter(p=>p.id!==activeProfileId);switchProfile('owner')}
 function exportProfile(){const b=new Blob([JSON.stringify(profile(),null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='jobradar-profile.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 function renderMissingQuestions(){
@@ -539,13 +546,28 @@ async function importProfileJSON(file){
   if(idx!==-1&&!confirm('Replace the existing profile named "'+profiles.list[idx].name+'"?'))return;
   const valid={...incoming,id,name:incoming.name.trim()};
   if(idx!==-1)profiles.list[idx]=valid;else profiles.list.push(valid);
-  storeProfiles();await switchProfile(id);showSettings();
-  feedback.textContent='Imported '+valid.name+'. Review the highlighted unanswered questions, then Save preferences.';
+  if(!storeProfiles())throw Error('Browser storage blocked. Export the JSON and enable site storage.');await switchProfile(id);showSettings();
+  feedback.textContent='✓ Imported and saved '+valid.name+'. Review any unanswered questions, then click Run scan.';profileFeedback('✓ Profile saved: '+valid.name);
   document.getElementById('profileImportFile').value='';
  }catch(err){feedback.textContent='Import failed: '+err.message}
 }
 
 
+
+const profileJobCache={};
+function allProfileJobs(){return activeProfileId==='owner'?jobs:(profileJobCache[activeProfileId]||[])}
+async function loadProfileJobs(){
+ if(activeProfileId==='owner')return;
+ const id=activeProfileId;
+ try{
+  const response=await fetch('data/profile-scans/'+encodeURIComponent(id)+'.json?ts='+Date.now(),{cache:'no-store'});
+  if(!response.ok){profileJobCache[id]=[];return}
+  const result=await response.json();
+  if(result.profileId!==id||!Array.isArray(result.jobs))throw Error('Unexpected profile scan data');
+  profileJobCache[id]=result.jobs;
+  scanMeta.textContent='Profile discovery: '+(result.count||0)+' unverified roles · scanned '+new Date(result.generatedAt).toLocaleString();
+ }catch(err){profileJobCache[id]=[];scanMeta.textContent='No published scan yet for '+profile().name}
+}
 const jobs=[...curatedJobs];
 let state={hidden:[],applied:['duvo']};
 let currentTab='opportunities';
@@ -607,8 +629,7 @@ function practicalFit(j){
   return Number(j.fit)||0;
 }
 function filteredJobs(){
-  let list=jobs.filter(j=>{
-    if(activeProfileId!=='owner')return false; // Don't leak CV-specific job scores and curated matches
+  let list=allProfileJobs().filter(j=>{
     if(currentTab==='hidden') return isHidden(j);
     if(currentTab==='applied') return isApplied(j)&&!isHidden(j);
     return !isHidden(j)&&!isApplied(j);
@@ -680,7 +701,7 @@ function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
   const items=filteredJobs();
   const counter=document.getElementById('visibleCount');if(counter)counter.textContent=items.length+' role'+(items.length===1?'':'s')+' in this view';
-  if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='No jobs in this folder.';host.appendChild(e);return}
+  if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent=activeProfileId==='owner'?'No jobs in this folder.':'No scan results for this profile yet. Use Run scan above. Results will be marked unverified until you check the employer careers page.';host.appendChild(e);return}
   items.forEach(j=>{
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;
     const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
@@ -727,10 +748,9 @@ async function bulkApply(){await bulkAction('applied')}
 async function bulkHide(){await bulkAction('hide')}
 
 function updateStats(){
-  if(activeProfileId!=='owner'){strong.textContent='—';lowHunter.textContent='—';applied.textContent=state.applied.length;hiddenCount.textContent=state.hidden.length;return}
-  strong.textContent=jobs.filter(j=>!isHidden(j)&&!isApplied(j)&&practicalFit(j)>=80).length;
-  lowHunter.textContent=jobs.filter(j=>!isHidden(j)&&j.hunter==='Low').length;
-  applied.textContent=jobs.filter(j=>isApplied(j)&&!isHidden(j)).length;
+  strong.textContent=allProfileJobs().filter(j=>!isHidden(j)&&!isApplied(j)&&practicalFit(j)>=80).length;
+  lowHunter.textContent=allProfileJobs().filter(j=>!isHidden(j)&&j.hunter==='Low').length;
+  applied.textContent=allProfileJobs().filter(j=>isApplied(j)&&!isHidden(j)).length;
   hiddenCount.textContent=state.hidden.length;
 }
 function switchTab(tab,el){currentTab=tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
@@ -771,7 +791,7 @@ async function enrichJobDetails(j){
 }
 
 function openDrawer(id){
-  const j=jobs.find(x=>x.id===id);if(!j)return;activeJobId=id;
+  const j=allProfileJobs().find(x=>x.id===id);if(!j)return;activeJobId=id;
   dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dStatus.textContent=isHidden(j)?'Hidden':isApplied(j)?'Applied':j.status;
   dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSalary.textContent=j.salary||'Undisclosed';dSource.textContent=j.foundVia||j.sourceDisplay||j.source||'Unknown';
   const domain=domainFromJob(j);const companyUrl=safeUrl(j.companyUrl)||(j.domain?'https://'+j.domain:'');dDomain.innerHTML=domain==='—'?'—':(companyUrl?'<a href="'+companyUrl+'" target="_blank" rel="noopener">'+domain+' ↗</a>':domain);
@@ -786,7 +806,7 @@ function openDrawer(id){
 }
 function closeDrawer(){drawer.classList.remove('open')}
 function openJobAd(){
-  const j=jobs.find(x=>x.id===activeJobId);if(!j)return;
+  const j=allProfileJobs().find(x=>x.id===activeJobId);if(!j)return;
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
   if(url) window.open(url,'_blank','noopener');
 }
@@ -798,11 +818,11 @@ async function persistState(action,id){
   const res=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,id})});
   const data=await res.json();if(!res.ok)throw new Error(data.error||'Unable to save state');
 }
-async function markApplied(){if(!activeJobId)return;const j=jobs.find(x=>x.id===activeJobId);try{await persistState(isApplied(j)?'unapply':'applied',activeJobId);openDrawer(activeJobId)}catch(e){alert(e.message)}}
-async function hideJob(){if(!activeJobId)return;const j=jobs.find(x=>x.id===activeJobId);try{await persistState(isHidden(j)?'unhide':'hide',activeJobId);closeDrawer();}catch(e){alert(e.message)}}
+async function markApplied(){if(!activeJobId)return;const j=allProfileJobs().find(x=>x.id===activeJobId);try{await persistState(isApplied(j)?'unapply':'applied',activeJobId);openDrawer(activeJobId)}catch(e){alert(e.message)}}
+async function hideJob(){if(!activeJobId)return;const j=allProfileJobs().find(x=>x.id===activeJobId);try{await persistState(isHidden(j)?'unhide':'hide',activeJobId);closeDrawer();}catch(e){alert(e.message)}}
 async function tailor(){
   if(activeProfileId!=='owner'){alert('A separate CV must be set up for this profile before tailoring.');return}
-  const j=jobs.find(x=>x.id===activeJobId);if(!j||isHidden(j))return;
+  const j=allProfileJobs().find(x=>x.id===activeJobId);if(!j||isHidden(j))return;
   tailorBtn.disabled=true;tailorBtn.textContent='Reading full job…';
 
   let details={description:(j.description||'').trim(),responsibilities:j.responsibilities||[],requirements:j.requirements||[],questions:j.questions||[]};
@@ -924,7 +944,7 @@ function getPdfContact(){
   };
 }
 function generateAtsPdf(){
-  const j=jobs.find(x=>x.id===activeJobId);
+  const j=allProfileJobs().find(x=>x.id===activeJobId);
   if(!j||!j.tailored){alert('Run Tailor application first.');return}
   if(!window.jspdf?.jsPDF){alert('PDF library is not available.');return}
   const contact=getPdfContact();
@@ -1132,8 +1152,45 @@ function mergeScannedJobs(payload){
   scanMeta.textContent='Scanner: Career Ops ATS engine · last scan '+when+' · '+(payload.count||0)+' matches';
 }
 async function loadScannedJobs(){try{mergeScannedJobs(await fetchScanPayload(false))}catch{scanMeta.textContent='Curated roles loaded · scanner data unavailable'}}
+
+async function scanSelectedProfile(e){
+ const b=e?.currentTarget||document.getElementById('scanBtn');
+ const p=profile();
+ const roles=String(p.roles||'').trim();
+ if(!roles){showSettings();profileFeedback('Please specify at least one target job title, then Save preferences.');return}
+ b.disabled=true;b.textContent='Starting…';scanMeta.textContent='Requesting scan for '+p.name+'…';
+ const id=activeProfileId;
+ try{
+  const r=await fetch('/api/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile:{id,roles,locations:p.locations||'France'}})});
+  const raw=await r.text();
+  let data={};try{data=JSON.parse(raw)}catch{}
+  if(!r.ok)throw Error(data.error||('Scan endpoint unavailable (HTTP '+r.status+').'));
+  scanMeta.textContent=data.message||'Scan queued';
+  b.textContent='Scanning…';
+  let attempts=0;
+  const timer=setInterval(async()=>{
+   attempts++;
+   if(activeProfileId!==id){clearInterval(timer);b.disabled=false;b.textContent='↻ Run scan';return}
+   try{
+    const st=await fetch('/api/scan-status?profileId='+encodeURIComponent(id)+'&ts='+Date.now(),{cache:'no-store'}).then(x=>x.json());
+    if(st.status==='completed'&&st.conclusion==='success'){
+     clearInterval(timer);await loadProfileJobs();updateStats();renderCurrent();b.disabled=false;b.textContent='↻ Run scan';
+    }else if(st.status==='completed'&&st.conclusion!=='success'){
+     clearInterval(timer);scanMeta.textContent='Profile scan finished with '+st.conclusion+' · see workflow logs';b.disabled=false;b.textContent='↻ Run scan';
+    }else if(attempts>=90){clearInterval(timer);scanMeta.textContent='Scan queued or still running. Refresh this page after completion.';b.disabled=false;b.textContent='↻ Run scan'}
+   }catch{}
+  },10000);
+ }catch(err){
+  b.disabled=false;b.textContent='↻ Run scan';
+  const actionUrl='https://github.com/SE7EN2606/job-radar/actions/workflows/scan-profile.yml';
+  const output='This site cannot dispatch scans directly ('+err.message+'). Open GitHub Actions → Run workflow → Profile ID: '+id+' · Roles: '+roles+' · Locations: '+(p.locations||'France')+'.';
+  scanMeta.textContent=output;
+  const link=document.getElementById('manualScanLink');if(link){link.href=actionUrl;link.hidden=false;}
+ }
+}
+
 async function scan(e){
-  if(activeProfileId!=='owner'){alert('An independent job scanner has not been set up for this profile yet.');return}
+  if(activeProfileId!=='owner'){await scanSelectedProfile(e);return}
   const b=e.currentTarget,before=lastScanGeneratedAt;b.disabled=true;b.textContent='Starting…';scanMeta.textContent='Starting scanner…';
   try{
     const res=await fetch('/api/scan',{method:'POST'}),payload=await res.json();if(!res.ok)throw new Error(payload.error||payload.details||'Unable to start scan');
@@ -1148,7 +1205,7 @@ async function scan(e){
     }catch{}},5000);
   }catch(err){b.disabled=false;b.textContent='Scan now';scanMeta.textContent='Scan failed: '+err.message}
 }
-async function init(){renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);updateProfileUI();updateStats();renderCurrent()}
+async function init(){renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent()}
 init();
 </script>
 </body>

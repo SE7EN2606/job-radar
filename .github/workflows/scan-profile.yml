@@ -1,0 +1,65 @@
+name: Scan a JobRadar candidate profile
+
+run-name: "Profile scan · ${{ inputs.profile_id }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile_id:
+        description: "Profile identifier (letters, numbers, dashes, underscores)"
+        required: true
+        type: string
+      roles:
+        description: "Semicolon-separated role titles (no private CV data)"
+        required: true
+        type: string
+      locations:
+        description: "Preferred locations (e.g. Bretagne, France)"
+        required: false
+        default: "France"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-scan-${{ inputs.profile_id }}
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install scanner dependencies
+        run: pip install -r requirements.txt
+      - name: Scan current candidate profile
+        env:
+          PROFILE_ID: ${{ inputs.profile_id }}
+          PROFILE_ROLES: ${{ inputs.roles }}
+          PROFILE_LOCATIONS: ${{ inputs.locations }}
+        run: python scanner/profile_scan.py "$PROFILE_ID" "$PROFILE_ROLES" "$PROFILE_LOCATIONS"
+      - name: Commit only public job discovery output
+        env:
+          PROFILE_ID: ${{ inputs.profile_id }}
+        run: |
+          set -e
+          git config user.name "job-radar-bot"
+          git config user.email "job-radar-bot@users.noreply.github.com"
+          git add "data/profile-scans/$PROFILE_ID.json"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Refresh profile job discoveries"
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            if git rebase origin/main && git push origin HEAD:main; then exit 0; fi
+            git rebase --abort || true
+            sleep $((attempt * 2))
+          done
+          echo "Unable to publish scan output"
+          exit 1

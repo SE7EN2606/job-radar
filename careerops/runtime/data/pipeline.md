@@ -207,4 +207,14 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/siteflow/jobs/customer-success-manager-h-f_paris_SITEF_xxyJ5a1 | Siteflow | Customer Success Manager (H/F) | Paris, France | 55000-60000 EUR | posted: 2026-11-03
 - [ ] https://www.welcometothejungle.com/en/companies/steeple/jobs/customer-success-manager_saint-jacques-de-la-lande_STEEP_77y2qoA | Steeple | Customer Success Manager | Saint-Jacques-de-la-Lande, France | 35000-50000 EUR | posted: 2026-11-03
 
+- [ ] https://www.welcometothejungle.com/en/companies/riot/jobs/customer-success-manager-csm-expansion-enterprise-france_paris | Riot | Customer Success Manager (CSM) Expansion Enterprise - France | Paris, France | 70000-95000 EUR | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/riot/jobs/enterprise-account-executive-uk_paris_RIOT_8KW54xV | Riot | Enterprise Account Executive, UK | Paris, France | 115000-140000 EUR | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/riot/jobs/enterprise-account-executive-france_paris | Riot | Enterprise Account Executive, France | Paris, France | 115-140 EUR | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/optimum-tracker/jobs/d5797869-7569-4295-bd4a-f877e9ad5ce2 | Optimum Tracker | Key Account Manager H/F (KAM) | Meyreuil, France | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/inqom/jobs/customer-success-manager-agricole_paris | Inqom | Customer Success Manager Agricole | Paris, France, Remote | 35000-45000 EUR | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/mytraffic/jobs/senior-customer-success-manager-f-h_paris_MYTRA_omZ6Vwr | MYTRAFFIC | Senior Customer Success Manager 🇮🇹 - F/H | Paris, France | 45000-55000 EUR | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/dream-catcher-sales/jobs/customer-success-manager-france-uk-bilingue-anglais-h-f-startup-saas-foodtech-restauration-connectee_paris | Dream Catcher Sales | Customer Success Manager France & UK / AM – Bilingue Anglais (H/F) / Startup SaaS – Data analise & conseil gérant franchise | Paris, France | posted: 2026-11-03
+- [ ] https://www.welcometothejungle.com/en/companies/naval-group-fr/jobs/cdi-manager-devsecops-customer-success-h-f_ollioules | Naval Group \[FR\] | CDI - Manager DevSecOps - Customer Success - H/F | Ollioules, France | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/weefin/jobs/project-manager-pmo-customer-success_paris | WeeFin | Project Manager (PMO, Customer Success) | Paris, France | posted: 2026-11-04
+
 ## Processed

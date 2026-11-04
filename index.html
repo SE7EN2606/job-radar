@@ -301,7 +301,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
   </div>
 
   <div class="table" id="jobs">
-    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div>Fit</div><div>Hunter</div><div>Location</div><div>Posted</div><div>Salary</div><div>Rating</div><div>Status</div><div></div></div>
+    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Fit</div><div>Hunter</div><div>Location</div><div>Posted</div><div>Salary</div><div>Rating</div><div>Status</div><div></div></div>
   </div>
 </div>
 <section id="settingsView" style="display:none;max-width:840px">
@@ -315,7 +315,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  <label>Work locations (primary search criteria — e.g. Bretagne; France)<textarea id="pLocations" rows="3"></textarea></label>
  <label>Excluded work locations<textarea id="pExcluded" rows="3"></textarea></label>
  <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
- <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Full search instructions (optional)<textarea id="pPrompt" rows="9" placeholder="Personalized search prompt for this profile"></textarea></label></div>
+ <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Candidate evaluation instructions (used AFTER discovery, not as search keywords)<textarea id="pPrompt" rows="9" placeholder="How to judge experience and mandatory requirements once jobs are found"></textarea></label></div>
  <div class="section linkedin-import">
   <h3>LinkedIn candidate profile</h3>
   <p class="muted">JobSpy searches LinkedIn JOBS, not the candidate's LinkedIn account. Import a LinkedIn profile PDF with permission or paste profile text below. Files are read inside this browser, not uploaded to GitHub.</p>
@@ -738,8 +738,9 @@ async function enrichVisibleJobs(){
 
 function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
+  const scoreLabel=document.getElementById('scoreColumnLabel');if(scoreLabel)scoreLabel.textContent=activeProfileId==='owner'?'Fit':'Search match';
   const items=filteredJobs();
-  const counter=document.getElementById('visibleCount');if(counter)counter.textContent=items.length+' role'+(items.length===1?'':'s')+' in this view';
+  const counter=document.getElementById('visibleCount');if(counter)counter.textContent=items.length+' '+(activeProfileId==='owner'?'role':'unverified lead')+(items.length===1?'':'s')+' in this view';
   if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent=activeProfileId==='owner'?'No jobs in this folder.':'No scan results for this profile yet. Use Run scan above. Results will be marked unverified until you check the employer careers page.';host.appendChild(e);return}
   items.forEach(j=>{
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;

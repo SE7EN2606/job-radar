@@ -39,7 +39,7 @@ HARD_TITLE_EXCLUSIONS = [
     "business development representative", "alternance", "apprenti", "stage ",
     "stagiaire", "vendeur", "teleprospect", "téléprospect", "commercial sedentaire",
     "commercial sédentaire", "account executive", "inside sales", "sales representative",
-    "directeur general des services", "directeur de cabinet", "directeur d ecole",
+    "directeur general des services", "directrice generale des services", "directeur de cabinet", "directeur d ecole",
 ]
 
 def clean(value):

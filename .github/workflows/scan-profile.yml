@@ -24,7 +24,7 @@ permissions:
 
 concurrency:
   group: profile-scan-${{ inputs.profile_id }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   scan:

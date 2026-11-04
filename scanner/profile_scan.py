@@ -18,12 +18,16 @@ from urllib.parse import urlsplit, urlunsplit
 from jobspy import scrape_jobs
 
 RESULTS_PER_QUERY = 60
-MAX_SEARCH_TITLES = 10
+MAX_SEARCH_TITLES = 15
 SITES = ("indeed", "linkedin")
 
 # Broaden search titles only where they express the same senior responsibility.
 ROLE_ALIASES = {
     "directeur bu": ["directeur de business unit", "business unit director", "directeur d'activité"],
+    "directeur de bu": ["directeur de business unit", "business unit director"],
+    "directeur de business unit": ["business unit director", "directeur d’activité"],
+    "directeur des ventes": ["directeur commercial", "sales director"],
+    "directeur du developpement commercial international": ["international sales director", "directeur commercial international"],
     "directeur business unit": ["directeur de business unit", "business unit director"],
     "directeur general": ["directeur général", "general manager", "directeur de filiale"],
     "directeur commercial": ["directeur commercial", "directrice commerciale", "head of sales"],
@@ -59,21 +63,25 @@ def safe_id(value):
     return value
 
 def titles(raw):
-    items = [x.strip() for x in re.split(r"[;\n]+", clean(raw)) if x.strip()]
+    items = [x.strip(" .") for x in re.split(r"[;,/\n]+|\.\s+(?=[A-ZÉÈÊ])", clean(raw)) if x.strip(" .")]
     return list(dict.fromkeys(items))[:MAX_SEARCH_TITLES]
 
 def expanded_titles(roles):
     variants = []
     seen = set()
+    # Search each explicitly selected role before adding English variants.
+    for term in roles:
+        key = fold(term)
+        if key not in seen:
+            seen.add(key)
+            variants.append(term)
     for role in roles:
-        norm = fold(role)
-        terms = [role] + ROLE_ALIASES.get(norm, [])
-        for term in terms:
+        for term in ROLE_ALIASES.get(fold(role), []):
             key = fold(term)
             if key not in seen:
                 seen.add(key)
                 variants.append(term)
-    return variants[:12]
+    return variants[:15]
 
 def search_locations(raw):
     value = fold(raw)

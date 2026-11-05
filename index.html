@@ -241,6 +241,26 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 .profile-feedback{color:#137c5e;font-size:13px;font-weight:650;min-height:16px}
 #manualScanLink{display:block;font-size:12px;color:#3c51c9;margin-top:8px}
 #manualScanLink[hidden]{display:none}
+
+/* Profile sharing and data-first proximity controls */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+.profile-tools{display:flex;align-items:center;gap:8px}
+.profile-avatar{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#e9ecff;color:#4d4ccf;font-weight:850}
+#topProfileSelect{min-width:130px;max-width:220px;font-size:12px;font-weight:700;background:#fff;border-color:#dce3ee}
+.share-profile-btn{font-size:11px!important}
+.proximity-bar{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;border:1px solid #e1e7f0;background:#fff;padding:12px 14px;border-radius:10px;margin:0 0 18px}
+.proximity-bar label:not(.nearby-toggle){display:flex;flex-direction:column;gap:5px;color:#68768b;font-size:10px;font-weight:750}
+.proximity-bar input[type=text]{min-height:35px;border:1px solid #dae2ee;border-radius:8px;padding:6px 10px;color:#21324b;min-width:175px;font-size:12px}
+.proximity-bar select{height:35px;padding:6px 9px;font-size:12px}
+.proximity-bar button{min-height:35px}
+.nearby-toggle{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#455775;min-height:35px}
+#distanceStatus{font-size:10px;flex:1;min-width:220px;align-self:center;text-align:right}
+.row{grid-template-columns:30px minmax(210px,2fr) 66px minmax(100px,.95fr) minmax(105px,.92fr) 72px 85px minmax(95px,.8fr) minmax(105px,.9fr) 70px}
+.industry{font-size:12px;color:#455879;line-height:1.35}
+.proximity-near{color:#127b60;font-weight:800}
+.proximity-unknown{color:#9aa5b8}
+@media(max-width:1250px){.row{min-width:1070px}.table{overflow-x:auto}}
+@media(max-width:700px){.profile-tools{gap:5px;justify-content:space-between}#topProfileSelect{max-width:200px}.proximity-bar{align-items:stretch}.proximity-bar label:not(.nearby-toggle){flex:1}.proximity-bar input[type=text]{min-width:135px;width:100%}#distanceStatus{text-align:left;flex-basis:100%}.workspace-bar{gap:8px;flex-wrap:wrap;padding:9px 0}.row{min-width:1070px}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -256,19 +276,26 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 </aside>
 <main class="main">
 <div id="radarView">
-  <div class="workspace-bar"><div><span class="workspace-dot"></span><span>JOBRADAR</span><span class="workspace-slash">/</span><strong>Opportunities</strong></div><button class="profile-shortcut" type="button" onclick="showSettings(event)" aria-label="Open profile settings"><span id="profileAvatar">M</span><span id="activeProfileLabel">My profile</span><span aria-hidden="true">⌄</span></button></div>
+  <div class="workspace-bar"><div><span class="workspace-dot"></span><span>JOBRADAR</span><span class="workspace-slash">/</span><strong>Opportunities</strong></div><div class="profile-tools"><span class="profile-avatar" id="profileAvatar" aria-hidden="true">M</span><label for="topProfileSelect" class="sr-only">Choose candidate profile</label><select id="topProfileSelect" aria-label="Choose candidate profile" onchange="switchProfile(this.value)"></select><button class="btn ghost small share-profile-btn" type="button" onclick="shareProfile()" title="Share a link with this profile's search titles and regions (no CV)">Share search</button></div></div>
   <div class="top">
     <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div><a id="manualScanLink" href="https://github.com/SE7EN2606/job-radar/actions/workflows/scan-profile.yml" target="_blank" rel="noopener noreferrer" hidden>Run the profile scan manually on GitHub Actions ↗</a></div>
     <div class="top-actions"><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
   </div>
   <div class="grid">
     <div class="stat"><span class="muted" id="strongLabel">Strong matches</span><b id="strong">0</b></div>
-    <div class="stat"><span class="muted">Low hunter intensity</span><b id="lowHunter">0</b></div>
+    <div class="stat"><span class="muted" id="nearbyLabel">Within distance limit</span><b id="lowHunter">—</b></div>
     <div class="stat"><span class="muted">Applied</span><b id="applied">0</b></div>
     <div class="stat"><span class="muted">Hidden</span><b id="hiddenCount">0</b></div>
   </div>
 
   <div class="opportunity-heading"><div><h2>All opportunities</h2><span id="visibleCount" class="muted">Your reviewed and discovered roles</span></div><label class="job-search"><span aria-hidden="true">⌕</span><input id="jobSearch" type="search" aria-label="Search jobs by company, title or location" placeholder="Search company, role, location…" oninput="renderCurrent()"><kbd>/</kbd></label></div>
+  <div class="proximity-bar" role="group" aria-label="Distance options">
+   <label>From city <input id="distanceOrigin" type="text" placeholder="e.g. Tallinn, Estonia" autocomplete="off" aria-label="Reference city for distances"></label>
+   <label>Radius <select id="distanceRadius" onchange="updateDistanceRadius(this.value)"><option value="50">50 km</option><option value="100">100 km</option><option value="150" selected>150 km</option><option value="250">250 km</option><option value="500">500 km</option><option value="1000">1,000 km</option></select></label>
+   <button class="btn ghost small" type="button" id="calculateDistances" onclick="calculateDistances()">Calculate distances</button>
+   <label class="nearby-toggle"><input type="checkbox" id="withinRadius" onchange="renderCurrent()"> Only within radius</label>
+   <span id="distanceStatus" class="muted" role="status">Straight-line km · not driving distance</span>
+  </div>
   <div class="toolbar">
     <div class="tabs">
       <button class="chip active" data-tab="opportunities" onclick="switchTab('opportunities',this)">Opportunities</button>
@@ -278,9 +305,11 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
     <select id="sortBy" onchange="renderCurrent()">
       <option value="fit-desc">Sort: Fit high → low</option>
       <option value="fit-asc">Fit low → high</option>
+      <option value="nearest">Distance: nearest first</option>
+      <option value="proximity">Sort: match + proximity</option>
       <option value="newest">Newest first</option>
       <option value="company">Company A → Z</option>
-      <option value="hunter">Hunter: low first</option>
+
     </select>
   </div>
 
@@ -301,18 +330,18 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
   </div>
 
   <div class="table" id="jobs">
-    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Fit</div><div>Hunter</div><div>Location</div><div>Posted</div><div>Salary</div><div>Rating</div><div>Status</div><div></div></div>
+    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Match</div><div>Industry</div><div>Location</div><div>Distance</div><div>Posted</div><div>Salary</div><div>Vacancy</div><div></div></div>
   </div>
 </div>
 <section id="settingsView" style="display:none;max-width:840px">
  <div class="top"><div><h1>Settings</h1><p class="muted">Manage search profiles</p></div><button class="btn ghost" onclick="closeSettings()">Back to jobs</button></div>
  <div class="section"><h3>Import a profile (JSON)</h3><p class="muted">Upload a previously exported profile or a prepared JobRadar profile JSON. Existing profiles are retained unless you explicitly approve replacement.</p><input type="file" id="profileImportFile" accept=".json,application/json" onchange="importProfileJSON(this.files && this.files[0])"><p class="muted" id="profileImportFeedback" aria-live="polite" style="font-size:12px"></p></div>
- <div class="section"><h3>Active profile</h3><div class="toolbar"><select id="profileSelect" onchange="switchProfile(this.value)"></select><button class="btn ghost" onclick="addProfile()">+ Add user profile</button></div><p class="muted" id="profileNotice"></p></div>
+ <div class="section"><h3>Active profile</h3><div class="toolbar"><select id="profileSelect" onchange="switchProfile(this.value)"></select><button class="btn ghost" onclick="addProfile()">+ Add user profile</button><button class="btn ghost" type="button" onclick="shareProfile()">Share search profile link</button></div><p class="muted" id="profileNotice"></p></div>
  <div class="section"><h3>Search settings</h3><div class="profileFields">
  <label>Profile name<input id="pName" maxlength="90"></label>
  <label>Target job titles (primary search criteria)<textarea id="pRoles" rows="3"></textarea></label>
  <label>Professional experience (used only for evaluating results, NOT for discovery)<textarea id="pExperience" rows="3"></textarea></label>
- <label>Work locations (primary search criteria — e.g. Bretagne; France)<textarea id="pLocations" rows="3"></textarea></label>
+ <label>Work locations (primary search criteria — e.g. Bretagne; France)<textarea id="pLocations" rows="3"></textarea></label><label>Home/reference city for distance sorting<input id="pHomeCity" placeholder="e.g. Rennes, France"></label>
  <label>Excluded work locations<textarea id="pExcluded" rows="3"></textarea></label>
  <label>Minimum annual base salary (€)<input id="pSalary" type="number" min="0" step="1000"></label>
  <label>Search requirements / hard exclusions<textarea id="pRules" rows="4"></textarea></label><label>Candidate evaluation instructions (used AFTER discovery, not as search keywords)<textarea id="pPrompt" rows="9" placeholder="How to judge experience and mandatory requirements once jobs are found"></textarea></label></div>
@@ -482,7 +511,7 @@ function suggestedApplicationAnswer(label,j){
 
 
 const PROFILE_STORAGE='jobRadarLocalProfilesV1';
-const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manager; Enterprise Account Manager; Key Account Manager; Enterprise Customer Growth',experience:'10+ years enterprise SaaS; ecommerce, retail, strategic relationships, French and English',locations:'France; Estonia; Sweden; Switzerland; northern Italy; Prague; Slovenia; Warsaw; Portugal; Luxembourg; Monaco',excluded:'Finland; Norway; Denmark; Netherlands; Slovakia; Balkans except Slovenia; Spain; Austria; Germany; UK; Ireland; Malta; Cyprus; Belgium',salary:'90000',rules:'Prioritize renewals and account expansion; exclude mandatory consulting experience and hunter-only roles'};
+const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manager; Enterprise Account Manager; Key Account Manager; Enterprise Customer Growth',experience:'10+ years enterprise SaaS; ecommerce, retail, strategic relationships, French and English',locations:'France; Estonia; Sweden; Switzerland; northern Italy; Prague; Slovenia; Warsaw; Portugal; Luxembourg; Monaco',excluded:'Finland; Norway; Denmark; Netherlands; Slovakia; Balkans except Slovenia; Spain; Austria; Germany; UK; Ireland; Malta; Cyprus; Belgium',salary:'90000',homeCity:'Tallinn, Estonia',distanceRadius:150,rules:'Prioritize renewals and account expansion; exclude mandatory consulting experience and hunter-only roles'};
 function getProfileStore(){try{const o=JSON.parse(localStorage.getItem(PROFILE_STORAGE)||'{}');const list=Array.isArray(o.list)?o.list:[];const savedOwner=list.find(x=>x.id==='owner')||{};return {list:[{...defaultOwner,...savedOwner,id:'owner'},...list.filter(x=>x.id!=='owner')],active:o.active||'owner'}}catch{return {list:[defaultOwner],active:'owner'}}}
 let profiles=getProfileStore();
 let activeProfileId=profiles.list.some(x=>x.id===profiles.active)?profiles.active:'owner';
@@ -495,10 +524,11 @@ function profile(){return profiles.list.find(p=>p.id===activeProfileId)||profile
 function localProfileState(){try{const p=JSON.parse(localStorage.getItem('jobRadarProfileState_'+activeProfileId)||'{}');return {hidden:Array.isArray(p.hidden)?p.hidden:[],applied:Array.isArray(p.applied)?p.applied:[]}}catch{return {hidden:[],applied:[]}}}
 function saveLocalProfileState(){localStorage.setItem('jobRadarProfileState_'+activeProfileId,JSON.stringify(state))}
 function renderProfileSettings(){
- const el=document.getElementById('profileSelect');el.replaceChildren();
- profiles.list.forEach(p=>{const opt=document.createElement('option');opt.value=p.id;opt.textContent=p.name;el.append(opt)});
- el.value=activeProfileId;
- for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'})) document.getElementById(id).value=profile()[k]||'';
+ const el=document.getElementById('profileSelect'),top=document.getElementById('topProfileSelect');
+ el.replaceChildren();if(top)top.replaceChildren();
+ profiles.list.forEach(p=>{const opt=document.createElement('option');opt.value=p.id;opt.textContent=p.name;el.append(opt);if(top)top.append(opt.cloneNode(true))});
+ el.value=activeProfileId;if(top)top.value=activeProfileId;
+ for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pHomeCity:'homeCity',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'})) document.getElementById(id).value=profile()[k]||'';
  renderMissingQuestions();
  document.getElementById('deleteProfile').disabled=activeProfileId==='owner';
  document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate search preferences and job results. Scans run through Vercel API or GitHub Actions. Private sign-in and cross-device sync are not yet implemented.';
@@ -510,6 +540,10 @@ function updateProfileUI(){
  b.title=activeProfileId==='owner'?'Run job scan':'Run a candidate-specific discovery scan';
  if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent=profileResultMeta[activeProfileId]||'No current results for this profile; run an updated scan.';
  const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
+ const top=document.getElementById('topProfileSelect');if(top)top.value=activeProfileId;
+ const city=document.getElementById('distanceOrigin');if(city)city.value=profile().homeCity||'';
+ const radius=document.getElementById('distanceRadius');if(radius)radius.value=String(profile().distanceRadius||150);
+ updateDistanceStats();
 }
 function showSettings(e){if(e)e.preventDefault();document.getElementById('radarView').style.display='none';document.getElementById('settingsView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.getElementById('settingsNav').classList.add('active');renderProfileSettings()}
 function closeSettings(){document.getElementById('settingsView').style.display='none';document.getElementById('radarView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.querySelector('.nav a').classList.add('active')}
@@ -522,7 +556,7 @@ async function switchProfile(id){
  renderProfileSettings();updateProfileUI();updateStats();renderCurrent();
 }
 function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
-function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'}))p[k]=document.getElementById(id).value.trim();
+function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pHomeCity:'homeCity',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'}))p[k]=document.getElementById(id).value.trim();
  saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return false}if(storeProfiles()){renderProfileSettings();updateProfileUI();profileFeedback('✓ Saved '+p.name+' in this browser. You can now run its discovery scan.');return true}return false}
 async function saveAndScanProfile(){if(!saveProfile())return;closeSettings();await scan({currentTarget:document.getElementById('scanBtn')})}
 function removeProfile(){if(activeProfileId==='owner')return;if(!confirm('Delete this browser-only profile?'))return;localStorage.removeItem('jobRadarProfileState_'+activeProfileId);profiles.list=profiles.list.filter(p=>p.id!==activeProfileId);switchProfile('owner')}

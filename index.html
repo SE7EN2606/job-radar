@@ -795,7 +795,7 @@ async function calculateDistances(){
 }
 function industryFor(job){
  const industry=String(job.industry||job.companyIndustry||job.company_industry||'').trim();
- if(industry)return industry.slice(0,75);
+ if(industry&&!/^(not specified|not provided|unknown|—|-)$/i.test(industry))return industry.slice(0,75);
  const text=(String(job.description||'').slice(0,2200)+' '+String(job.title||'')).toLowerCase();
  const patterns=[
   [/animal nutrition|nutrition animale|feed additive|alimentation animale/,'Animal nutrition'],

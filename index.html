@@ -261,6 +261,8 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 .proximity-unknown{color:#9aa5b8}
 @media(max-width:1250px){.row{min-width:1070px}.table{overflow-x:auto}}
 @media(max-width:700px){.profile-tools{gap:5px;justify-content:space-between}#topProfileSelect{max-width:200px}.proximity-bar{align-items:stretch}.proximity-bar label:not(.nearby-toggle){flex:1}.proximity-bar input[type=text]{min-width:135px;width:100%}#distanceStatus{text-align:left;flex-basis:100%}.workspace-bar{gap:8px;flex-wrap:wrap;padding:9px 0}.row{min-width:1070px}}
+
+@media(max-width:650px){.table .row>*{display:block!important}.table .row>div:first-child{align-self:center}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -302,7 +304,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
       <button class="chip" data-tab="applied" onclick="switchTab('applied',this)">Applied</button>
       <button class="chip" data-tab="hidden" onclick="switchTab('hidden',this)">Hidden</button>
     </div>
-    <select id="sortBy" onchange="renderCurrent()">
+    <select id="sortBy" onchange="onSortChanged()">
       <option value="fit-desc">Sort: Fit high → low</option>
       <option value="fit-asc">Fit low → high</option>
       <option value="nearest">Distance: nearest first</option>
@@ -357,7 +359,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  </div>
  <h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
  <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="saveAndScanProfile()">Save &amp; run scan</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
- <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Profiles and application history are saved only in this browser, not synced across devices. Candidate-specific discovery scans can be triggered through the Vercel API or GitHub Actions; on this static GitHub Pages site, use the GitHub Actions fallback link. Results are unverified until employer-site checks. Private accounts still require a secure backend.</p>
+ <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Profiles and application history are saved only in this browser, not synced across devices. The Share search profile link carries only a name, job titles and regions (no CV or notes); imported job results are publicly hosted and are not access-controlled. Candidate-specific discovery scans can be triggered through the Vercel API or GitHub Actions; on this static GitHub Pages site, use the GitHub Actions fallback link. Results are unverified until employer-site checks. Private accounts still require a secure backend.</p>
  </div>
 </section>
 </main>
@@ -727,6 +729,11 @@ function distanceKM(job){
  const a=cityCoordsCache[origin.key],b=cityCoordsCache[destination.key];
  if(!a||!b)return null;
  return directKM(a,b);
+}
+function onSortChanged(){
+ renderCurrent();
+ const mode=document.getElementById('sortBy').value;
+ if((mode==='nearest'||mode==='proximity')&&profile().homeCity&&allProfileJobs().length&&!cityCoordsCache[placeKey(profile().homeCity)?.key])calculateDistances();
 }
 function updateDistanceRadius(value){
  profile().distanceRadius=Math.max(25,Math.min(2000,Number(value)||150));

@@ -223,8 +223,10 @@ def main():
                 match = min(99, max(50, quality - 7 + region_bonus))
                 dedup = normalized_url(url)
                 jid = "profile-" + hashlib.sha1(dedup.encode()).hexdigest()[:20]
+                industry = clean(raw.get("company_industry")) or clean(raw.get("industry"))
                 item = {
                     "id": jid, "company": company, "title": title, "fit": match,
+                    "industry": industry or "Not specified",
                     "domainFit": quality, "hunter": "Unknown", "location": where,
                     "salary": "Undisclosed", "rating": "—",
                     "status": "Unverified vacancy", "statusTone": "warn",

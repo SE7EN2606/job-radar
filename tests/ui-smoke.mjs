@@ -68,6 +68,32 @@ try{
  const shareDecoded=await page.evaluate(value=>shareDecode(value),encoded);
  if(JSON.stringify(shareDecoded).includes('PRIVATE WORK EXPERIENCE'))throw Error('private text leaked in share link');
 
+
+ // Fresh isolated browser: no prior localStorage, no shared URL, no cookies.
+ const incognito=await browser.newPage();
+ const incogErrors=[];incognito.on('pageerror',err=>incogErrors.push(err.message));
+ await incognito.route('**/data/profiles-public.json*',route=>route.fulfill({
+  status:200,contentType:'application/json',
+  body:JSON.stringify({version:1,profiles:[{
+   id:'local-mw24lfrk-mu765',name:'Clément Le Ricousse',
+   roles:'Directeur commercial; Directeur général',locations:'Bretagne; France',
+   homeCity:'Rennes, France',distanceRadius:150
+  }]})
+ }));
+ await incognito.route('**/data/profile-scans/local-mw24lfrk-mu765.json*',route=>route.fulfill({
+  status:200,contentType:'application/json',
+  body:JSON.stringify({profileId:'local-mw24lfrk-mu765',strategy:'title-and-location-first-v2',
+    count:1,generatedAt:'2026-11-05T10:00:00Z',
+    jobs:[{...jobs[0],id:'profile-clem-test'}]})
+ }));
+ await incognito.goto('http://127.0.0.1:8765/',{waitUntil:'domcontentloaded'});
+ await incognito.waitForFunction(()=>[...document.querySelectorAll('#topProfileSelect option')].some(x=>x.textContent.includes('Clément Le Ricousse')));
+ if(await incognito.locator('#topProfileSelect option').count()!==2)throw Error('Expected default owner and one public candidate in private browser');
+ await incognito.locator('#topProfileSelect').selectOption('local-mw24lfrk-mu765');
+ await incognito.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===1);
+ if(incogErrors.length)throw Error('Private browser errors: '+incogErrors.join(' | '));
+ console.log('PASS: clean browser auto-loads public profile directory and profile scan');
+
  const other=await browser.newPage();const otherErrors=[];other.on('pageerror',err=>otherErrors.push(err.message));
  await routeMocks(other);
  other.on('dialog',dialog=>dialog.accept());

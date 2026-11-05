@@ -521,6 +521,52 @@ function storeProfiles(){
 }
 function profileFeedback(message){const n=document.getElementById('profileSaveFeedback');if(n)n.textContent=message}
 function profile(){return profiles.list.find(p=>p.id===activeProfileId)||profiles.list[0]}
+
+/* A search-profile link shares only name, ID, job titles and regions.
+   It intentionally excludes CV, contact, LinkedIn, prompt and notes. */
+function publicSearchProfile(){
+ const p=profile();
+ return {v:1,id:p.id,name:p.name,roles:p.roles||'',locations:p.locations||''};
+}
+function shareEncode(payload){
+ const bytes=new TextEncoder().encode(JSON.stringify(payload));
+ return btoa(Array.from(bytes,x=>String.fromCharCode(x)).join('')).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function shareDecode(value){
+ if(!/^[A-Za-z0-9_-]{10,2400}$/.test(value))throw Error('Invalid or oversized share link');
+ const raw=atob(value.replace(/-/g,'+').replace(/_/g,'/'));
+ return JSON.parse(new TextDecoder().decode(Uint8Array.from(raw,x=>x.charCodeAt(0))));
+}
+async function shareProfile(){
+ const p=publicSearchProfile();
+ if(p.id==='owner'){alert('Select a secondary profile first. Your main account and CV cannot be shared through this simple link.');return}
+ if(!p.roles.trim()){alert('Set the target job titles before sharing this profile.');return}
+ const url=location.origin+location.pathname+'#share='+shareEncode(p);
+ try{await navigator.clipboard.writeText(url);alert('Shareable search link copied. It contains only the candidate name, search titles, locations and scan ID — not CV or private notes. The recipient will have independent local settings and application history.')}
+ catch{prompt('Copy this search profile link:',url)}
+}
+async function importSearchFromLink(){
+ const m=location.hash.match(/^#share=([A-Za-z0-9_-]+)$/);
+ if(!m)return;
+ try{
+  const p=shareDecode(m[1]);
+  if(p.v!==1||!/^[-_A-Za-z0-9]{4,90}$/.test(String(p.id))||p.id==='owner'||typeof p.name!=='string'||typeof p.roles!=='string'||typeof p.locations!=='string')throw Error('Unsupported share payload');
+  if(p.name.length>90||p.roles.length>900||p.locations.length>500)throw Error('Shared search preferences too long');
+  history.replaceState(null,'',location.pathname+location.search);
+  if(!confirm('Open shared search profile for '+p.name+'? It will be saved in this browser. It does not grant access to private CV data.'))return;
+  const current=profiles.list.find(x=>x.id===p.id);
+  if(!current){
+   profiles.list.push({id:p.id,name:p.name,roles:p.roles,locations:p.locations,experience:'',rules:'',salary:'',homeCity:'',distanceRadius:150});
+   if(!storeProfiles())throw Error('Could not save in this browser');
+  }else if(current.roles!==p.roles||current.locations!==p.locations){
+   if(confirm('Update the locally saved job titles and search locations for '+current.name+'?')){
+    current.roles=p.roles;current.locations=p.locations;storeProfiles();
+   }
+  }
+  await switchProfile(p.id);
+ }catch(err){alert('Could not open shared search link: '+err.message)}
+}
+
 function localProfileState(){try{const p=JSON.parse(localStorage.getItem('jobRadarProfileState_'+activeProfileId)||'{}');return {hidden:Array.isArray(p.hidden)?p.hidden:[],applied:Array.isArray(p.applied)?p.applied:[]}}catch{return {hidden:[],applied:[]}}}
 function saveLocalProfileState(){localStorage.setItem('jobRadarProfileState_'+activeProfileId,JSON.stringify(state))}
 function renderProfileSettings(){
@@ -549,6 +595,7 @@ function showSettings(e){if(e)e.preventDefault();document.getElementById('radarV
 function closeSettings(){document.getElementById('settingsView').style.display='none';document.getElementById('radarView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.querySelector('.nav a').classList.add('active')}
 async function switchProfile(id){
  if(!profiles.list.some(p=>p.id===id))return;
+ distanceRunToken++;
  if(activeProfileId!=='owner')saveLocalProfileState();
  activeProfileId=id;profiles.active=id;storeProfiles();selectedJobs.clear();closeDrawer();
  state=id==='owner'?{hidden:[],applied:['duvo']}:localProfileState();
@@ -557,6 +604,7 @@ async function switchProfile(id){
 }
 function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
 function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pHomeCity:'homeCity',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'}))p[k]=document.getElementById(id).value.trim();
+ p.distanceRadius=Number(document.getElementById('distanceRadius')?.value)||p.distanceRadius||150;
  saveQuestionAnswers();if(!p.name){alert('Please enter a profile name');return false}if(storeProfiles()){renderProfileSettings();updateProfileUI();profileFeedback('✓ Saved '+p.name+' in this browser. You can now run its discovery scan.');return true}return false}
 async function saveAndScanProfile(){if(!saveProfile())return;closeSettings();await scan({currentTarget:document.getElementById('scanBtn')})}
 function removeProfile(){if(activeProfileId==='owner')return;if(!confirm('Delete this browser-only profile?'))return;localStorage.removeItem('jobRadarProfileState_'+activeProfileId);profiles.list=profiles.list.filter(p=>p.id!==activeProfileId);switchProfile('owner')}
@@ -1293,7 +1341,7 @@ async function scan(e){
     }catch{}},5000);
   }catch(err){b.disabled=false;b.textContent='Scan now';scanMeta.textContent='Scan failed: '+err.message}
 }
-async function init(){renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent()}
+async function init(){renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent();await importSearchFromLink()}
 init();
 </script>
 </body>

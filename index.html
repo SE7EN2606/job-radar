@@ -582,7 +582,7 @@ function renderProfileSettings(){
  document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate search preferences and job results. Scans run through Vercel API or GitHub Actions. Private sign-in and cross-device sync are not yet implemented.';
 }
 function updateProfileUI(){
- document.getElementById('activeProfileLabel').textContent=profile().name;
+ // The top-right native select is now the visible candidate label; no old label node remains.
  const avatar=document.getElementById('profileAvatar');if(avatar)avatar.textContent=(profile().name||'P').trim().charAt(0).toUpperCase();
  const b=document.getElementById('scanBtn');b.disabled=false;
  b.title=activeProfileId==='owner'?'Run job scan':'Run a candidate-specific discovery scan';

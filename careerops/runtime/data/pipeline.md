@@ -217,4 +217,11 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/naval-group-fr/jobs/cdi-manager-devsecops-customer-success-h-f_ollioules | Naval Group \[FR\] | CDI - Manager DevSecOps - Customer Success - H/F | Ollioules, France | posted: 2026-11-04
 - [ ] https://www.welcometothejungle.com/en/companies/weefin/jobs/project-manager-pmo-customer-success_paris | WeeFin | Project Manager (PMO, Customer Success) | Paris, France | posted: 2026-11-04
 
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-en-logistique-h-f-ile-de-france-93-95_cergy | Gojob | Key Account Manager en Logistique H/F - Île de France (93/95) | Cergy, France | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-en-logistique-h-f-hauts-de-france-59-62_arras | Gojob | Key Account Manager en Logistique H/F - Hauts de France (59/62) | Arras, France | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/la-petite-epicerie/jobs/2eb11a01-9f33-42e6-8dab-2799f64fc2d0 | La Petite Epicerie | Key account manager - Commercial Grands comptes BtoB | Montreuil, France | 38000-50000 EUR | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/mediaperformances/jobs/cdi-customer-success-manager-h-f_courbevoie | Médiaperformances | CDI - Customer Success Manager - H/F | Courbevoie, France | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/up-coop/jobs/responsable-grands-comptes-gennevilliers-ou-lille-h-f_gennevilliers | Upcoop | Responsable grands comptes Gennevilliers / Lille / Lyon / Rennes | Rennes, France | posted: 2026-11-04
+- [ ] https://www.welcometothejungle.com/en/companies/ipsos/jobs/directeur-de-clientele-brand-strategy-h-f-nb_paris | Ipsos | Directeur de clientèle Brand strategy (H/F/NB) | Paris, France | posted: 2026-11-04
+
 ## Processed

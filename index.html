@@ -263,6 +263,53 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 @media(max-width:700px){.profile-tools{gap:5px;justify-content:space-between}#topProfileSelect{max-width:200px}.proximity-bar{align-items:stretch}.proximity-bar label:not(.nearby-toggle){flex:1}.proximity-bar input[type=text]{min-width:135px;width:100%}#distanceStatus{text-align:left;flex-basis:100%}.workspace-bar{gap:8px;flex-wrap:wrap;padding:9px 0}.row{min-width:1070px}}
 
 @media(max-width:650px){.table .row>*{display:block!important}.table .row>div:first-child{align-self:center}}
+
+/* Job Matching — single-decision workspace */
+#matchingView[hidden]{display:none}
+#radarView.matching-mode > :not(.workspace-bar):not(#matchingView){display:none!important}
+#radarView.matching-mode #matchingView{display:block}
+.matching-header{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin:36px 0 28px}
+.matching-header h1{font-size:clamp(30px,3vw,43px);letter-spacing:-.055em;margin:0 0 8px;color:#17243b}
+.matching-header .page-subtitle{max-width:640px}
+.matching-header-actions{display:flex;gap:8px}
+.matching-progress{display:flex;justify-content:space-between;align-items:center;color:#6e7d94;font-size:12px;margin-bottom:11px;font-weight:700}
+.matching-progress-rail{height:5px;background:#e3e8f2;border-radius:6px;overflow:hidden;margin-bottom:25px}
+#matchingProgressFill{height:100%;width:0%;background:#5b62df;transition:width 180ms ease}
+.matching-layout{display:grid;grid-template-columns:minmax(0,730px) minmax(220px,280px);gap:20px;justify-content:center;align-items:start}
+.matching-card{background:#fff;border:1px solid #dbe2ed;border-radius:17px;box-shadow:0 14px 48px rgba(32,47,90,.07);min-height:390px;overflow:hidden}
+.matching-card-top{background:linear-gradient(115deg,#f4f6ff,#fbfcff);padding:26px 30px 22px;border-bottom:1px solid #e4e9f4}
+.matching-card-kicker{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:#687991;font-size:11px;font-weight:750;margin-bottom:15px}
+.matching-card-title{font-size:clamp(22px,2.2vw,30px);letter-spacing:-.045em;line-height:1.2;margin:0 0 7px;color:#18273e}
+.matching-card-company{font-weight:800;font-size:14px;color:#4958a4}
+.matching-card-body{padding:23px 30px 28px}
+.matching-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 18px;margin-bottom:25px}
+.matching-fact{min-width:0}
+.matching-fact dt{color:#8996a9;font-size:10px;text-transform:uppercase;font-weight:800;letter-spacing:.06em;margin-bottom:5px}
+.matching-fact dd{margin:0;color:#30415b;font-size:13px;font-weight:690;overflow-wrap:anywhere}
+.matching-card h3{font-size:13px;color:#243752;margin:20px 0 8px}
+.matching-description{max-height:185px;overflow-y:auto;line-height:1.6;font-size:12px;color:#51617b;white-space:pre-wrap}
+.matching-source{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding-top:17px;margin-top:20px;border-top:1px solid #edf0f5;font-size:12px}
+.matching-source a{color:#3a4cc8;font-weight:750}
+.matching-source .muted{font-size:11px}
+.matching-controls{display:flex;gap:14px;justify-content:center;margin:22px 0 12px}
+.matching-controls .btn{padding:15px 26px;min-height:52px;font-size:14px;border-radius:12px;font-weight:800}
+.matching-no{background:#fff;color:#9d4352;border:1px solid #edc6cb}
+.matching-no:hover{background:#fff1f2}
+.matching-yes{background:#4355d6;color:#fff;box-shadow:0 5px 15px rgba(67,85,214,.16)}
+.matching-yes:hover{background:#3447c3}
+.matching-guide{border:1px solid #e2e8f2;background:#f7f9fc;border-radius:13px;padding:19px 20px;color:#607189;font-size:12px;line-height:1.65}
+.matching-guide h3{margin:0 0 12px;color:#293951;font-size:14px}
+.matching-guide p{margin:0 0 12px}
+.matching-guide strong{color:#243d76}
+.matching-guide-meta{font-size:11px;border-top:1px solid #e2e8f1;padding-top:12px;margin-top:16px}
+.matching-empty{text-align:center;padding:72px 28px 65px;color:#64748b}
+.matching-empty h2{color:#223451;font-size:24px;margin:14px 0 8px}
+.matching-empty button{margin:16px 4px 0}
+.matching-feedback{text-align:center;font-size:12px;color:#5d6c81;min-height:20px;margin-top:8px}
+@media(max-width:880px){.matching-layout{grid-template-columns:minmax(0,1fr)}.matching-guide{display:none}}
+@media(max-width:650px){.matching-header{display:block;margin:22px 0 18px}.matching-header-actions{margin-top:16px;flex-wrap:wrap}.matching-card-top{padding:22px 19px 17px}.matching-card-body{padding:18px 19px 22px}.matching-facts{gap:12px}.matching-controls{gap:8px}.matching-controls .btn{flex:1;padding:12px 8px;font-size:12px}.matching-card{min-height:340px}}
+@media(prefers-reduced-motion:reduce){#matchingProgressFill{transition:none}}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -271,14 +318,42 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 <aside class="side">
   <div class="brand">Job<span>Radar</span></div>
   <div class="side-label">WORKSPACE</div>
-  <nav class="nav"><a class="active" href="#">◫ &nbsp; Opportunities</a><a href="#" onclick="jumpToTab(event,'applied')">✓ &nbsp; Applications</a><a href="#">▤ &nbsp; CV Master</a><a href="#">▦ &nbsp; Companies</a></nav>
+  <nav class="nav"><a class="active" id="opportunitiesNav" href="#" onclick="showOpportunities(event)">◫ &nbsp; Opportunities</a><a id="matchingNav" href="#" onclick="showMatching(event)">♡ &nbsp; Job Matching</a><a href="#" onclick="jumpToTab(event,'applied')">✓ &nbsp; Applications</a><a href="#">▤ &nbsp; CV Master</a><a href="#">▦ &nbsp; Companies</a></nav>
   <div class="side-label account-label">ACCOUNT</div>
   <nav class="nav"><a href="#" onclick="showSettings(event)" id="settingsNav">⚙ &nbsp; Profiles & settings</a></nav>
   <div class="side-bottom"><span class="connection-dot"></span> Job discovery workspace <small>Profiles and scans are kept separate</small></div>
 </aside>
 <main class="main">
 <div id="radarView">
-  <div class="workspace-bar"><div><span class="workspace-dot"></span><span>JOBRADAR</span><span class="workspace-slash">/</span><strong>Opportunities</strong></div><div class="profile-tools"><span class="profile-avatar" id="profileAvatar" aria-hidden="true">M</span><label for="topProfileSelect" class="sr-only">Choose candidate profile</label><select id="topProfileSelect" aria-label="Choose candidate profile" onchange="switchProfile(this.value)"></select><button class="btn ghost small share-profile-btn" type="button" onclick="shareProfile()" title="Share a link with this profile's search titles and regions (no CV)">Share search</button></div></div>
+  <div class="workspace-bar"><div><span class="workspace-dot"></span><span>JOBRADAR</span><span class="workspace-slash">/</span><strong id="workspacePage">Opportunities</strong></div><div class="profile-tools"><span class="profile-avatar" id="profileAvatar" aria-hidden="true">M</span><label for="topProfileSelect" class="sr-only">Choose candidate profile</label><select id="topProfileSelect" aria-label="Choose candidate profile" onchange="switchProfile(this.value)"></select><button class="btn ghost small share-profile-btn" type="button" onclick="shareProfile()" title="Share a link with this profile's search titles and regions (no CV)">Share search</button></div></div>
+  <section id="matchingView" aria-label="Job Matching" hidden>
+    <div class="matching-header">
+      <div><div class="eyebrow">QUICK DECISIONS</div><h1>Job Matching<span class="headline-period">.</span></h1>
+      <p class="page-subtitle">Review one opportunity at a time. Yes keeps it on your shortlist; No archives it.</p></div>
+      <div class="matching-header-actions"><button class="btn ghost" type="button" onclick="showOpportunities()">View opportunities</button><button class="btn ghost" type="button" onclick="openMatchingArchived()">Archived jobs</button></div>
+    </div>
+    <div class="matching-progress">
+      <span id="matchingProgress" role="status" aria-live="polite">Preparing matches…</span>
+      <span id="matchingYesCount">0 saved for review</span>
+    </div>
+    <div class="matching-progress-rail"><div id="matchingProgressFill"></div></div>
+    <div class="matching-layout">
+      <article class="matching-card" id="matchingCard">
+        <div id="matchingCardContent"></div>
+      </article>
+      <aside class="matching-guide"><h3>How it works</h3>
+        <p><strong>Yes</strong> saves the job to <em>Yes · Review</em> and keeps it in Opportunities.</p>
+        <p><strong>No</strong> moves it to <em>Hidden</em>, immediately removing it from Opportunities and future matching rounds until restored.</p>
+        <p>Decisions are saved in this browser for the selected candidate. No application is submitted automatically.</p>
+        <div class="matching-guide-meta" id="matchingQueueMeta"></div>
+      </aside>
+    </div>
+    <div class="matching-controls" id="matchingControls">
+      <button class="btn matching-no" id="matchingNo" type="button" onclick="decideMatch('no')"><span aria-hidden="true">×</span> No — Archive</button>
+      <button class="btn matching-yes" id="matchingYes" type="button" onclick="decideMatch('yes')"><span aria-hidden="true">♡</span> Yes — Review later</button>
+    </div>
+    <div class="matching-feedback" id="matchingFeedback" aria-live="polite"></div>
+  </section>
   <div class="top">
     <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div><a id="manualScanLink" href="https://github.com/SE7EN2606/job-radar/actions/workflows/scan-profile.yml" target="_blank" rel="noopener noreferrer" hidden>Run the profile scan manually on GitHub Actions ↗</a></div>
     <div class="top-actions"><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
@@ -301,8 +376,9 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
   <div class="toolbar">
     <div class="tabs">
       <button class="chip active" data-tab="opportunities" onclick="switchTab('opportunities',this)">Opportunities</button>
+      <button class="chip" data-tab="shortlist" onclick="switchTab('shortlist',this)">Yes · Review <span id="shortlistTabCount">0</span></button>
       <button class="chip" data-tab="applied" onclick="switchTab('applied',this)">Applied</button>
-      <button class="chip" data-tab="hidden" onclick="switchTab('hidden',this)">Hidden</button>
+      <button class="chip" data-tab="hidden" onclick="switchTab('hidden',this)">Hidden <span id="hiddenTabCount">0</span></button>
     </div>
     <select id="sortBy" onchange="onSortChanged()">
       <option value="fit-desc">Sort: Fit high → low</option>

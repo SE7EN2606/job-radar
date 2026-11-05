@@ -676,6 +676,141 @@ async function importProfileJSON(file){
 
 
 
+
+/* Optional city geocoding: direct distances, not roads or journey times.
+   Open-Meteo / GeoNames city lookups; no precise address or device GPS. */
+const GEO_STORAGE='jobRadarCityCoordinatesV1';
+let cityCoordsCache={};
+try{cityCoordsCache=JSON.parse(localStorage.getItem(GEO_STORAGE)||'{}')||{}}catch{}
+let distanceRunToken=0;
+function foldPlace(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+function placeKey(value){
+ const full=String(value||'').trim();
+ if(!full||/\b(remote|hybrid everywhere|europe-wide|multiple locations|worldwide)\b/i.test(full))return null;
+ const city=full.split(/[,|]/)[0].trim().replace(/\s+(metropolitan area|area)$/i,'');
+ if(!city||city.length<2||/^(france|estonia|brittany|bretagne|ile.de.france|europe|eu|countrywide|national|united kingdom|germany)$/i.test(city))return null;
+ const country=/\b(estonia|eesti|tallinn|tartu)\b/i.test(full)?'EE':/\b(france|french|brittany|bretagne|paris|rennes)\b/i.test(full)?'FR':'';
+ return {city,country,key:country+'|'+foldPlace(city)};
+}
+async function lookupCity(place){
+ const parsed=placeKey(place);
+ if(!parsed)return null;
+ if(cityCoordsCache[parsed.key])return cityCoordsCache[parsed.key];
+ const query=new URLSearchParams({name:parsed.city,count:'5',language:'en'});
+ if(parsed.country)query.set('countryCode',parsed.country);
+ const endpoint='https://geocoding-api.open-meteo.com/v1/search?'+query;
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),7500);
+ try{
+  const response=await fetch(endpoint,{signal:controller.signal});
+  if(!response.ok)throw Error('City lookup HTTP '+response.status);
+  const data=await response.json();
+  const candidates=Array.isArray(data.results)?data.results:[];
+  const exact=candidates.find(x=>foldPlace(x.name)===foldPlace(parsed.city))||candidates[0];
+  if(!exact||!Number.isFinite(Number(exact.latitude))||!Number.isFinite(Number(exact.longitude)))return null;
+  const entry={lat:Number(exact.latitude),lon:Number(exact.longitude),label:exact.name+', '+exact.country};
+  cityCoordsCache[parsed.key]=entry;
+  try{localStorage.setItem(GEO_STORAGE,JSON.stringify(cityCoordsCache))}catch{}
+  return entry;
+ }finally{clearTimeout(timeout)}
+}
+function radians(value){return value*Math.PI/180}
+function directKM(a,b){
+ const dLat=radians(b.lat-a.lat),dLon=radians(b.lon-a.lon);
+ const h=Math.sin(dLat/2)**2+Math.cos(radians(a.lat))*Math.cos(radians(b.lat))*Math.sin(dLon/2)**2;
+ return Math.round(6371*2*Math.asin(Math.min(1,Math.sqrt(h))));
+}
+function distanceKM(job){
+ const origin=placeKey(profile().homeCity);
+ const destination=placeKey(job.location);
+ if(!origin||!destination)return null;
+ const a=cityCoordsCache[origin.key],b=cityCoordsCache[destination.key];
+ if(!a||!b)return null;
+ return directKM(a,b);
+}
+function updateDistanceRadius(value){
+ profile().distanceRadius=Math.max(25,Math.min(2000,Number(value)||150));
+ storeProfiles();updateDistanceStats();renderCurrent();
+}
+function nearbyBonus(job){
+ const km=distanceKM(job),radius=Number(profile().distanceRadius)||150;
+ return km===null||km>radius?0:Math.round(12*(1-km/radius));
+}
+function weightedFit(job){return Math.min(99,practicalFit(job)+nearbyBonus(job))}
+function updateDistanceStats(){
+ const total=allProfileJobs().filter(j=>!isHidden(j));
+ const known=total.filter(j=>distanceKM(j)!==null);
+ const count=known.filter(j=>distanceKM(j)<=Number(profile().distanceRadius||150)).length;
+ const stat=document.getElementById('lowHunter');
+ if(stat)stat.textContent=known.length?String(count):'—';
+ const label=document.getElementById('nearbyLabel');
+ if(label)label.textContent='Within '+(profile().distanceRadius||150)+' km';
+}
+async function calculateDistances(){
+ const originInput=document.getElementById('distanceOrigin');
+ const input=String(originInput?.value||'').trim();
+ const status=document.getElementById('distanceStatus');
+ if(!placeKey(input)){status.textContent='Enter a city and country, not a street address.';return}
+ const id=activeProfileId;
+ const token=++distanceRunToken;
+ profile().homeCity=input;storeProfiles();
+ const button=document.getElementById('calculateDistances');
+ button.disabled=true;button.textContent='Locating…';
+ status.textContent='Locating '+input+'…';
+ try{
+  const origin=await lookupCity(input);
+  if(!origin)throw Error('Could not locate reference city. Try "Rennes, France" or "Tallinn, Estonia".');
+  const unique=new Map();
+  for(const job of allProfileJobs()){
+   const v=placeKey(job.location);
+   if(v&&!cityCoordsCache[v.key])unique.set(v.key,v);
+  }
+  // Cap API work so the page stays responsive on a large job list.
+  const queue=[...unique.values()].slice(0,120);
+  let completed=0;
+  const workers=Array.from({length:2},async()=>{
+   while(queue.length&&token===distanceRunToken&&id===activeProfileId){
+    const city=queue.shift();
+    try{await lookupCity(city.city+(city.country=== 'FR'?', France':city.country==='EE'?', Estonia':''))}
+    catch{}
+    completed++;
+    if(completed%8===0||queue.length===0)status.textContent='City distances: '+completed+' / '+(completed+queue.length)+' lookups · straight-line km';
+   }
+  });
+  await Promise.all(workers);
+  if(token!==distanceRunToken||id!==activeProfileId)return;
+  const known=allProfileJobs().filter(j=>distanceKM(j)!==null).length;
+  const total=allProfileJobs().length;
+  status.textContent=known+' / '+total+' job distances available · straight-line km, not road travel time'+(unique.size>120?' · additional cities pending':'');
+  updateDistanceStats();renderCurrent();
+ }catch(err){if(token===distanceRunToken)status.textContent='Distance lookup unavailable: '+err.message}
+ finally{if(token===distanceRunToken){button.disabled=false;button.textContent='Calculate distances'}}
+}
+function industryFor(job){
+ const industry=String(job.industry||job.companyIndustry||job.company_industry||'').trim();
+ if(industry)return industry.slice(0,75);
+ const text=String(job.description||'').slice(0,2200).toLowerCase();
+ const patterns=[
+  [/animal nutrition|nutrition animale|feed additive|alimentation animale/,'Animal nutrition'],
+  [/agroalimentaire|food production|food industry|food manufacturing/,'Food / Agri-food'],
+  [/biogas|biogaz|renewable energy|énergie renouvelable/,'Energy'],
+  [/pharma|medical device|biotech|healthcare|santé/,'Healthcare'],
+  [/software as a service|\bsaas\b|enterprise software/,'Software / SaaS'],
+  [/construction|building material|bâtiment/,'Construction'],
+  [/insurance|assurance|banking|banque/,'Finance / Insurance'],
+  [/retail|e-commerce|ecommerce/,'Retail / E-commerce'],
+ ];
+ for(const [re,label]of patterns)if(re.test(text))return 'Likely: '+label;
+ return 'Not specified';
+}
+function vacancyInfo(job){
+ const status=String(job.verificationStatus||'').toLowerCase();
+ if(status==='verified-open'||status==='verified_open')return {label:'Verified open',tone:'good'};
+ if(status==='closed'||status==='expired')return {label:'Closed',tone:'bad'};
+ return {label:'Not verified',tone:'warn'};
+}
+function escapeJobText(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
 const profileJobCache={};
 const profileResultMeta={};
 function allProfileJobs(){return activeProfileId==='owner'?jobs:(profileJobCache[activeProfileId]||[])}

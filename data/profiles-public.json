@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "description": "Public JobRadar search profiles. No CVs, work history, LinkedIn links, personal contact details or application records.",
+  "profiles": [
+    {
+      "id": "local-mw24lfrk-mu765",
+      "name": "Clément Le Ricousse",
+      "roles": "Directeur de Business Unit; Directeur de BU; Directeur général; Directeur général de filiale; Directeur commercial; Directeur des ventes; Directeur commercial international; Directeur export; Directeur du développement commercial international",
+      "locations": "Bretagne; France",
+      "homeCity": "Rennes, France",
+      "distanceRadius": 150
+    }
+  ]
+}

@@ -905,13 +905,16 @@ function filteredJobs(){
     return !isHidden(j)&&!isApplied(j);
   });
   if(currentFilter!=='all') list=list.filter(j=>j.type.includes(currentFilter));
+  if(document.getElementById('withinRadius')?.checked)list=list.filter(j=>{const km=distanceKM(j);return km!==null&&km<=Number(profile().distanceRadius||150)});
   const query=(document.getElementById('jobSearch')?.value||'').trim().toLocaleLowerCase();
   if(query)list=list.filter(j=>[j.company,j.title,j.location,j.domain,j.salary].some(v=>String(v||'').toLocaleLowerCase().includes(query)));
   const mode=sortBy.value;
   list.sort((a,b)=>{
     if(mode==='fit-asc') return practicalFit(a)-practicalFit(b);
+    if(mode==='nearest'){const aKm=distanceKM(a),bKm=distanceKM(b);return (aKm===null?Infinity:aKm)-(bKm===null?Infinity:bKm)||practicalFit(b)-practicalFit(a)}
+    if(mode==='proximity')return weightedFit(b)-weightedFit(a)||practicalFit(b)-practicalFit(a);
     if(mode==='company') return a.company.localeCompare(b.company);
-    if(mode==='hunter'){const m={Low:0,Medium:1,High:2};return (m[a.hunter]??3)-(m[b.hunter]??3)||practicalFit(b)-practicalFit(a)}
+
     if(mode==='newest') return String(b.datePosted||'').localeCompare(String(a.datePosted||''));
     return practicalFit(b)-practicalFit(a);
   });
@@ -969,20 +972,36 @@ async function enrichVisibleJobs(){
 
 function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
-  const scoreLabel=document.getElementById('scoreColumnLabel');if(scoreLabel)scoreLabel.textContent=activeProfileId==='owner'?'Fit':'Search match';
+  const scoreLabel=document.getElementById('scoreColumnLabel');if(scoreLabel)scoreLabel.textContent=sortBy.value==='proximity'?'Match + near':activeProfileId==='owner'?'Fit':'Search match';
   const items=filteredJobs();
   const counter=document.getElementById('visibleCount');if(counter)counter.textContent=items.length+' '+(activeProfileId==='owner'?'role':'unverified lead')+(items.length===1?'':'s')+' in this view';
   if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent=activeProfileId==='owner'?'No jobs in this folder.':(profileResultMeta[activeProfileId]||'No current results for this profile')+' Use Run scan above to refresh. Employer verification is still required.';host.appendChild(e);return}
   items.forEach(j=>{
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;
     const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
-    const domain=domainFromJob(j);
     const sourceLabel=j.foundVia||j.sourceDisplay||j.source||'Unknown source';
-    r.innerHTML='<div><input type="checkbox" '+(selectedJobs.has(j.id)?'checked':'')+' onchange="toggleJobSelection(\''+j.id+'\',this.checked)"></div><div><div class="company">'+j.company+'</div><div class="title">'+j.title+'</div><div class="meta"><span>'+domain+'</span><span class="pill info">'+sourceLabel+'</span>'+(url?'<a href="'+url+'" target="_blank" rel="noopener">Job ad ↗</a>':'')+'</div></div>'+
-      '<div class="score">'+practicalFit(j)+'</div>'+
-      '<div><span class="pill '+(j.hunter==='Low'?'good':j.hunter==='High'?'bad':'warn')+'">'+j.hunter+'</span></div>'+
-      '<div>'+j.location+'</div><div>'+formatDate(j.datePosted)+'</div><div class="salary">'+j.salary+'</div><div>'+j.rating+'</div><div>'+statusPill(j)+'</div>'+
-      '<div class="actions"><button class="btn ghost small" onclick="openDrawer(\''+j.id+'\')">Review</button></div>';
+    const km=distanceKM(j);
+    const inRadius=km!==null&&km<=Number(profile().distanceRadius||150);
+    const proximityText=km===null?'—':km.toLocaleString()+' km';
+    const industry=industryFor(j);
+    const vacancy=vacancyInfo(j);
+    const mode=sortBy.value;
+    const proximityMode=mode==='proximity';
+    const score=proximityMode?weightedFit(j):practicalFit(j);
+    const bonus=proximityMode?nearbyBonus(j):0;
+    const id=String(j.id||'');
+    if(!/^[a-zA-Z0-9_-]+$/.test(id))return;
+    const applyLink=url?'<a href="'+escapeJobText(url)+'" target="_blank" rel="noopener noreferrer">Job ad ↗</a>':'';
+    r.innerHTML='<div><input type="checkbox" '+(selectedJobs.has(id)?'checked':'')+' onchange="toggleJobSelection(\''+id+'\',this.checked)"></div>'+
+      '<div><div class="company">'+escapeJobText(j.company)+'</div><div class="title">'+escapeJobText(j.title)+'</div><div class="meta"><span class="pill info">'+escapeJobText(sourceLabel)+'</span>'+applyLink+'</div></div>'+
+      '<div class="score">'+score+(bonus?'<div class="muted" style="font-size:10px">+'+bonus+' nearby</div>':'')+'</div>'+
+      '<div class="industry">'+escapeJobText(industry)+'</div>'+
+      '<div>'+escapeJobText(j.location||'—')+'</div>'+
+      '<div class="'+(inRadius?'proximity-near':km===null?'proximity-unknown':'')+'">'+escapeJobText(proximityText)+'</div>'+
+      '<div>'+escapeJobText(formatDate(j.datePosted))+'</div>'+
+      '<div class="salary">'+escapeJobText(j.salary&&j.salary!=='Undisclosed'?j.salary:'—')+'</div>'+
+      '<div><span class="pill '+vacancy.tone+'">'+escapeJobText(vacancy.label)+'</span></div>'+
+      '<div class="actions"><button class="btn ghost small" onclick="openDrawer(\''+id+'\')">Review</button></div>';
     host.appendChild(r);
   });
   updateBulkBar();
@@ -1020,7 +1039,7 @@ async function bulkHide(){await bulkAction('hide')}
 
 function updateStats(){
   strong.textContent=allProfileJobs().filter(j=>!isHidden(j)&&!isApplied(j)&&practicalFit(j)>=80).length;
-  lowHunter.textContent=allProfileJobs().filter(j=>!isHidden(j)&&j.hunter==='Low').length;
+  updateDistanceStats();
   applied.textContent=allProfileJobs().filter(j=>isApplied(j)&&!isHidden(j)).length;
   hiddenCount.textContent=state.hidden.length;
 }

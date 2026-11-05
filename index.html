@@ -587,6 +587,7 @@ function updateProfileUI(){
  const b=document.getElementById('scanBtn');b.disabled=false;
  b.title=activeProfileId==='owner'?'Run job scan':'Run a candidate-specific discovery scan';
  if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent=profileResultMeta[activeProfileId]||'No current results for this profile; run an updated scan.';
+ else document.getElementById('scanMeta').textContent=lastScanGeneratedAt?'Career Ops: last scan '+new Date(lastScanGeneratedAt).toLocaleString():'Owner job search · results loaded';
  const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
  const top=document.getElementById('topProfileSelect');if(top)top.value=activeProfileId;
  const city=document.getElementById('distanceOrigin');if(city)city.value=profile().homeCity||'';

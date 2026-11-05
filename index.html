@@ -359,7 +359,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  </div>
  <h3>Information to confirm with this user</h3><p class="muted">Answer the missing questions before activating a customized search. Unanswered entries remain flagged; answers are included in JSON exports.</p><div id="missingQuestions"></div>
  <div class="toolbar"><button class="btn primary" onclick="saveProfile()">Save preferences</button><button class="btn ghost" onclick="saveAndScanProfile()">Save &amp; run scan</button><button class="btn ghost" onclick="exportProfile()">Export JSON</button><button class="btn danger" id="deleteProfile" onclick="removeProfile()">Delete profile</button></div>
- <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Profiles and application history are saved only in this browser, not synced across devices. The Share search profile link carries only a name, job titles and regions (no CV or notes); imported job results are publicly hosted and are not access-controlled. Candidate-specific discovery scans can be triggered through the Vercel API or GitHub Actions; on this static GitHub Pages site, use the GitHub Actions fallback link. Results are unverified until employer-site checks. Private accounts still require a secure backend.</p>
+ <p id="profileSaveFeedback" class="profile-feedback" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Publicly listed search profiles are loaded from data/profiles-public.json in every browser, including incognito. Other profiles and private fields are saved only in this browser. Share search links contain a candidate name, search titles and regions (no CV or notes). Public scan results are not access-controlled. Editing a listed profile here does not update the shared directory; changes need a GitHub commit. Candidate-specific discovery scans can be triggered through the Vercel API or GitHub Actions; on this static GitHub Pages site, use the GitHub Actions fallback link. Results are unverified until employer-site checks. Private accounts still require a secure backend.</p>
  </div>
 </section>
 </main>
@@ -517,6 +517,45 @@ const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manage
 function getProfileStore(){try{const o=JSON.parse(localStorage.getItem(PROFILE_STORAGE)||'{}');const list=Array.isArray(o.list)?o.list:[];const savedOwner=list.find(x=>x.id==='owner')||{};return {list:[{...defaultOwner,...savedOwner,id:'owner'},...list.filter(x=>x.id!=='owner')],active:o.active||'owner'}}catch{return {list:[defaultOwner],active:'owner'}}}
 let profiles=getProfileStore();
 let activeProfileId=profiles.list.some(x=>x.id===profiles.active)?profiles.active:'owner';
+
+const PUBLIC_PROFILE_DIRECTORY='data/profiles-public.json';
+let publicProfileIds=new Set();
+function readPublicCandidate(entry){
+ if(!entry||typeof entry!=='object'||Array.isArray(entry)||entry.id==='owner')return null;
+ const props=['id','name','roles','locations','homeCity'];
+ if(props.some(k=>typeof entry[k]!=='string'))return null;
+ if(!/^[a-zA-Z0-9_-]{4,90}$/.test(entry.id)||entry.name.length>90||!entry.name.trim()||entry.roles.length>900||entry.locations.length>500||entry.homeCity.length>150)return null;
+ const radius=Number(entry.distanceRadius);
+ return {id:entry.id,name:entry.name.trim(),roles:entry.roles,locations:entry.locations,homeCity:entry.homeCity,distanceRadius:Number.isFinite(radius)&&radius>=25&&radius<=2000?radius:150};
+}
+async function loadPublicProfiles(){
+ try{
+  const r=await fetch(PUBLIC_PROFILE_DIRECTORY+'?v='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw Error('HTTP '+r.status);
+  const data=await r.json();
+  if(data.version!==1||!Array.isArray(data.profiles))throw Error('Unsupported public directory');
+  publicProfileIds=new Set();
+  for(const item of data.profiles){
+   const p=readPublicCandidate(item);
+   if(!p)continue;
+   publicProfileIds.add(p.id);
+   const current=profiles.list.find(x=>x.id===p.id);
+   if(!current){profiles.list.push({...p,experience:'',rules:'',excluded:'',salary:''})}
+   else{
+    // The public directory owns only the search fields. Keep private notes,
+    // CV references, LinkedIn content and application tracking in this browser.
+    Object.assign(current,p);
+   }
+  }
+  // Best effort storage. Incognito still works with in-memory profiles.
+  storeProfiles();
+  return true;
+ }catch(err){
+  console.warn('Public profiles unavailable; keeping browser-local profiles.',err);
+  return false;
+ }
+}
+
 function storeProfiles(){
  try{localStorage.setItem(PROFILE_STORAGE,JSON.stringify(profiles));return true}
  catch(err){const n=document.getElementById('profileSaveFeedback');if(n)n.textContent='Saving failed: browser storage is disabled or full ('+err.message+').';return false}
@@ -579,7 +618,7 @@ function renderProfileSettings(){
  for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pHomeCity:'homeCity',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'})) document.getElementById(id).value=profile()[k]||'';
  renderMissingQuestions();
  document.getElementById('deleteProfile').disabled=activeProfileId==='owner';
- document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':'This profile has separate search preferences and job results. Scans run through Vercel API or GitHub Actions. Private sign-in and cross-device sync are not yet implemented.';
+ document.getElementById('profileNotice').textContent=activeProfileId==='owner'?'Current production search and CV remain linked to this profile.':(publicProfileIds.has(activeProfileId)?'Listed in the public search-profile directory. Search titles and city are visible to anyone; CV and application history remain browser-local. ':'Local-only profile. To make it available to everyone, add a minimal entry in data/profiles-public.json. ')+'Scans use GitHub Actions/Vercel API. Private sign-in and cross-device sync are not yet implemented.';
 }
 function updateProfileUI(){
  // The top-right native select is now the visible candidate label; no old label node remains.
@@ -1503,7 +1542,7 @@ async function scan(e){
     }catch{}},5000);
   }catch(err){b.disabled=false;b.textContent='Scan now';scanMeta.textContent='Scan failed: '+err.message}
 }
-async function init(){renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent();await importSearchFromLink()}
+async function init(){await loadPublicProfiles();renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent();await importSearchFromLink()}
 init();
 </script>
 </body>

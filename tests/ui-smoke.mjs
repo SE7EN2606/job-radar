@@ -64,7 +64,36 @@ try{
  await page.locator('#withinRadius').check();
  if(await page.locator('#jobs .row.data').count()!==2)throw Error('radius filter unexpectedly removed jobs');
 
- const encoded=await page.evaluate(()=>shareEncode(publicSearchProfile()));
+ // Tinder-like Job Matching must update the original Opportunities table.
+ await page.locator('#matchingNav').click();
+ await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.dataset.jobId==='profile-example-one');
+ await page.locator('#matchingYes').click();
+ await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.dataset.jobId==='profile-example-two');
+ await page.locator('#matchingNo').click();
+ await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.textContent.includes('All caught up'));
+ if(await page.locator('#matchingControls').isVisible())throw Error('Matching buttons still visible with empty queue');
+ await page.locator('#matchingCardContent').getByRole('button',{name:'Review Yes jobs'}).click();
+ await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===1);
+ if(!(await page.locator('#jobs .row.data').first().textContent()).includes('Example Software'))throw Error('Yes shortlist incorrect');
+ await page.locator('[data-tab="hidden"]').click();
+ await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===1);
+ if(!(await page.locator('#jobs .row.data').first().textContent()).includes('Example Foods'))throw Error('No not archived');
+ await page.locator('#jobs .row.data button').last().click();
+ await page.locator('#hideBtn').click();
+ await page.locator('#matchingNav').click();
+ await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.dataset.jobId==='profile-example-two');
+ // Archiving it again should persist across reloads, but Yes must not count as Applied.
+ await page.locator('#matchingNo').click();
+ await page.reload({waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='local-test-candidate-001');
+ await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length>=1);
+ await page.locator('#matchingNav').click();
+ await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.textContent.includes('All caught up'));
+ if(await page.locator('#applied').textContent()!=='0')throw Error('Yes incorrectly applied');
+ if(await page.locator('#hiddenCount').textContent()!=='1')throw Error('Archived No failed to persist');
+ console.log('PASS: Matching Yes shortlist, No archive, restore, cross-view state and reload persistence');
+
+  const encoded=await page.evaluate(()=>shareEncode(publicSearchProfile()));
  const shareDecoded=await page.evaluate(value=>shareDecode(value),encoded);
  if(JSON.stringify(shareDecoded).includes('PRIVATE WORK EXPERIENCE'))throw Error('private text leaked in share link');
 

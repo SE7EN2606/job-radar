@@ -1,0 +1,30 @@
+name: UI smoke tests
+on:
+  push:
+    paths:
+      - "index.html"
+      - "tests/ui-smoke.mjs"
+      - ".github/workflows/test-ui.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "tests/ui-smoke.mjs"
+      - ".github/workflows/test-ui.yml"
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install chromium --with-deps
+      - name: Run local site and browser checks
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/jobradar-http.log 2>&1 &
+          sleep 2
+          node tests/ui-smoke.mjs

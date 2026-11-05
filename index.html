@@ -709,8 +709,8 @@ function updateProfileUI(){
  const radius=document.getElementById('distanceRadius');if(radius)radius.value=String(profile().distanceRadius||150);
  updateDistanceStats();
 }
-function showSettings(e){if(e)e.preventDefault();document.getElementById('radarView').style.display='none';document.getElementById('settingsView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.getElementById('settingsNav').classList.add('active');renderProfileSettings()}
-function closeSettings(){document.getElementById('settingsView').style.display='none';document.getElementById('radarView').style.display='block';document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));document.querySelector('.nav a').classList.add('active')}
+function showSettings(e){if(e)e.preventDefault();document.getElementById('radarView').style.display='none';document.getElementById('settingsView').style.display='block';refreshNavigation();renderProfileSettings()}
+function closeSettings(){document.getElementById('settingsView').style.display='none';document.getElementById('radarView').style.display='block';refreshNavigation()}
 async function switchProfile(id){
  if(!profiles.list.some(p=>p.id===id))return;
  distanceRunToken++;
@@ -718,7 +718,7 @@ async function switchProfile(id){
  activeProfileId=id;profiles.active=id;storeProfiles();selectedJobs.clear();closeDrawer();
  state=id==='owner'?{hidden:[],applied:['duvo']}:localProfileState();
  if(id==='owner')await loadState();else await loadProfileJobs();
- renderProfileSettings();updateProfileUI();updateStats();renderCurrent();
+ renderProfileSettings();updateProfileUI();updateStats();renderCurrent();renderMatching();
 }
 function addProfile(){const id='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);profiles.list.push({id,name:'Friend profile',roles:'',experience:'',locations:'',excluded:'',salary:'',rules:''});storeProfiles();switchProfile(id)}
 function saveProfile(){const p=profile();for(const [id,k] of Object.entries({pName:'name',pRoles:'roles',pExperience:'experience',pLocations:'locations',pHomeCity:'homeCity',pExcluded:'excluded',pSalary:'salary',pRules:'rules',pPrompt:'searchPrompt',pLinkedIn:'linkedinUrl',pLinkedinText:'linkedinProfileText'}))p[k]=document.getElementById(id).value.trim();
@@ -1024,6 +1024,7 @@ function practicalFit(j){
 function filteredJobs(){
   let list=allProfileJobs().filter(j=>{
     if(currentTab==='hidden') return isHidden(j);
+    if(currentTab==='shortlist')return matchingYesIds().has(j.id)&&!isHidden(j)&&!isApplied(j);
     if(currentTab==='applied') return isApplied(j)&&!isHidden(j);
     return !isHidden(j)&&!isApplied(j);
   });
@@ -1160,7 +1161,144 @@ async function bulkAction(action){
 async function bulkApply(){await bulkAction('applied')}
 async function bulkHide(){await bulkAction('hide')}
 
+
+/* Job Matching: lightweight local decisions, isolated per candidate profile.
+   "Yes" means shortlist for further evaluation (never an application).
+   "No" shares the existing Hidden status so the main table is updated. */
+const MATCHING_STORE_PREFIX='jobRadarMatchingYes_';
+function matchingYesIds(){
+ try{
+  const items=JSON.parse(localStorage.getItem(MATCHING_STORE_PREFIX+activeProfileId)||'[]');
+  return new Set(Array.isArray(items)?items.filter(x=>typeof x==='string') : []);
+ }catch{return new Set()}
+}
+function persistMatchingYes(ids){
+ try{localStorage.setItem(MATCHING_STORE_PREFIX+activeProfileId,JSON.stringify([...ids]))}
+ catch(e){console.warn('Cannot persist shortlist in this browser',e)}
+}
+function matchingQueue(){
+ return allProfileJobs()
+  .filter(j=>!isHidden(j)&&!isApplied(j)&&!matchingYesIds().has(j.id))
+  .sort((a,b)=>practicalFit(b)-practicalFit(a)||String(b.datePosted||'').localeCompare(String(a.datePosted||'')));
+}
+function refreshNavigation(){
+ const isMatching=document.getElementById('radarView').classList.contains('matching-mode');
+ const isSettings=document.getElementById('settingsView').style.display!=='none';
+ for(const a of document.querySelectorAll('.nav a'))a.classList.remove('active');
+ const nav=document.getElementById(isSettings?'settingsNav':isMatching?'matchingNav':'opportunitiesNav');
+ if(nav)nav.classList.add('active');
+ const page=document.getElementById('workspacePage');
+ if(page)page.textContent=isMatching?'Job Matching':'Opportunities';
+}
+function showMatching(e){
+ if(e)e.preventDefault();
+ const view=document.getElementById('radarView');
+ document.getElementById('settingsView').style.display='none';
+ view.style.display='block';
+ view.classList.add('matching-mode');
+ refreshNavigation();
+ renderMatching();
+}
+function showOpportunities(e){
+ if(e)e.preventDefault();
+ const view=document.getElementById('radarView');
+ document.getElementById('settingsView').style.display='none';
+ view.style.display='block';
+ view.classList.remove('matching-mode');
+ refreshNavigation();updateStats();renderCurrent();
+}
+function openMatchingArchived(){
+ showOpportunities();
+ document.getElementById('jobSearch').value='';
+ document.getElementById('withinRadius').checked=false;
+ currentFilter='all';
+ document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x.dataset.filter==='all'));
+ const tab=document.querySelector('[data-tab="hidden"]');
+ if(tab)switchTab('hidden',tab);
+}
+function openMatchingShortlist(){
+ showOpportunities();
+ document.getElementById('jobSearch').value='';
+ document.getElementById('withinRadius').checked=false;
+ currentFilter='all';
+ document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x.dataset.filter==='all'));
+ const tab=document.querySelector('[data-tab="shortlist"]');
+ if(tab)switchTab('shortlist',tab);
+}
+function renderMatching(){
+ const section=document.getElementById('matchingView'),container=document.getElementById('matchingCardContent');
+ if(!section||!container)return;
+ const totalJobs=allProfileJobs().filter(j=>!isApplied(j));
+ const saved=matchingYesIds();
+ const reviewed=totalJobs.filter(j=>isHidden(j)||saved.has(j.id)).length;
+ const queue=matchingQueue();
+ const progress=document.getElementById('matchingProgress'),savedCount=document.getElementById('matchingYesCount');
+ progress.textContent=queue.length+' remaining · '+reviewed+' reviewed of '+totalJobs.length;
+ savedCount.textContent=totalJobs.filter(j=>saved.has(j.id)&&!isHidden(j)).length+' saved for further review';
+ document.getElementById('matchingQueueMeta').textContent=state.hidden.length+' archived for this profile. All decisions remain browser-local.';
+ document.getElementById('matchingProgressFill').style.width=(totalJobs.length?Math.min(100,reviewed/totalJobs.length*100):0)+'%';
+ const buttons=document.getElementById('matchingControls');
+ if(!queue.length){
+  buttons.hidden=true;
+  container.innerHTML='<div class="matching-empty"><span style="font-size:38px" aria-hidden="true">✓</span><h2>All caught up</h2><p>No undecided jobs remain for this profile. New scan results will automatically enter the matching queue.</p><button class="btn primary" type="button" onclick="openMatchingShortlist()">Review Yes jobs</button><button class="btn ghost" type="button" onclick="openMatchingArchived()">View archived jobs</button></div>';
+  return;
+ }
+ buttons.hidden=false;
+ const j=queue[0],url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
+ const industry=industryFor(j),vacancy=vacancyInfo(j);
+ const companyUrl=safeUrl(j.companyUrl);
+ const details=String(j.description||j.details?.description||'').trim();
+ const summary=details?escapeJobText(details.slice(0,1700)):'Full responsibilities are not available in the current scan. Open the original job ad to assess the role and mandatory requirements before applying.';
+ const pros=Array.isArray(j.pros)?j.pros.slice(0,3):[];
+ const cons=Array.isArray(j.cons)?j.cons.slice(0,3):[];
+ const km=distanceKM(j);
+ const companyLink=companyUrl?'<a href="'+escapeJobText(companyUrl)+'" target="_blank" rel="noopener noreferrer">Company website ↗</a>':'';
+ const adLink=url?'<a href="'+escapeJobText(url)+'" target="_blank" rel="noopener noreferrer">Open original job ad ↗</a>':'';
+ const facts=[
+  ['Location',j.location||'Unknown'],['Distance',km===null?'Not calculated':km+' km straight line'],
+  ['Industry',industry],['Published',formatDate(j.datePosted)],
+  ['Salary',j.salary&&j.salary!=='Undisclosed'?j.salary:'Not disclosed'],
+  ['Vacancy status',vacancy.label],
+ ];
+ container.innerHTML='<div class="matching-card-top">'+
+  '<div class="matching-card-kicker"><span class="pill info">Match '+escapeJobText(practicalFit(j))+'/100</span><span>'+escapeJobText(j.foundVia||j.sourceDisplay||j.source||'Source unknown')+'</span></div>'+
+  '<h2 class="matching-card-title">'+escapeJobText(j.title)+'</h2><div class="matching-card-company">'+escapeJobText(j.company)+'</div></div>'+
+  '<div class="matching-card-body"><dl class="matching-facts">'+facts.map(([label,value])=>'<div class="matching-fact"><dt>'+escapeJobText(label)+'</dt><dd>'+escapeJobText(value)+'</dd></div>').join('')+'</dl>'+
+  '<h3>About the role</h3><div class="matching-description">'+summary+'</div>'+
+  (pros.length?'<h3>Why it surfaced</h3><div class="matching-description">'+pros.map(x=>'• '+escapeJobText(x)).join('\n')+'</div>':'')+
+  (cons.length?'<h3>Before applying</h3><div class="matching-description">'+cons.map(x=>'• '+escapeJobText(x)).join('\n')+'</div>':'')+
+  '<div class="matching-source">'+(adLink||'<span class="muted">No source link provided</span>')+companyLink+
+  '<button type="button" class="btn ghost small" onclick="openDrawer(\''+escapeJobText(j.id)+'\')">More details</button></div></div>';
+ container.dataset.jobId=j.id;
+}
+function decideMatch(choice){
+ if(choice!=='yes'&&choice!=='no')return;
+ const job=matchingQueue()[0];
+ if(!job)return;
+ const yesIds=matchingYesIds();
+ const feedback=document.getElementById('matchingFeedback');
+ if(choice==='yes'){
+  yesIds.add(job.id);persistMatchingYes(yesIds);
+  feedback.textContent='Saved '+job.company+' for further review. It remains in Opportunities.';
+ }else{
+  yesIds.delete(job.id);persistMatchingYes(yesIds);
+  applyStateActionLocal('hide',job.id);
+  if(activeProfileId==='owner'){
+   pendingState[job.id]='hide';savePendingState();
+   // An API is available on Vercel, not on the static GitHub Pages site.
+   // Local pending state protects this decision when that API is unavailable.
+   fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'hide',id:job.id})}).catch(()=>{});
+  }else{
+   try{saveLocalProfileState()}catch(e){console.warn('Archive could not be saved to local storage',e)}
+  }
+  feedback.textContent='Archived '+job.company+'. Restore it any time from Hidden.';
+ }
+ updateStats();renderCurrent();renderMatching();
+}
+
 function updateStats(){
+  const shortlist=document.getElementById('shortlistTabCount');if(shortlist)shortlist.textContent=allProfileJobs().filter(j=>matchingYesIds().has(j.id)&&!isHidden(j)&&!isApplied(j)).length;
+  const archived=document.getElementById('hiddenTabCount');if(archived)archived.textContent=state.hidden.length;
   strong.textContent=allProfileJobs().filter(j=>!isHidden(j)&&!isApplied(j)&&practicalFit(j)>=80).length;
   updateDistanceStats();
   applied.textContent=allProfileJobs().filter(j=>isApplied(j)&&!isHidden(j)).length;
@@ -1168,7 +1306,7 @@ function updateStats(){
 }
 function switchTab(tab,el){currentTab=tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
 function setFilter(filter,el){currentFilter=filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
-function jumpToTab(e,tab){if(e)e.preventDefault();closeSettings();const button=document.querySelector('[data-tab="'+tab+'"]');if(button)switchTab(tab,button)}
+function jumpToTab(e,tab){if(e)e.preventDefault();showOpportunities();const button=document.querySelector('[data-tab="'+tab+'"]');if(button)switchTab(tab,button)}
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)){if(document.getElementById('radarView').style.display!=='none'){e.preventDefault();document.getElementById('jobSearch').focus();}}});
 async function enrichJobDetails(j){
   if(!j || !j.id.startsWith('careerops-')) return;
@@ -1618,7 +1756,7 @@ async function scan(e){
     }catch{}},5000);
   }catch(err){b.disabled=false;b.textContent='Scan now';scanMeta.textContent='Scan failed: '+err.message}
 }
-async function init(){await loadPublicProfiles();renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent();await importSearchFromLink()}
+async function init(){await loadPublicProfiles();renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent();renderMatching();await importSearchFromLink()}
 init();
 </script>
 </body>

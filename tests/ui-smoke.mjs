@@ -44,6 +44,9 @@ try{
  await page.locator('#profileImportFile').setInputFiles({
   name:'candidate.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(candidate))
  });
+ await page.waitForTimeout(1200);
+ console.log('IMPORT FEEDBACK:',await page.locator('#profileImportFeedback').textContent());
+ console.log('PAGE ERRORS:',pageErrors);
  await page.waitForFunction(() => document.querySelector('#profileImportFeedback')?.textContent.includes('Imported and saved'));
  await page.waitForFunction(() => document.querySelector('#topProfileSelect')?.value === 'local-test-candidate-001');
  await page.locator('#pHomeCity').fill('Rennes, France');

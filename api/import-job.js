@@ -165,7 +165,8 @@ async function greenhouseData(url){
  const api="https://boards-api.greenhouse.io/v1/boards/"+encodeURIComponent(ref.board)+"/jobs/"+ref.id;
  const page=await fetchPage(api);
  const item=JSON.parse(page.body);
- const result={url:item.absolute_url||url,title:clean(item.title),company:"",location:clean(item.location?.name),industry:"",
+ const boardLabel=ref.board.replace(/[-_]+/g," ").replace(/\b\w/g,c=>c.toUpperCase());
+ const result={url:item.absolute_url||url,title:clean(item.title),company:clean(item.company?.name||item.company_name||boardLabel),location:clean(item.location?.name),industry:"",
   salary:"",description:safeText(item.content),datePosted:String(item.updated_at||"").slice(0,40)};
  result.fields=Object.entries(result).filter(([k,v])=>v&&k!=="url"&&k!=="datePosted").map(([k])=>k);
  return {...result,method:"Greenhouse public job API",complete:!!result.title,needsReview:true};

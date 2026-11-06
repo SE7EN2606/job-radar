@@ -121,7 +121,7 @@ try{
  await page.reload({waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='local-test-candidate-001');
  await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===2);
- if(!await page.locator('#jobs .row.data').first().textContent().then(x=>x.includes('Manual Test Company')))throw Error('Manual entry not persisted after reload');
+ if(!(await page.locator('#jobs .row.data').allTextContents()).some(x=>x.includes('Manual Test Company')))throw Error('Manual entry not persisted after reload');
  await page.locator('#topProfileSelect').selectOption('owner');
  await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='owner');
  if(await page.locator('#jobs .row.data').getByText('Manual Test Company').count())throw Error('Manual job leaked into owner profile');

@@ -977,7 +977,79 @@ function escapeJobText(value){return String(value??'').replace(/[&<>"']/g,c=>({'
 
 const profileJobCache={};
 const profileResultMeta={};
-function allProfileJobs(){return activeProfileId==='owner'?jobs:(profileJobCache[activeProfileId]||[])}
+/* Manually saved jobs stay on this device, separately for each candidate.
+   A URL is stored as a source reference only; the page does not scrape it. */
+const MANUAL_JOBS_PREFIX='jobRadarManualJobsV1_';
+function manualJobsFor(id=activeProfileId){
+ try{
+  const data=JSON.parse(localStorage.getItem(MANUAL_JOBS_PREFIX+id)||'[]');
+  return Array.isArray(data)?data.filter(x=>x&&typeof x==='object'&&/^manual-[a-zA-Z0-9_-]+$/.test(x.id)&&x.type==='manual'):[];
+ }catch{return []}
+}
+function jobUrlKey(url){
+ try{
+  const u=new URL(url);
+  if(!['http:','https:'].includes(u.protocol))return '';
+  u.hash='';
+  for(const k of [...u.searchParams.keys()]){
+   if(/^(utm_|fbclid$|gclid$|ref$|source$)/i.test(k))u.searchParams.delete(k);
+  }
+  return u.toString().replace(/\/$/,'');
+ }catch{return ''}
+}
+function openAddJob(){
+ const dialog=document.getElementById('addJobDialog');
+ document.getElementById('addJobForm').reset();
+ document.getElementById('addJobFeedback').textContent='';
+ dialog.showModal();
+ document.getElementById('manualJobUrl').focus();
+}
+function closeAddJob(){document.getElementById('addJobDialog').close()}
+function submitManualJob(event){
+ event.preventDefault();
+ const feedback=document.getElementById('addJobFeedback');
+ const read=id=>String(document.getElementById(id).value||'').trim();
+ const title=read('manualJobTitle'),company=read('manualJobCompany');
+ const rawUrl=read('manualJobUrl');
+ if(!title||!company){feedback.textContent='Job title and company are required.';return}
+ const url=rawUrl?jobUrlKey(rawUrl):'';
+ if(rawUrl&&!url){feedback.textContent='Please enter a valid http:// or https:// job URL.';return}
+ const manual=manualJobsFor();
+ if(manual.length>=300){feedback.textContent='This browser has reached the 300 manually saved jobs limit.';return}
+ const existing=allProfileJobs().find(j=>url&&jobUrlKey(j.applyUrl||j.sourceUrl)===url);
+ if(existing){feedback.textContent='This job URL is already present for this profile. Use the existing entry instead.';return}
+ const id='manual-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);
+ const entry={
+  id,company,title,location:read('manualJobLocation')||'Not specified',
+  industry:read('manualJobIndustry')||'Not specified',
+  salary:read('manualJobSalary')||'Undisclosed',
+  description:read('manualJobDescription'),
+  fit:0,domainFit:0,hunter:'Unknown',rating:'—',
+  status:'Manually added · unverified',statusTone:'warn',
+  verificationStatus:'unverified',type:'manual',rec:'REVIEW',
+  source:'Manually added',sourceDisplay:'Manual entry',sourceUrl:url,applyUrl:url,
+  datePosted:'',addedAt:new Date().toISOString(),
+  pros:['Added manually for this candidate'],
+  cons:['Vacancy status, eligibility and requirements have not been independently checked'],
+  diff:'Review the employer advertisement before tailoring.',
+  cover:'Not generated.'
+ };
+ try{localStorage.setItem(MANUAL_JOBS_PREFIX+activeProfileId,JSON.stringify([...manual,entry]))}
+ catch(err){feedback.textContent='Could not save locally: browser storage is unavailable or full.';return}
+ closeAddJob();
+ showOpportunities();
+ document.getElementById('jobSearch').value='';
+ document.getElementById('withinRadius').checked=false;
+ currentFilter='all';
+ document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x.dataset.filter==='all'));
+ const allTab=document.querySelector('[data-tab="opportunities"]');
+ if(allTab)switchTab('opportunities',allTab);
+ document.getElementById('sortBy').value='newest';
+ updateStats();renderCurrent();renderMatching();
+ const message=document.getElementById('scanMeta');
+ if(message)message.textContent='✓ Manually added '+company+' — saved on this device for '+profile().name+'.';
+}
+function allProfileJobs(){return [...manualJobsFor(),...(activeProfileId==='owner'?jobs:(profileJobCache[activeProfileId]||[]))]}
 async function loadProfileJobs(){
  if(activeProfileId==='owner')return;
  const id=activeProfileId;
@@ -1075,6 +1147,7 @@ function filteredJobs(){
   if(query)list=list.filter(j=>[j.company,j.title,j.location,j.domain,j.salary].some(v=>String(v||'').toLocaleLowerCase().includes(query)));
   const mode=sortBy.value;
   list.sort((a,b)=>{
+    if(mode==='newest'&&Boolean(a.type==='manual')!==Boolean(b.type==='manual'))return a.type==='manual'?-1:1;
     if(mode==='fit-asc') return practicalFit(a)-practicalFit(b);
     if(mode==='nearest'){const aKm=distanceKM(a),bKm=distanceKM(b);return (aKm===null?Infinity:aKm)-(bKm===null?Infinity:bKm)||practicalFit(b)-practicalFit(a)}
     if(mode==='proximity')return weightedFit(b)-weightedFit(a)||practicalFit(b)-practicalFit(a);
@@ -1159,7 +1232,7 @@ function renderCurrent(){
     const applyLink=url?'<a href="'+escapeJobText(url)+'" target="_blank" rel="noopener noreferrer">Job ad ↗</a>':'';
     r.innerHTML='<div><input type="checkbox" '+(selectedJobs.has(id)?'checked':'')+' onchange="toggleJobSelection(\''+id+'\',this.checked)"></div>'+
       '<div><div class="company">'+escapeJobText(j.company)+'</div><div class="title">'+escapeJobText(j.title)+'</div><div class="meta"><span class="pill info">'+escapeJobText(sourceLabel)+'</span>'+applyLink+'</div></div>'+
-      '<div class="score">'+score+(bonus?'<div class="muted" style="font-size:10px">+'+bonus+' nearby</div>':'')+'</div>'+
+      '<div class="score">'+(j.type==='manual'?'—':score)+(bonus?'<div class="muted" style="font-size:10px">+'+bonus+' nearby</div>':'')+'</div>'+
       '<div class="industry">'+escapeJobText(industry)+'</div>'+
       '<div>'+escapeJobText(j.location||'—')+'</div>'+
       '<div class="'+(inRadius?'proximity-near':km===null?'proximity-unknown':'')+'">'+escapeJobText(proximityText)+'</div>'+
@@ -1220,7 +1293,7 @@ function persistMatchingYes(ids){
 function matchingQueue(){
  return allProfileJobs()
   .filter(j=>!isHidden(j)&&!isApplied(j)&&!matchingYesIds().has(j.id))
-  .sort((a,b)=>practicalFit(b)-practicalFit(a)||String(b.datePosted||'').localeCompare(String(a.datePosted||'')));
+  .sort((a,b)=>(b.type==='manual'?1:0)-(a.type==='manual'?1:0)||practicalFit(b)-practicalFit(a)||String(b.datePosted||'').localeCompare(String(a.datePosted||'')));
 }
 function refreshNavigation(){
  const isMatching=document.getElementById('radarView').classList.contains('matching-mode');
@@ -1302,7 +1375,7 @@ function renderMatching(){
   ['Vacancy status',vacancy.label],
  ];
  container.innerHTML='<div class="matching-card-top">'+
-  '<div class="matching-card-kicker"><span class="pill info">Match '+escapeJobText(practicalFit(j))+'/100</span><span>'+escapeJobText(j.foundVia||j.sourceDisplay||j.source||'Source unknown')+'</span></div>'+
+  '<div class="matching-card-kicker"><span class="pill info">'+(j.type==='manual'?'Manually added · Not scored':'Match '+escapeJobText(practicalFit(j))+'/100')+'</span><span>'+escapeJobText(j.foundVia||j.sourceDisplay||j.source||'Source unknown')+'</span></div>'+
   '<h2 class="matching-card-title">'+escapeJobText(j.title)+'</h2><div class="matching-card-company">'+escapeJobText(j.company)+'</div></div>'+
   '<div class="matching-card-body"><dl class="matching-facts">'+facts.map(([label,value])=>'<div class="matching-fact"><dt>'+escapeJobText(label)+'</dt><dd>'+escapeJobText(value)+'</dd></div>').join('')+'</dl>'+
   '<h3>About the role</h3><div class="matching-description">'+summary+'</div>'+
@@ -1385,7 +1458,7 @@ async function enrichJobDetails(j){
 function openDrawer(id){
   const j=allProfileJobs().find(x=>x.id===id);if(!j)return;activeJobId=id;
   dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dStatus.textContent=isHidden(j)?'Hidden':isApplied(j)?'Applied':j.status;
-  dFit.textContent=practicalFit(j)+'/100';dDomainFit.textContent=(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSalary.textContent=j.salary||'Undisclosed';dSource.textContent=j.foundVia||j.sourceDisplay||j.source||'Unknown';
+  dFit.textContent=j.type==='manual'?'Not scored':practicalFit(j)+'/100';dDomainFit.textContent=j.type==='manual'?'Not scored':(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSalary.textContent=j.salary||'Undisclosed';dSource.textContent=j.foundVia||j.sourceDisplay||j.source||'Unknown';
   const domain=domainFromJob(j);const companyUrl=safeUrl(j.companyUrl)||(j.domain?'https://'+j.domain:'');dDomain.innerHTML=domain==='—'?'—':(companyUrl?'<a href="'+companyUrl+'" target="_blank" rel="noopener">'+domain+' ↗</a>':domain);
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);dLink.innerHTML=url?'<a href="'+url+'" target="_blank" rel="noopener">Open job ad ↗</a>':'No direct link';
   dPros.innerHTML=(j.pros||[]).map(x=>'• '+x).join('<br>');dCons.innerHTML=(j.cons||[]).map(x=>'• '+x).join('<br>');

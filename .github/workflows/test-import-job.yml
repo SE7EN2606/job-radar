@@ -1,0 +1,22 @@
+name: Job import parser tests
+on:
+  push:
+    paths:
+      - "api/import-job.js"
+      - "tests/import-job.test.mjs"
+      - ".github/workflows/test-import-job.yml"
+  pull_request:
+    paths:
+      - "api/import-job.js"
+      - "tests/import-job.test.mjs"
+      - ".github/workflows/test-import-job.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: node --test tests/import-job.test.mjs

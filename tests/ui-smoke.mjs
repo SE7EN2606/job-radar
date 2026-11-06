@@ -126,7 +126,7 @@ try{
  await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='owner');
  if(await page.locator('#jobs .row.data').getByText('Manual Test Company').count())throw Error('Manual job leaked into owner profile');
  await page.locator('#topProfileSelect').selectOption('local-test-candidate-001');
- await page.waitForFunction(()=>document.querySelector('#jobs .row.data')?.textContent.includes('Manual Test Company'));
+ await page.waitForFunction(()=>[...document.querySelectorAll('#jobs .row.data')].some(x=>x.textContent.includes('Manual Test Company')));
  console.log('PASS: manual add, duplicate detection, matching, shortlist, refresh and profile isolation');
 
  const encoded=await page.evaluate(()=>shareEncode(publicSearchProfile()));

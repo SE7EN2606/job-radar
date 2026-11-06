@@ -96,7 +96,7 @@ try{
  
  // URL-only import: mock our own backend so job-site access is deterministic.
  let importRequests=0;
- await page.route('https://job-radar-murex-eight.vercel.app/api/import-job',route=>{
+ await page.route('**/api/import-job',route=>{
   importRequests++;
   return route.fulfill({status:200,headers:{
    'Content-Type':'application/json','Access-Control-Allow-Origin':'http://127.0.0.1:8765'

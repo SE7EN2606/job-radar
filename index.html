@@ -505,8 +505,8 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
   <div class="section"><h3>Cover letter angle</h3><div id="dCover"></div></div>
 
   <div id="tailorOutput" class="section" style="display:none">
-    <h3>Tailored application pack</h3>
-    <div class="muted" style="margin-bottom:8px">Controlled wording only. No invented experience.</div>
+    <h3>Basic application suggestions (not fully personalized)</h3>
+    <div class="muted" style="margin-bottom:8px">Current engine uses broad keyword patterns and reusable paragraphs. It does not yet produce a precise vacancy-specific CV and cover letter. Verify every change against the full job description and your original CV.</div>
     <div class="copybox" id="tailorText"></div>
     <button class="btn ghost small" style="margin-top:8px" onclick="copyTailor()">Copy all</button>
     <button class="btn primary small" style="margin-top:8px" onclick="generateAtsPdf()">Generate ATS PDF</button>
@@ -514,7 +514,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 
   <div class="drawer-actions">
     <button id="viewJobBtn" class="btn primary" onclick="openJobAd()">View job ad ↗</button>
-    <button id="tailorBtn" class="btn ghost" onclick="tailor()">Tailor application</button>
+    <button id="tailorBtn" class="btn ghost" onclick="tailor()" title="Current implementation: basic rule-based edits, not genuine job-by-job AI tailoring">Basic tailoring preview</button>
     <button id="hideBtn" class="btn danger" onclick="hideJob()">Not for me</button>
   </div>
 </div>
@@ -1555,7 +1555,7 @@ async function tailor(){
       }
     }
   }catch{}
-  tailorBtn.disabled=false;tailorBtn.textContent='Tailor application';
+  tailorBtn.disabled=false;tailorBtn.textContent='Basic tailoring preview';
 
   const jd=details.description||'';
   const responsibilities=Array.isArray(details.responsibilities)?details.responsibilities:[];

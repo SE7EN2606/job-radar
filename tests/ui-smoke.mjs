@@ -94,25 +94,34 @@ try{
  console.log('PASS: Matching Yes shortlist, No archive, restore, cross-view state and reload persistence');
 
  
- // A user can add a manual vacancy to the currently selected profile.
+ // URL-only import: mock our own backend so job-site access is deterministic.
+ let importRequests=0;
+ await page.route('https://job-radar-murex-eight.vercel.app/api/import-job',route=>{
+  importRequests++;
+  return route.fulfill({status:200,headers:{
+   'Content-Type':'application/json','Access-Control-Allow-Origin':'http://127.0.0.1:8765'
+  },body:JSON.stringify({
+   ok:true,title:'Regional Technical Director',company:'Manual Test Company',
+   location:'Rennes, France',industry:'Industrial Engineering',salary:'€75,000',
+   description:'Responsible for leading regional technical teams.',
+   method:'JobPosting structured data'
+  })});
+ });
  await page.locator('#matchingNav').click();
  await page.locator('#matchingView').getByRole('button',{name:'+ Add job'}).click();
  await page.locator('#manualJobUrl').fill('https://example.com/careers/manual-123?utm_source=email');
- await page.locator('#manualJobTitle').fill('Regional Technical Director');
- await page.locator('#manualJobCompany').fill('Manual Test Company');
- await page.locator('#manualJobLocation').fill('Rennes, France');
- await page.locator('#manualJobIndustry').fill('Industrial Engineering');
- await page.locator('#manualJobSalary').fill('€75,000');
- await page.locator('#manualJobDescription').fill('Responsible for leading regional technical teams.');
+ if(await page.locator('#manualJobSave').isEnabled())throw Error('Save enabled before import');
+ await page.locator('#manualJobFetch').click();
+ await page.waitForFunction(()=>document.querySelector('#manualJobTitle')?.value==='Regional Technical Director');
+ if((await page.locator('#manualJobCompany').inputValue())!=='Manual Test Company')throw Error('Company not automatically filled');
+ if((await page.locator('#manualJobDescription').inputValue()).length<20)throw Error('Description not automatically filled');
  await page.locator('#manualJobSave').click();
- await page.waitForFunction(()=>document.querySelector('#jobs .row.data')?.textContent.includes('Manual Test Company'));
- if(await page.locator('#jobs .row.data').count()!==2)throw Error('Manual job not added to opportunities');
+ await page.waitForFunction(()=>[...document.querySelectorAll('#jobs .row.data')].some(x=>x.textContent.includes('Manual Test Company')));
+ if(importRequests!==1)throw Error('Expected exactly one URL import request');
  await page.locator('#addJobButton').click();
  await page.locator('#manualJobUrl').fill('https://example.com/careers/manual-123?utm_source=other');
- await page.locator('#manualJobTitle').fill('Duplicate Test');
- await page.locator('#manualJobCompany').fill('Manual Test Company');
- await page.locator('#manualJobSave').click();
- await page.waitForFunction(()=>document.querySelector('#addJobFeedback')?.textContent.includes('already present'));
+ await page.locator('#manualJobFetch').click();
+ await page.waitForFunction(()=>document.querySelector('#addJobFeedback')?.textContent.includes('already saved or listed'));
  await page.getByRole('button',{name:'Close add job'}).click();
  await page.locator('#matchingNav').click();
  await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.textContent.includes('Regional Technical Director'));
@@ -121,13 +130,12 @@ try{
  await page.reload({waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='local-test-candidate-001');
  await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===2);
- if(!(await page.locator('#jobs .row.data').allTextContents()).some(x=>x.includes('Manual Test Company')))throw Error('Manual entry not persisted after reload');
+ if(!(await page.locator('#jobs .row.data').allTextContents()).some(x=>x.includes('Manual Test Company')))throw Error('Imported job not persisted');
  await page.locator('#topProfileSelect').selectOption('owner');
- await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='owner' && ![...document.querySelectorAll('#jobs .row.data')].some(x=>x.textContent.includes('Manual Test Company')));
- if(await page.locator('#jobs .row.data').getByText('Manual Test Company').count())throw Error('Manual job leaked into owner profile');
+ await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='owner'&&! [...document.querySelectorAll('#jobs .row.data')].some(x=>x.textContent.includes('Manual Test Company')));
  await page.locator('#topProfileSelect').selectOption('local-test-candidate-001');
  await page.waitForFunction(()=>[...document.querySelectorAll('#jobs .row.data')].some(x=>x.textContent.includes('Manual Test Company')));
- console.log('PASS: manual add, duplicate detection, matching, shortlist, refresh and profile isolation');
+ console.log('PASS: URL import autofill, duplicate prevention, matching, persistence and profile isolation');
 
  const encoded=await page.evaluate(()=>shareEncode(publicSearchProfile()));
  const shareDecoded=await page.evaluate(value=>shareDecode(value),encoded);

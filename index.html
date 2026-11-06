@@ -318,7 +318,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 .add-job-heading{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:22px}
 .add-job-heading h2{font-size:25px;letter-spacing:-.05em;margin:0 0 6px}
 .add-job-heading .muted{font-size:12px;margin:0}
-.add-job-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.add-job-import-action{grid-column:1/-1;display:flex;align-items:center;gap:11px;margin-top:2px;margin-bottom:6px}.add-job-import-action .muted{font-size:11px}.add-job-fields[hidden]{display:none}.add-job-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .add-job-fields label{font-size:12px;font-weight:720;color:#475a73;display:flex;flex-direction:column;gap:6px}
 .add-job-fields label:first-child,.add-job-wide{grid-column:1/-1}
 .add-job-fields input,.add-job-fields textarea{border:1px solid #d6dfeb;background:#fff;border-radius:8px;padding:10px;color:#1d3049;font:inherit;font-size:13px;width:100%;resize:vertical}
@@ -462,21 +462,21 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 <dialog id="addJobDialog" class="add-job-dialog" aria-labelledby="addJobHeading">
  <form id="addJobForm" onsubmit="submitManualJob(event)" autocomplete="off">
   <div class="add-job-heading">
-   <div><div class="eyebrow">MANUAL OPPORTUNITY</div><h2 id="addJobHeading">Add a job</h2><p class="muted">Save a vacancy to the selected profile. It will also appear in Job Matching.</p></div>
+   <div><div class="eyebrow">ONE-LINK IMPORT</div><h2 id="addJobHeading">Import a job</h2><p class="muted">Paste an advertisement link to fetch the available job details automatically.</p></div>
    <button class="btn ghost small" type="button" onclick="closeAddJob()" aria-label="Close add job">×</button>
   </div>
   <div class="add-job-fields">
-   <label>Job advertisement URL <span class="muted">(optional)</span><input id="manualJobUrl" type="url" placeholder="https://company.com/careers/job..." maxlength="2048" autocomplete="url"></label>
-   <label>Job title <span class="required">*</span><input id="manualJobTitle" required maxlength="180" placeholder="Senior Product Manager"></label>
-   <label>Company <span class="required">*</span><input id="manualJobCompany" required maxlength="150" placeholder="Company name"></label>
+   <label>Job advertisement URL <span class="required">*</span><input id="manualJobUrl" oninput="manualJobImportReady=false;document.getElementById('manualJobSave').disabled=true;document.getElementById('manualJobFields').hidden=true" type="url" required placeholder="https://company.com/careers/job..." maxlength="2048" autocomplete="url"></label>
+   <div class="add-job-import-action"><button type="button" class="btn primary" id="manualJobFetch" onclick="fetchManualJobDetails()">Fetch details</button><span id="manualJobFetchStatus" class="muted" role="status">Reads publicly accessible job details. No sign-in or scraping bypass.</span></div><div id="manualJobFields" class="add-job-fields" hidden><label>Job title <span class="required">*</span><input id="manualJobTitle" oninput="checkManualJobReady()" required maxlength="180" placeholder="Senior Product Manager"></label>
+   <label>Company <span class="required">*</span><input id="manualJobCompany" oninput="checkManualJobReady()" required maxlength="150" placeholder="Company name"></label>
    <label>Location <span class="muted">(optional)</span><input id="manualJobLocation" maxlength="180" placeholder="Paris, France / Remote"></label>
    <label>Industry <span class="muted">(optional)</span><input id="manualJobIndustry" maxlength="120" placeholder="Software / Manufacturing / Healthcare"></label>
    <label>Salary <span class="muted">(optional)</span><input id="manualJobSalary" maxlength="100" placeholder="€75,000–90,000"></label>
-   <label class="add-job-wide">Job description / notes <span class="muted">(optional)</span><textarea id="manualJobDescription" rows="5" maxlength="12000" placeholder="Paste the role description or any relevant details."></textarea></label>
+   <label class="add-job-wide">Job description / notes <span class="muted">(optional)</span><textarea id="manualJobDescription" rows="5" maxlength="12000" placeholder="Extracted description"></textarea></label></div>
   </div>
   <p id="addJobFeedback" role="alert" class="add-job-feedback"></p>
-  <p class="muted add-job-privacy">Saved in this browser for the selected profile only. Other users and incognito windows will not see manually added jobs. The job is not independently verified.</p>
-  <div class="add-job-actions"><button class="btn ghost" type="button" onclick="closeAddJob()">Cancel</button><button class="btn primary" id="manualJobSave" type="submit">Add to opportunities</button></div>
+  <p class="muted add-job-privacy">URL import requires the JobRadar server API. Some sites prohibit automated reading or require sign-in; in those cases we cannot import them automatically. Saved jobs remain on this browser only, and are not independently verified.</p>
+  <div class="add-job-actions"><button class="btn ghost" type="button" onclick="closeAddJob()">Cancel</button><button class="btn primary" id="manualJobSave" type="submit" disabled>Save imported job</button></div>
  </form>
 </dialog>
 
@@ -997,7 +997,12 @@ function jobUrlKey(url){
   return u.toString().replace(/\/$/,'');
  }catch{return ''}
 }
+let manualJobImportReady=false;
 function openAddJob(){
+ manualJobImportReady=false;
+ document.getElementById('manualJobFields').hidden=true;
+ document.getElementById('manualJobSave').disabled=true;
+ document.getElementById('manualJobFetchStatus').textContent='Paste a job link and fetch its details.';
  const dialog=document.getElementById('addJobDialog');
  document.getElementById('addJobForm').reset();
  document.getElementById('addJobFeedback').textContent='';
@@ -1005,12 +1010,57 @@ function openAddJob(){
  document.getElementById('manualJobUrl').focus();
 }
 function closeAddJob(){document.getElementById('addJobDialog').close()}
+
+const IMPORT_JOB_API_FALLBACK='https://job-radar-murex-eight.vercel.app/api/import-job';
+async function fetchManualJobDetails(){
+ const url=document.getElementById('manualJobUrl').value.trim();
+ const status=document.getElementById('manualJobFetchStatus');
+ const feedback=document.getElementById('addJobFeedback');
+ const button=document.getElementById('manualJobFetch');
+ feedback.textContent='';
+ manualJobImportReady=false;
+ document.getElementById('manualJobSave').disabled=true;
+ document.getElementById('manualJobFields').hidden=true;
+ if(!url||!/^https:\/\//i.test(url)){feedback.textContent='Paste a complete HTTPS job advertisement URL.';return}
+ const normalized=jobUrlKey(url);
+ if(allProfileJobs().some(j=>jobUrlKey(j.applyUrl||j.sourceUrl)===normalized)){feedback.textContent='This job is already saved or listed for this profile.';return}
+ button.disabled=true;button.textContent='Fetching…';status.textContent='Contacting job website…';
+ try{
+  const endpoint=location.hostname.endsWith('github.io')?IMPORT_JOB_API_FALLBACK:'/api/import-job';
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),18000);
+  let response;
+  try{response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url}),signal:controller.signal})}
+  finally{clearTimeout(timer)}
+  let result;try{result=await response.json()}catch{throw Error('The import service did not return valid job data.')}
+  if(!response.ok)throw Error(result.error||'Import failed (HTTP '+response.status+').');
+  if(!result.title){throw Error('The source page did not provide a readable job title.')}
+  const mapping={manualJobTitle:'title',manualJobCompany:'company',manualJobLocation:'location',manualJobIndustry:'industry',manualJobSalary:'salary',manualJobDescription:'description'};
+  for(const [id,key]of Object.entries(mapping))document.getElementById(id).value=String(result[key]||'').slice(0,document.getElementById(id).maxLength>0?document.getElementById(id).maxLength:12000);
+  if(result.company)document.getElementById('manualJobCompany').value=result.company;
+  document.getElementById('manualJobFields').hidden=false;
+  manualJobImportReady=true;
+  document.getElementById('manualJobSave').disabled=!(result.title&&result.company);
+  if(result.company){
+   status.textContent='Fetched via '+(result.method||'public job metadata')+'. Review extracted details, then save.';
+  }else{
+   status.textContent='Job title found, but company name was not provided. Check the source; fill the missing name to save.';
+   document.getElementById('manualJobCompany').focus();
+  }
+ }catch(err){
+  feedback.textContent=(err.name==='AbortError'?'The importer timed out.':err.message||'Import unavailable.')+' If this is GitHub Pages, its import backend must be deployed separately.';
+  status.textContent='Automatic fetch unsuccessful.';
+ }finally{button.disabled=false;button.textContent='Fetch details'}
+}
+function checkManualJobReady(){
+ document.getElementById('manualJobSave').disabled=!(manualJobImportReady&&document.getElementById('manualJobTitle').value.trim()&&document.getElementById('manualJobCompany').value.trim());
+}
 function submitManualJob(event){
  event.preventDefault();
  const feedback=document.getElementById('addJobFeedback');
  const read=id=>String(document.getElementById(id).value||'').trim();
  const title=read('manualJobTitle'),company=read('manualJobCompany');
  const rawUrl=read('manualJobUrl');
+ if(!manualJobImportReady){feedback.textContent='Fetch the vacancy from its URL before saving.';return}
  if(!title||!company){feedback.textContent='Job title and company are required.';return}
  const url=rawUrl?jobUrlKey(rawUrl):'';
  if(rawUrl&&!url){feedback.textContent='Please enter a valid http:// or https:// job URL.';return}

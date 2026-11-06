@@ -93,7 +93,43 @@ try{
  if(await page.locator('#hiddenCount').textContent()!=='1')throw Error('Archived No failed to persist');
  console.log('PASS: Matching Yes shortlist, No archive, restore, cross-view state and reload persistence');
 
-  const encoded=await page.evaluate(()=>shareEncode(publicSearchProfile()));
+ 
+ // A user can add a manual vacancy to the currently selected profile.
+ await page.locator('#matchingNav').click();
+ await page.locator('#matchingView').getByRole('button',{name:'+ Add job'}).click();
+ await page.locator('#manualJobUrl').fill('https://example.com/careers/manual-123?utm_source=email');
+ await page.locator('#manualJobTitle').fill('Regional Technical Director');
+ await page.locator('#manualJobCompany').fill('Manual Test Company');
+ await page.locator('#manualJobLocation').fill('Rennes, France');
+ await page.locator('#manualJobIndustry').fill('Industrial Engineering');
+ await page.locator('#manualJobSalary').fill('€75,000');
+ await page.locator('#manualJobDescription').fill('Responsible for leading regional technical teams.');
+ await page.locator('#manualJobSave').click();
+ await page.waitForFunction(()=>document.querySelector('#jobs .row.data')?.textContent.includes('Manual Test Company'));
+ if(await page.locator('#jobs .row.data').count()!==2)throw Error('Manual job not added to opportunities');
+ await page.locator('#addJobButton').click();
+ await page.locator('#manualJobUrl').fill('https://example.com/careers/manual-123?utm_source=other');
+ await page.locator('#manualJobTitle').fill('Duplicate Test');
+ await page.locator('#manualJobCompany').fill('Manual Test Company');
+ await page.locator('#manualJobSave').click();
+ await page.waitForFunction(()=>document.querySelector('#addJobFeedback')?.textContent.includes('already present'));
+ await page.getByRole('button',{name:'Close add job'}).click();
+ await page.locator('#matchingNav').click();
+ await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.textContent.includes('Regional Technical Director'));
+ await page.locator('#matchingYes').click();
+ await page.waitForFunction(()=>document.querySelector('#matchingCardContent')?.textContent.includes('All caught up'));
+ await page.reload({waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='local-test-candidate-001');
+ await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===2);
+ if(!await page.locator('#jobs .row.data').first().textContent().then(x=>x.includes('Manual Test Company')))throw Error('Manual entry not persisted after reload');
+ await page.locator('#topProfileSelect').selectOption('owner');
+ await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='owner');
+ if(await page.locator('#jobs .row.data').getByText('Manual Test Company').count())throw Error('Manual job leaked into owner profile');
+ await page.locator('#topProfileSelect').selectOption('local-test-candidate-001');
+ await page.waitForFunction(()=>document.querySelector('#jobs .row.data')?.textContent.includes('Manual Test Company'));
+ console.log('PASS: manual add, duplicate detection, matching, shortlist, refresh and profile isolation');
+
+ const encoded=await page.evaluate(()=>shareEncode(publicSearchProfile()));
  const shareDecoded=await page.evaluate(value=>shareDecode(value),encoded);
  if(JSON.stringify(shareDecoded).includes('PRIVATE WORK EXPERIENCE'))throw Error('private text leaked in share link');
 

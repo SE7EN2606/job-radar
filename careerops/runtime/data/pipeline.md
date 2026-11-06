@@ -224,4 +224,13 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/up-coop/jobs/responsable-grands-comptes-gennevilliers-ou-lille-h-f_gennevilliers | Upcoop | Responsable grands comptes Gennevilliers / Lille / Lyon / Rennes | Rennes, France | posted: 2026-11-04
 - [ ] https://www.welcometothejungle.com/en/companies/ipsos/jobs/directeur-de-clientele-brand-strategy-h-f-nb_paris | Ipsos | Directeur de clientèle Brand strategy (H/F/NB) | Paris, France | posted: 2026-11-04
 
+- [ ] https://www.welcometothejungle.com/en/companies/mindlapse/jobs/25341f4d-9733-4fc7-9879-ec93f171e12d | MINDLAPSE | Enterprise Account Executive, Cyber-GRC (H/F) | Paris, France | 80000-120000 EUR | posted: 2026-11-06
+- [ ] https://www.welcometothejungle.com/en/companies/jacobs-douwe-egberts/jobs/cdi-key-account-manager-retail-kam-l-or-tassimo-senseo_paris | JDE Peet’s France | CDI - Key Account Manager Retail (KAM) / L'Or, Tassimo, Senseo | Paris, France | posted: 2026-11-06
+- [ ] https://www.welcometothejungle.com/en/companies/united-heroes-group/jobs/team-lead-customer-success-manager-f-h_paris | United Heroes | Team Lead Customer Success Manager (F/H) | Paris, France | 55000-60000 EUR | posted: 2026-11-05
+- [ ] https://www.welcometothejungle.com/en/companies/rca/jobs/key-account-manager-editeur-saas-h-f_nantes | RCA | Key Account Manager – Editeur SAAS H/F | Nantes, France | posted: 2026-11-06
+- [ ] https://www.welcometothejungle.com/en/companies/culligan/jobs/key-account-manager-developpement-h-f_versailles | Culligan | Key Account Manager - Développement (H/F) | Versailles, France | posted: 2026-11-05
+- [ ] https://www.welcometothejungle.com/en/companies/inqom/jobs/customer-success-manager_paris_INQOM_5meV4KK | Inqom | Customer Success Manager confirmé - Comptable | Paris, France, Remote | 35000-45000 EUR | posted: 2026-11-05
+- [ ] https://www.welcometothejungle.com/en/companies/unify-group/jobs/directeur-de-clientele-ops-f-h_boulogne-billancourt_UG_VzrN3L2 | Unify Group | Directeur de Clientèle OPS F/H | Boulogne-Billancourt, France | posted: 2026-11-06
+- [ ] https://www.welcometothejungle.com/en/companies/unify-group/jobs/directeur-de-clientele-ops-agences-media-brand-content-social-media-f-h_boulogne-billancourt_UG_lwwOWKX | Unify Group | Directeur de Clientèle OPS / Agences Média, Brand Content & Social Media F/H | Boulogne-Billancourt, France | posted: 2026-11-06
+
 ## Processed

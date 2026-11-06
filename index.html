@@ -311,6 +311,24 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 @media(max-width:650px){.matching-header{display:block;margin:22px 0 18px}.matching-header-actions{margin-top:16px;flex-wrap:wrap}.matching-card-top{padding:22px 19px 17px}.matching-card-body{padding:18px 19px 22px}.matching-facts{gap:12px}.matching-controls{gap:8px}.matching-controls .btn{flex:1;padding:12px 8px;font-size:12px}.matching-card{min-height:340px}}
 @media(prefers-reduced-motion:reduce){#matchingProgressFill{transition:none}}
 
+
+.add-job-dialog{border:1px solid #dae2ef;border-radius:16px;padding:0;width:min(670px,calc(100vw - 24px));max-height:min(90vh,900px);box-shadow:0 30px 90px rgba(19,36,67,.22);background:#fff;color:#1c2d44;overflow:auto}
+.add-job-dialog::backdrop{background:rgba(9,20,37,.58)}
+.add-job-dialog form{padding:26px}
+.add-job-heading{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:22px}
+.add-job-heading h2{font-size:25px;letter-spacing:-.05em;margin:0 0 6px}
+.add-job-heading .muted{font-size:12px;margin:0}
+.add-job-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.add-job-fields label{font-size:12px;font-weight:720;color:#475a73;display:flex;flex-direction:column;gap:6px}
+.add-job-fields label:first-child,.add-job-wide{grid-column:1/-1}
+.add-job-fields input,.add-job-fields textarea{border:1px solid #d6dfeb;background:#fff;border-radius:8px;padding:10px;color:#1d3049;font:inherit;font-size:13px;width:100%;resize:vertical}
+.add-job-fields input:focus,.add-job-fields textarea:focus{outline:2px solid #546be5;outline-offset:1px}
+.add-job-fields .required{color:#a63d54}
+.add-job-feedback{font-size:12px;color:#ad3d51;margin:10px 0;min-height:15px}
+.add-job-privacy{font-size:11px;margin:13px 0}
+.add-job-actions{display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #ebeff5;padding-top:18px}
+@media(max-width:650px){.add-job-fields{grid-template-columns:1fr}.add-job-fields label{grid-column:1/-1}.add-job-dialog form{padding:18px}.add-job-actions .btn{flex:1}}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -331,7 +349,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
     <div class="matching-header">
       <div><div class="eyebrow">QUICK DECISIONS</div><h1>Job Matching<span class="headline-period">.</span></h1>
       <p class="page-subtitle">Review one opportunity at a time. Yes keeps it on your shortlist; No archives it.</p></div>
-      <div class="matching-header-actions"><button class="btn ghost" type="button" onclick="showOpportunities()">View opportunities</button><button class="btn ghost" type="button" onclick="openMatchingArchived()">Archived jobs</button></div>
+      <div class="matching-header-actions"><button class="btn ghost" type="button" onclick="openAddJob()">+ Add job</button><button class="btn ghost" type="button" onclick="showOpportunities()">View opportunities</button><button class="btn ghost" type="button" onclick="openMatchingArchived()">Archived jobs</button></div>
     </div>
     <div class="matching-progress">
       <span id="matchingProgress" role="status" aria-live="polite">Preparing matches…</span>
@@ -357,7 +375,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
   </section>
   <div class="top">
     <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div><a id="manualScanLink" href="https://github.com/SE7EN2606/job-radar/actions/workflows/scan-profile.yml" target="_blank" rel="noopener noreferrer" hidden>Run the profile scan manually on GitHub Actions ↗</a></div>
-    <div class="top-actions"><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
+    <div class="top-actions"><button class="btn ghost" id="addJobButton" type="button" onclick="openAddJob()">+ Add job</button><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
   </div>
   <div class="grid">
     <div class="stat"><span class="muted" id="strongLabel">Strong matches</span><b id="strong">0</b></div>
@@ -440,6 +458,28 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
  </div>
 </section>
 </main>
+
+<dialog id="addJobDialog" class="add-job-dialog" aria-labelledby="addJobHeading">
+ <form id="addJobForm" onsubmit="submitManualJob(event)" autocomplete="off">
+  <div class="add-job-heading">
+   <div><div class="eyebrow">MANUAL OPPORTUNITY</div><h2 id="addJobHeading">Add a job</h2><p class="muted">Save a vacancy to the selected profile. It will also appear in Job Matching.</p></div>
+   <button class="btn ghost small" type="button" onclick="closeAddJob()" aria-label="Close add job">×</button>
+  </div>
+  <div class="add-job-fields">
+   <label>Job advertisement URL <span class="muted">(optional)</span><input id="manualJobUrl" type="url" placeholder="https://company.com/careers/job..." maxlength="2048" autocomplete="url"></label>
+   <label>Job title <span class="required">*</span><input id="manualJobTitle" required maxlength="180" placeholder="Senior Product Manager"></label>
+   <label>Company <span class="required">*</span><input id="manualJobCompany" required maxlength="150" placeholder="Company name"></label>
+   <label>Location <span class="muted">(optional)</span><input id="manualJobLocation" maxlength="180" placeholder="Paris, France / Remote"></label>
+   <label>Industry <span class="muted">(optional)</span><input id="manualJobIndustry" maxlength="120" placeholder="Software / Manufacturing / Healthcare"></label>
+   <label>Salary <span class="muted">(optional)</span><input id="manualJobSalary" maxlength="100" placeholder="€75,000–90,000"></label>
+   <label class="add-job-wide">Job description / notes <span class="muted">(optional)</span><textarea id="manualJobDescription" rows="5" maxlength="12000" placeholder="Paste the role description or any relevant details."></textarea></label>
+  </div>
+  <p id="addJobFeedback" role="alert" class="add-job-feedback"></p>
+  <p class="muted add-job-privacy">Saved in this browser for the selected profile only. Other users and incognito windows will not see manually added jobs. The job is not independently verified.</p>
+  <div class="add-job-actions"><button class="btn ghost" type="button" onclick="closeAddJob()">Cancel</button><button class="btn primary" id="manualJobSave" type="submit">Add to opportunities</button></div>
+ </form>
+</dialog>
+
 </div>
 <div class="drawer" id="drawer">
   <button class="btn ghost small" style="float:right" onclick="closeDrawer()">Close</button>

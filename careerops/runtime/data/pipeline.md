@@ -233,4 +233,20 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/unify-group/jobs/directeur-de-clientele-ops-f-h_boulogne-billancourt_UG_VzrN3L2 | Unify Group | Directeur de Clientèle OPS F/H | Boulogne-Billancourt, France | posted: 2026-11-06
 - [ ] https://www.welcometothejungle.com/en/companies/unify-group/jobs/directeur-de-clientele-ops-agences-media-brand-content-social-media-f-h_boulogne-billancourt_UG_lwwOWKX | Unify Group | Directeur de Clientèle OPS / Agences Média, Brand Content & Social Media F/H | Boulogne-Billancourt, France | posted: 2026-11-06
 
+- [ ] https://www.welcometothejungle.com/en/companies/pigment/jobs/enterprise-account-executive-israel_paris | PIGMENT | Enterprise Account Executive - Israel | Paris, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/pigment/jobs/customer-success-manager_paris_PIGME_VGbjy9 | PIGMENT | Customer Success Manager | Paris, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/pigment/jobs/strategic-account-executive_paris | PIGMENT | Strategic Account Executive | Paris, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/pigment/jobs/enterprise-account-executive_paris_PIGME_eZZbXY | PIGMENT | Enterprise Account Executive - Paris | Paris, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/cureety-sas/jobs/key-account-manager-h-f-healthtech-sante-nouvelle-aquitaine_bordeaux | Cureety | Key Account Manager H/F – Healthtech / Santé – Nouvelle Aquitaine | Bordeaux, France, Remote | 50000-70000 EUR | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/spaag/jobs/account-director-senior-consultant-b2b-expert | Spaag | Account Director & Senior Consultant - B2B | Paris, France | 55000-70000 EUR | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/stocklear/jobs/52d2ed8f-44fd-4a9e-8b62-bc26e4e11459 | Stocklear | Key Account Manager | France | posted: 2026-11-06
+- [ ] https://www.welcometothejungle.com/en/companies/join-stories/jobs/senior-customer-success-manager_paris_JOIN_WkVbjXA | JOIN | Senior Customer Success Manager | Paris, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/bridge/jobs/customer-success-manager-h-f-x_paris_BRIDG_4g7g1bl | Bridge | Customer Success Manager h/f/x | Paris, France | 42000-45000 EUR | posted: 2026-11-07
+- [ ] https://www.welcometothejungle.com/en/companies/ovh/jobs/customer-success-manager-italian-french-english_paris | OVHcloud | Customer Success Manager Italian/French/English | Paris, France | posted: 2026-11-07
+- [ ] https://www.welcometothejungle.com/en/companies/lifen/jobs/customer-success-manager-en-sante_paris | Lifen | Senior Customer Success Manager – Secteur public | Paris, France | 50000 | posted: 2026-11-08
+- [ ] https://www.welcometothejungle.com/en/companies/pigment/jobs/senior-customer-success-operations-manager_paris | PIGMENT | Senior Customer Success Operations Manager | Paris, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/hadrena/jobs/responsable-grands-comptes-partenariats-h-f_paris | Hadrena | Responsable Grands Comptes & Partenariats H/F | Paris, France | 75000 EUR | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/ceetadel/jobs/directeur-de-clientele-rp_lyon | CEETADEL | Directeur de clientèle RP (H/F) | Lyon, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/oswald-orb/jobs/directeur-de-clientele-senior-h-f_suresnes | Oswald Orb | Directeur de clientèle sénior (H/F) | Levallois-Perret, France | 45000-52000 EUR | posted: 2026-11-08
+
 ## Processed

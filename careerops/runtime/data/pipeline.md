@@ -249,4 +249,11 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/ceetadel/jobs/directeur-de-clientele-rp_lyon | CEETADEL | Directeur de clientèle RP (H/F) | Lyon, France | posted: 2026-11-09
 - [ ] https://www.welcometothejungle.com/en/companies/oswald-orb/jobs/directeur-de-clientele-senior-h-f_suresnes | Oswald Orb | Directeur de clientèle sénior (H/F) | Levallois-Perret, France | 45000-52000 EUR | posted: 2026-11-08
 
+- [ ] https://www.welcometothejungle.com/en/companies/withings/jobs/international-key-account-manager-h-f_issy-les-moulineaux_WITHI_ON19p9q | Withings | International Key Account Manager (H/F) | Issy-les-Moulineaux, France | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/hiflow/jobs/key-account-manager_paris_HIFLO_6RD4J7W | Hiflow | Key Account Manager | Paris, France | 50000-60000 EUR | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/vivatech/jobs/senior-key-account-manager-corporate-h-f-x_paris | VivaTech | Senior Key Account Manager (H/F/X) | Paris, France | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/dastra-1/jobs/customer-success-manager-saas_paris | Dastra | Customer Success Manager SaaS | Paris, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/certideal/jobs/customer-success-italie_levallois-perret | CertiDeal - VC Technology | Customer Success / Italie | Levallois-Perret, France | 26000-30000 EUR | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/sysnav/jobs/h-f-chef-de-projet-operations-et-customer-success_vernon | SYSNAV | H/F Chef de Projet Opérations et Customer Success | Vernon, France | posted: 2026-11-10
+
 ## Processed

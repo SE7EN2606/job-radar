@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-09T16:32:36.307Z",
+  "generatedAt": "2026-11-10T14:58:19.070Z",
   "source": "career-ops",
-  "count": 1259,
+  "count": 1277,
   "jobs": [
     {
       "id": "careerops-303bce05fc2f12f05c44",
@@ -244,6 +244,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/global-e/jobs/senior-enterprise-customer-success-manager_paris_cymqlpg4",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-10-31",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-269b2b862d01187cb20e",
+      "company": "Greenly",
+      "title": "Senior Account Manager - Enterprise",
+      "fit": 84,
+      "domainFit": 84,
+      "hunter": "Low",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Strong match",
+      "statusTone": "good",
+      "type": "careerops scanned growth",
+      "rec": "APPLY / REVIEW",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/greenly/jobs/senior-account-manager-enterprise_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/greenly/jobs/senior-account-manager-enterprise_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -2973,7 +3008,7 @@
       "sourceUrl": "https://www.welcometothejungle.com/en/companies/certideal/jobs/customer-success-italie_levallois-perret",
       "applyUrl": "https://www.welcometothejungle.com/en/companies/certideal/jobs/customer-success-italie_levallois-perret",
       "companyUrl": "https://welcometothejungle.com",
-      "datePosted": "2026-09-08",
+      "datePosted": "2026-11-10",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -3884,6 +3919,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/dastra-1/jobs/customer-success-manager-saas-legaltech_paris_DASTR_kR5aXXK",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-09-18",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-40289d03b48e3ee5412b",
+      "company": "Dastra",
+      "title": "Customer Success Manager SaaS",
+      "fit": 74,
+      "domainFit": 74,
+      "hunter": "Low",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/dastra-1/jobs/customer-success-manager-saas_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/dastra-1/jobs/customer-success-manager-saas_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -7489,6 +7559,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/hiboo/jobs/customer-success-manager-stage_paris",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-10-23",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-5a15cc816ac83e66dd57",
+      "company": "Hiflow",
+      "title": "Key Account Manager",
+      "fit": 74,
+      "domainFit": 74,
+      "hunter": "Low",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/hiflow/jobs/key-account-manager_paris_HIFLO_6RD4J7W",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/hiflow/jobs/key-account-manager_paris_HIFLO_6RD4J7W",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -14424,6 +14529,41 @@
       "language": ""
     },
     {
+      "id": "careerops-05b2c9299967aa2445a7",
+      "company": "SYSNAV",
+      "title": "H/F Chef de Projet Opérations et Customer Success",
+      "fit": 74,
+      "domainFit": 74,
+      "hunter": "Low",
+      "location": "Vernon, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/sysnav/jobs/h-f-chef-de-projet-operations-et-customer-success_vernon",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/sysnav/jobs/h-f-chef-de-projet-operations-et-customer-success_vernon",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-37b93090ca75c4c1ced3",
       "company": "Tango",
       "title": "Customer Success Manager",
@@ -15791,7 +15931,7 @@
     {
       "id": "careerops-da5d9756a4d47bd73796",
       "company": "VivaTech",
-      "title": "Senior Key Account Manager Corporate (H/F/X)",
+      "title": "Senior Key Account Manager (H/F/X)",
       "fit": 74,
       "domainFit": 74,
       "hunter": "Low",
@@ -15818,7 +15958,7 @@
       "sourceUrl": "https://www.welcometothejungle.com/en/companies/vivatech/jobs/senior-key-account-manager-corporate-h-f-x_paris",
       "applyUrl": "https://www.welcometothejungle.com/en/companies/vivatech/jobs/senior-key-account-manager-corporate-h-f-x_paris",
       "companyUrl": "https://welcometothejungle.com",
-      "datePosted": "2026-09-09",
+      "datePosted": "2026-11-10",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -16413,7 +16553,7 @@
       "sourceUrl": "https://www.welcometothejungle.com/en/companies/withings/jobs/international-key-account-manager-h-f_issy-les-moulineaux_WITHI_ON19p9q",
       "applyUrl": "https://www.welcometothejungle.com/en/companies/withings/jobs/international-key-account-manager-h-f_issy-les-moulineaux_WITHI_ON19p9q",
       "companyUrl": "https://welcometothejungle.com",
-      "datePosted": "2026-09-05",
+      "datePosted": "2026-11-10",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -17574,6 +17714,41 @@
       "language": ""
     },
     {
+      "id": "careerops-faa94cf918d946f28f1c",
+      "company": "Sunstice",
+      "title": "Engagement Manager (Strategic Accounts)",
+      "fit": 70,
+      "domainFit": 70,
+      "hunter": "Medium",
+      "location": "Boulogne-Billancourt, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/sunstice/jobs/engagement-manager-strategic-accounts_boulogne-billancourt",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/sunstice/jobs/engagement-manager-strategic-accounts_boulogne-billancourt",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-7b89e39f1e353340e3d7",
       "company": "TeamViewer",
       "title": "Team Manager, Enterprise Account Specialists",
@@ -17919,6 +18094,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/aisi/jobs/ingenieur-d-affaires-cybersecurite_saint-mande",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-10-26",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-49a35885a1816c586c68",
+      "company": "APAVE CLIMATE",
+      "title": "Account Executive - France",
+      "fit": 64,
+      "domainFit": 64,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned ae",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/apave-climate/jobs/account-executive-france_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/apave-climate/jobs/account-executive-france_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -18589,6 +18799,41 @@
       "language": ""
     },
     {
+      "id": "careerops-f370edcc87daccab6c26",
+      "company": "Doctolib",
+      "title": "Account Executive -Toulouse (x/f/m)",
+      "fit": 64,
+      "domainFit": 64,
+      "hunter": "Medium",
+      "location": "Toulouse, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned ae",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/doctolib/jobs/account-executive-toulouse-x-f-m_toulouse_a7ecbr4z",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/doctolib/jobs/account-executive-toulouse-x-f-m_toulouse_a7ecbr4z",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-5f5983b512f453444bc7",
       "company": "Doctrine",
       "title": "Account Executive - SMB (law/corporate)",
@@ -18899,6 +19144,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/each-one/jobs/account-executive-h-f-x_paris_EO_JlQAKkb",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-09-18",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-4c17f16c254e44c741e5",
+      "company": "Edumapper",
+      "title": "Account Executive",
+      "fit": 64,
+      "domainFit": 64,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned ae",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/edumapper/jobs/account-executive-business-developer_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/edumapper/jobs/account-executive-business-developer_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -24259,6 +24539,41 @@
       "language": ""
     },
     {
+      "id": "careerops-4ee0629cba73c361f5e1",
+      "company": "Banque Palatine",
+      "title": "Directeur de Centre d'Affaires et Banque Privée H/F",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Metz, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/banque-palatine/jobs/directeur-de-centre-d-affaires-et-banque-privee-h-f_metz",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/banque-palatine/jobs/directeur-de-centre-d-affaires-et-banque-privee-h-f_metz",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-b523fc10c26958551ef7",
       "company": "Banque Populaire Auvergne Rhône Alpes",
       "title": "Directeur Entité Commerciale H/F",
@@ -29544,6 +29859,41 @@
       "language": ""
     },
     {
+      "id": "careerops-e8caa529cce02f786b6c",
+      "company": "DBA",
+      "title": "Responsable Comptable Externalisé F/H",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/dba/jobs/responsable-comptable-externalise-f-h_paris_DBA_W6dMGP0",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/dba/jobs/responsable-comptable-externalise-f-h_paris_DBA_W6dMGP0",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-73b6be1756d478687b35",
       "company": "Decathlon",
       "title": "Conseiller-ère Vente Omnicanal (H/F) Chasse / Pêche Période Estivale",
@@ -31044,6 +31394,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/epsa-france/jobs/ingenieur-d-affaires-business-developer-h-f_strasbourg_EPSA_JM17m2Q",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-10-26",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-61edf3233d1b13dd4ae5",
+      "company": "EPSA",
+      "title": "Ingénieur d'affaires/Business Developer H/F",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Strasbourg, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/epsa-france/jobs/ingenieur-d-affaires-business-developer-h-f_strasbourg_EPSA_qYdRYJG",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/epsa-france/jobs/ingenieur-d-affaires-business-developer-h-f_strasbourg_EPSA_qYdRYJG",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -32764,6 +33149,41 @@
       "language": ""
     },
     {
+      "id": "careerops-0f74c1b9a9112f7e0806",
+      "company": "Groupe Brakson (Chargemap, Mister EV, Saabre)",
+      "title": "Program Manager - Projets transverses H/F @Chargemap",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Strasbourg, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/chargemap/jobs/project-lead-h-f-chargemap_strasbourg",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/chargemap/jobs/project-lead-h-f-chargemap_strasbourg",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-5a12a275b70575ec6ff0",
       "company": "GROUPE CCF",
       "title": "CONSEILLER PREMIUM- CCF Nancy - F/H",
@@ -34194,6 +34614,76 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/honore-gaming/jobs/chief-operating-officer-f-h-x_paris",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-10-02",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-1bc8d8ede5c559b7f940",
+      "company": "Hopscotch Groupe",
+      "title": "DIRECTEUR.TRICE DE CLIENTÈLE BRAND EXPERIENCE H/F",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/hopscotch/jobs/directeur-trice-de-clientele-brand-experience-h-f_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/hopscotch/jobs/directeur-trice-de-clientele-brand-experience-h-f_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-db57374a2e34ac443775",
+      "company": "Hopscotch Groupe",
+      "title": "DIRECTEUR.TRICE DE CLIENTÈLE/CONSEIL CORP EXPERIENCE H/F",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/hopscotch/jobs/directeur-trice-de-clientele-conseil-corp-experience-h-f_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/hopscotch/jobs/directeur-trice-de-clientele-conseil-corp-experience-h-f_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -38504,6 +38994,41 @@
       "language": ""
     },
     {
+      "id": "careerops-c314669ffc041d441e79",
+      "company": "Pelico",
+      "title": "Field Marketing Manager - Paris",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/pelico/jobs/field-marketing-manager-paris_paris_bvqfehhc",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/pelico/jobs/field-marketing-manager-paris_paris_bvqfehhc",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-10-27",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-3bd04d416e35edb8c068",
       "company": "PIGMENT",
       "title": "Technical Account Management Team Lead - EMEA",
@@ -39519,6 +40044,41 @@
       "language": ""
     },
     {
+      "id": "careerops-fd54e3ca0646ccc5ee9a",
+      "company": "Rexel France",
+      "title": "Chargé de clientèle OEM/Constructeurs de Machines F/H - Lorraine/Champagne",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Heillecourt, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/rexel-france/jobs/charge-de-clientele-clients-finaux-industrie-f-h-lorraine_heillecourt",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/rexel-france/jobs/charge-de-clientele-clients-finaux-industrie-f-h-lorraine_heillecourt",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-09",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-32c9651d1327018b1d9c",
       "company": "Roads",
       "title": "Performance Manager SEA / SMA (H/F)",
@@ -40249,6 +40809,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/smartkeyword/jobs/consultant-seo-senior-5y_paris",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-10-16",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-13d7d488f34bfc1046f1",
+      "company": "Smartkeyword",
+      "title": "Consultant SEO/GEO Confirmé·e (H/F)",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/smartkeyword/jobs/consultant-seo-confirme-e-h-f-rejoins-smartkeyword_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/smartkeyword/jobs/consultant-seo-confirme-e-h-f-rejoins-smartkeyword_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-10",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -41894,6 +42489,41 @@
       "applyUrl": "https://careers.teamviewer.com/jobs/8455325-senior-solutions-engineer-french-italian-spanish-speaking",
       "companyUrl": "https://careers.teamviewer.com",
       "datePosted": "2026-09-25",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-74e602ddb988489f29bb",
+      "company": "TeamViewer",
+      "title": "Product Owner",
+      "fit": 60,
+      "domainFit": 60,
+      "hunter": "Medium",
+      "location": "Porto, Portugal",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: teamtailor-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · teamtailor-api",
+      "foundVia": "Career Ops · teamtailor-api",
+      "provider": "teamtailor-api",
+      "sourceUrl": "https://careers.teamviewer.com/jobs/8693175-product-owner",
+      "applyUrl": "https://careers.teamviewer.com/jobs/8693175-product-owner",
+      "companyUrl": "https://careers.teamviewer.com",
+      "datePosted": "2026-11-09",
       "description": "",
       "trustScore": "",
       "language": ""

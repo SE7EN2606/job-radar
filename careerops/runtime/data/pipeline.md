@@ -256,4 +256,14 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/certideal/jobs/customer-success-italie_levallois-perret | CertiDeal - VC Technology | Customer Success / Italie | Levallois-Perret, France | 26000-30000 EUR | posted: 2026-11-10
 - [ ] https://www.welcometothejungle.com/en/companies/sysnav/jobs/h-f-chef-de-projet-operations-et-customer-success_vernon | SYSNAV | H/F Chef de Projet Opérations et Customer Success | Vernon, France | posted: 2026-11-10
 
+- [ ] https://www.welcometothejungle.com/en/companies/wpp-media/jobs/business-director-f-h-cdi_paris | WPP Media | Account Director - (F/H) - CDI | Paris, France | posted: 2026-11-11
+- [ ] https://www.welcometothejungle.com/en/companies/360learning/jobs/strategic-customer-success-partner-coach-france_paris_360LE_RbpOq78 | 360Learning | Strategic Customer Success Partner Coach - France | Paris, France, Remote | posted: 2026-11-12
+- [ ] https://www.welcometothejungle.com/en/companies/zestmeup/jobs/key-account-manager-kam_paris | Zest | Key Account Manager (KAM) | Paris, France | posted: 2026-11-12
+- [ ] https://www.welcometothejungle.com/en/companies/stoik/jobs/customer-success-manager-fr_paris_STOK_0k8DZgG | Stoïk | Customer Success Manager (FR) | Paris, France | posted: 2026-11-11
+- [ ] https://www.welcometothejungle.com/en/companies/digitevent/jobs/customer-success-manager-uk-csm-rennes_rennes | Digitevent | Customer Success Manager UK - CSM - Rennes | Rennes, France | 38000-43000 EUR | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/digitevent/jobs/customer-success-manager-csm-rennes_rennes | Digitevent | Customer Success Manager - CSM - Rennes | Rennes, France | 38000-43000 EUR | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/solarock-fr/jobs/customer-success-deployment-manager-reseau-powered-by-solarock-h-f_paris | Solarock | Customer Success & Deployment Manager, Réseau Powered by Solarock (H/F) | Paris, France | 40000-45000 EUR | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/goalmap/jobs/responsable-grands-comptes_paris_GOALM_2qwbO8G | Goalmap | Responsable Grands Comptes | Paris, France | posted: 2026-11-12
+- [ ] https://www.welcometothejungle.com/en/companies/asi/jobs/ingenieur-d-affaires-senior-comptes-strategiques-h-f_nantes | ASI | Ingénieur d'Affaires Senior — Comptes Stratégiques (H/F) | Nantes, France | 40000-50000 EUR | posted: 2026-11-11
+
 ## Processed

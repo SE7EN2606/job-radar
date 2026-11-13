@@ -266,4 +266,15 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/goalmap/jobs/responsable-grands-comptes_paris_GOALM_2qwbO8G | Goalmap | Responsable Grands Comptes | Paris, France | posted: 2026-11-12
 - [ ] https://www.welcometothejungle.com/en/companies/asi/jobs/ingenieur-d-affaires-senior-comptes-strategiques-h-f_nantes | ASI | Ingénieur d'Affaires Senior — Comptes Stratégiques (H/F) | Nantes, France | 40000-50000 EUR | posted: 2026-11-11
 
+- [ ] https://www.welcometothejungle.com/en/companies/poppulo1/jobs/customer-success-manager-emea-us_lyon | Poppulo | Customer Success Manager - EMEA & US | Lyon, France | posted: 2026-11-12
+- [ ] https://www.welcometothejungle.com/en/companies/licorne-society/jobs/enterprise-account-executive-saas-supply-chain-logistique-h-f_paris | Licorne Society | Enterprise Account Executive – SaaS Supply Chain & Logistique (H/F) | Paris, France | 120000-150000 EUR | posted: 2026-11-12
+- [ ] https://www.welcometothejungle.com/en/companies/trusk/jobs/key-account-manager-h-f_st-ouen_TRUSK_edOW34L | TRUSK | KEY ACCOUNT MANAGER H/F | Saint-Ouen-sur-Seine, France | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/dilitrust/jobs/key-account-manager-france_paris_DILIT_LxRg685 | DiliTrust | Key Account Manager - France | Paris, France | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/wpp-media/jobs/social-media-influence-director-h-f-cdi_paris | WPP Media | Social Media & Influence Account Director H/F - CDI | Paris, France | posted: 2026-11-10
+- [ ] https://www.welcometothejungle.com/en/companies/chargemap/jobs/customer-success-manager-businessen-cdi-chargemap_strasbourg | Groupe Brakson (Chargemap, Mister EV, Saabre) | Customer Success Manager (CSM) Business CDI @Chargemap | Strasbourg, France | 34000-36000 EUR | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/homeexchange/jobs/sales-customer-success-spain_paris | HomeExchange | Sales & Customer Success – Spain | Paris, France | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/homeexchange/jobs/sales-customer-success-france_paris | HomeExchange | Sales & Customer Success – France | Paris, France | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/holicare/jobs/customer-success-manager-f-h_paris | Holicare | Customer success manager (F/H) | Paris, France | 40000-45000 EUR | posted: 2026-11-12
+- [ ] https://www.welcometothejungle.com/en/companies/aon/jobs/directeur-de-clientele-sante-prevoyance-grands-comptes-h-f_paris | Aon France | Directeur de Clientèle Santé-Prévoyance Grands-Comptes (H/F) | Paris, France | posted: 2026-11-12
+
 ## Processed

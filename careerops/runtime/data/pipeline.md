@@ -277,4 +277,14 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/holicare/jobs/customer-success-manager-f-h_paris | Holicare | Customer success manager (F/H) | Paris, France | 40000-45000 EUR | posted: 2026-11-12
 - [ ] https://www.welcometothejungle.com/en/companies/aon/jobs/directeur-de-clientele-sante-prevoyance-grands-comptes-h-f_paris | Aon France | Directeur de Clientèle Santé-Prévoyance Grands-Comptes (H/F) | Paris, France | posted: 2026-11-12
 
+- [ ] https://job-boards.greenhouse.io/gitlab/jobs/8937803002 | GitLab | Customer Success Architect, France | Remote, France | posted: 2026-11-15
+- [ ] https://www.welcometothejungle.com/en/companies/catalina-france/jobs/key-account-manager-local-f-h_boulogne-billancourt_CF_W68lD2G | Catalina France | Key Account Manager F/H | Boulogne-Billancourt, France | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/nexton-consulting/jobs/key-account-manager-ia-h-f_paris | NEXTON | Key Account Manager - IA H/F | Paris, France | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-en-aero-et-logistique-h-f-roissy-cdg_roissy | Gojob | Key Account Manager en aéro et logistique H/F - Roissy CDG | Ormoy, France | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/euris/jobs/customer-success-manager-deploiement-saas-sante-f-h_boulogne-billancourt | Euris | CUSTOMER SUCCESS MANAGER – DÉPLOIEMENT SaaS SANTÉ (F/H) | Boulogne-Billancourt, France | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/euris/jobs/chef-de-projet-deploiement-customer-success-manager-saas-sante-f-h_boulogne-billancourt | Euris | CHEF DE PROJET DÉPLOIEMENT / CUSTOMER SUCCESS MANAGER – SaaS SANTÉ (F/H) | Boulogne-Billancourt, France | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/omnidoc/jobs/customer-success-manager-scale | Omnidoc | Customer Success Manager Scale | Marseille, France, Remote | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/rexel-france/jobs/responsable-grands-comptes-nationaux-data-center-f-h-paris_paris | Rexel France | Responsable Grands Comptes Nationaux Data Center F/H Paris | Paris, France | posted: 2026-11-13
+- [ ] https://www.welcometothejungle.com/en/companies/diot-siaci/jobs/directeur-de-clientele-psc-h-f_lyon | Diot Siaci | Directeur de Clientèle PSC H/F | Lyon, France | posted: 2026-11-16
+
 ## Processed

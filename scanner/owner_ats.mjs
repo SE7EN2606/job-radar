@@ -27,7 +27,19 @@ export const BOARDS = [
   {provider:'ashby',board:'n8n',company:'n8n',industry:'Automation / Developer tools'},
   {provider:'ashby',board:'sardine',company:'Sardine',industry:'Fraud / Fintech SaaS'},
   {provider:'ashby',board:'sphere',company:'Sphere',industry:'Payments / Fintech SaaS'},
-  {provider:'ashby',board:'chatbase',company:'Chatbase',industry:'AI / Customer service SaaS'}
+  {provider:'ashby',board:'chatbase',company:'Chatbase',industry:'AI / Customer service SaaS'},
+  {provider:'ashby',board:'opsmill',company:'OpsMill',industry:'IT automation / Network infrastructure'},
+  {provider:'ashby',board:'fullenrich',company:'FullEnrich',industry:'Sales intelligence SaaS'},
+  {provider:'ashby',board:'gitbook',company:'GitBook',industry:'Developer documentation SaaS'},
+  {provider:'ashby',board:'hightouch-inc',company:'Hightouch',industry:'Data / Marketing SaaS'},
+  {provider:'ashby',board:'elicit',company:'Elicit',industry:'AI / Research software'},
+  {provider:'ashby',board:'omnea',company:'Omnea',industry:'Procurement SaaS'},
+  {provider:'ashby',board:'synthesia',company:'Synthesia',industry:'AI / Video SaaS'},
+  {provider:'ashby',board:'molecule-software',company:'Molecule Software',industry:'Energy trading software'},
+  {provider:'greenhouse',board:'chainguard',company:'Chainguard',industry:'Software supply-chain security'},
+  {provider:'greenhouse',board:'tenon',company:'Tenon',industry:'Enterprise SaaS'},
+  {provider:'greenhouse',board:'amplemarket',company:'Amplemarket',industry:'B2B sales SaaS'},
+  {provider:'greenhouse',board:'pulumicorporation',company:'Pulumi',industry:'Cloud infrastructure / DevOps'}
 ];
 
 /** Avoid BDR, SDR, junior and marketing / engineering roles. */

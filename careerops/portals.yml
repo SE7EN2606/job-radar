@@ -4,6 +4,22 @@
 title_filter:
   positive:
     - "Enterprise Account Manager"
+    - "Technical Account Manager"
+    - "Account Executive"
+    - "Senior Account Executive"
+    - "Account Director"
+    - "Commercial Account Executive"
+    - "IT Sales Executive"
+    - "Regional Sales Manager"
+    - "Sales Director"
+    - "Solutions Sales Specialist"
+    - "Business Development Manager"
+    - "Business Development Director"
+    - "Business Solutions Manager"
+    - "Partner Manager"
+    - "Alliances Manager"
+    - "Channel Account Manager"
+    - "Customer Success Director"
     - "Strategic Account Manager"
     - "Key Account Manager"
     - "Global Account Manager"
@@ -22,13 +38,28 @@ title_filter:
     - "Sales Development Representative"
     - "SDR"
     - "BDR"
-    - "Inside Sales"
     - "Junior"
 
 # Keep the scanner broad enough for remote roles but reject countries Greg has
 # explicitly excluded from physical work/relocation.
 location_filter:
   strict: true
+  # Office locations remain selective. Remote country-restricted jobs are
+  # discoverable but must be checked for actual Estonia/France eligibility.
+  always_allow:
+    - "Remote Europe"
+    - "Europe Remote"
+    - "Remote - Europe"
+    - "Remote, Europe"
+    - "EMEA Remote"
+    - "Remote EMEA"
+    - "Remote EU"
+    - "EU Remote"
+    - "Germany (Remote)"
+    - "Germany Remote"
+    - "Remote - Germany"
+    - "Remote Germany"
+    - "Germany - Remote"
   allow:
     - "France"
     - "Paris"
@@ -75,6 +106,14 @@ location_filter:
     - "UK"
     - "England"
     - "London"
+    - "United States"
+    - "USA"
+    - "India"
+    - "Japan"
+    - "Brazil"
+    - "Australia"
+    - "Canada"
+  block:
     - "Germany"
     - "Austria"
     - "Spain"
@@ -87,7 +126,7 @@ location_filter:
     - "Norway"
     - "Finland"
     - "Slovakia"
-  remote_title_fallback: false
+  remote_title_fallback: true
 
 max_posting_age_days: 30
 preferred_languages: [en, fr]
@@ -114,7 +153,7 @@ job_boards:
   - name: Welcome to the Jungle
     provider: wttj
     wttj:
-      filters: 'offices.country_code:FR AND contract_type:full_time'
+      filters: 'contract_type:full_time'
       queries:
         - "enterprise account manager"
         - "strategic account manager"
@@ -126,5 +165,14 @@ job_boards:
         - "responsable grands comptes"
         - "comptes stratégiques"
         - "directeur de clientèle"
-      max_hits: 200
+        - "it sales executive"
+        - "commercial account executive"
+        - "account executive saas"
+        - "sales director saas"
+        - "business development manager software"
+        - "partner manager saas"
+        - "enterprise customer success"
+        - "sales account manager"
+        - "responsable commercial informatique"
+      max_hits: 400
     enabled: true

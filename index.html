@@ -389,7 +389,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
    <label>From city <input id="distanceOrigin" type="text" placeholder="e.g. Tallinn, Estonia" autocomplete="off" aria-label="Reference city for distances"></label>
    <label>Radius <select id="distanceRadius" onchange="updateDistanceRadius(this.value)"><option value="50">50 km</option><option value="100">100 km</option><option value="150" selected>150 km</option><option value="250">250 km</option><option value="500">500 km</option><option value="1000">1,000 km</option></select></label>
    <button class="btn ghost small" type="button" id="calculateDistances" onclick="calculateDistances()">Calculate distances</button>
-   <label class="nearby-toggle"><input type="checkbox" id="withinRadius" onchange="renderCurrent()"> Only within radius</label>
+   <label class="nearby-toggle"><input type="checkbox" id="withinRadius" onchange="renderCurrent()"> Only within radius</label><label class="nearby-toggle"><input type="checkbox" id="newThisWeek" onchange="renderCurrent()"> New this week</label>
    <span id="distanceStatus" class="muted" role="status">Straight-line km · not driving distance</span>
   </div>
   <div class="toolbar">
@@ -983,6 +983,8 @@ function vacancyInfo(job){
  const status=String(job.verificationStatus||'').toLowerCase();
  if(status==='listed-at-source')return {label:'Listed on ATS',tone:'info'};
  if(status==='not-rechecked')return {label:'Not rechecked',tone:'warn'};
+ if(status==='listed-at-source')return {label:'Listed on ATS',tone:'info'};
+ if(status==='not-rechecked')return {label:'Not rechecked',tone:'warn'};
  if(status==='verified-open'||status==='verified_open')return {label:'Verified open',tone:'good'};
  if(status==='closed'||status==='expired')return {label:'Closed',tone:'bad'};
  return {label:'Not verified',tone:'warn'};
@@ -1209,6 +1211,7 @@ function filteredJobs(){
   });
   if(currentFilter!=='all') list=list.filter(j=>j.type.includes(currentFilter));
   if(document.getElementById('withinRadius')?.checked)list=list.filter(j=>{const km=distanceKM(j);return km!==null&&km<=Number(profile().distanceRadius||150)});
+  if(document.getElementById('newThisWeek')?.checked)list=list.filter(j=>discoveredTimestamp(j)>Date.now()-7*86400000);
   const query=(document.getElementById('jobSearch')?.value||'').trim().toLocaleLowerCase();
   if(query)list=list.filter(j=>[j.company,j.title,j.location,j.domain,j.salary].some(v=>String(v||'').toLocaleLowerCase().includes(query)));
   const mode=sortBy.value;
@@ -1306,7 +1309,7 @@ function renderCurrent(){
     if(!/^[a-zA-Z0-9_-]+$/.test(id))return;
     const applyLink=url?'<a href="'+escapeJobText(url)+'" target="_blank" rel="noopener noreferrer">Job ad ↗</a>':'';
     r.innerHTML='<div><input type="checkbox" '+(selectedJobs.has(id)?'checked':'')+' onchange="toggleJobSelection(\''+id+'\',this.checked)"></div>'+
-      '<div><div class="company">'+escapeJobText(j.company)+'</div><div class="title">'+escapeJobText(j.title)+'</div><div class="meta"><span class="pill info">'+escapeJobText(sourceLabel)+'</span>'+applyLink+'</div></div>'+
+      '<div><div class="company">'+escapeJobText(j.company)+'</div><div class="title">'+escapeJobText(j.title)+'</div><div class="meta"><span class="pill info">'+escapeJobText(sourceLabel)+'</span>'+(discoveredTimestamp(j)>Date.now()-7*86400000?'<span class="pill good">NEW</span>':'')+applyLink+'</div></div>'+
       '<div class="score">'+(j.type==='manual'?'—':score)+(bonus?'<div class="muted" style="font-size:10px">+'+bonus+' nearby</div>':'')+'</div>'+
       '<div class="industry">'+escapeJobText(industry)+'</div>'+
       '<div>'+escapeJobText(j.location||'—')+'</div>'+

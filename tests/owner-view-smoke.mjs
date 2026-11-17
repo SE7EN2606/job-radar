@@ -54,7 +54,33 @@ try{
   applyUrl:'https://jobs.ashbyhq.com/mock/104',sourceUrl:'https://jobs.ashbyhq.com/mock/104',firstSeenAt:new Date().toISOString()}];
  await page.evaluate(async()=>{await loadScannedJobs();updateStats();renderCurrent()});
  await page.waitForFunction(()=>[...document.querySelectorAll('#jobs .row.data')].some(x=>x.textContent.includes('Mock IT New')));
- // Existing profile's data remains isolated.
+ // A broad search should render just the first 100 results and keep sorting server-independent.
+ currentJobs=[
+  ...jobs,
+  ...Array.from({length:108},(_,i)=>({
+   ...jobs[2],id:'ownerats-pagination-'+i,company:'Mock IT Pagination '+i,
+   title:'Enterprise Account Executive',
+   applyUrl:'https://jobs.ashbyhq.com/mock/pagination-'+i,
+   sourceUrl:'https://jobs.ashbyhq.com/mock/pagination-'+i,
+   firstSeenAt:days(0),datePosted:''
+  }))
+ ];
+ await page.evaluate(async()=>{await loadScannedJobs();resetJobPage();renderCurrent()});
+ await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===100);
+ if(!(await page.locator('#jobLoadMore').isVisible()))throw Error('Show more not available for broad job list');
+ await page.locator('#selectAll').check();
+ const selectedCount=await page.evaluate(()=>selectedJobs.size);
+ if(selectedCount!==100)throw Error('Select all selected '+selectedCount+' rather than current page of 100');
+ await page.evaluate(()=>clearSelection());
+ await page.locator('#jobLoadMore button').click();
+ await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===111);
+ await page.locator('#jobSourceFilter').selectOption('fresh');
+ await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===100);
+ const clean=await page.evaluate(()=>filteredJobs().every(j=>j.source==='owner-public-ats'||j.id.startsWith('ownerats-')));
+ if(!clean)throw Error('Fresh ATS filter included historical sources');
+ console.log('PASS pagination, page-scoped bulk selection, source filters');
+
+  // Existing profile's data remains isolated.
  await page.locator('#topProfileSelect').selectOption('local-mw24lfrk-mu765');
  await page.waitForFunction(()=>document.querySelector('#topProfileSelect')?.value==='local-mw24lfrk-mu765');
  const other=await page.evaluate(()=>allProfileJobs().some(j=>j.company.startsWith('Mock IT')));

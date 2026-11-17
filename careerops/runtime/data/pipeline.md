@@ -287,4 +287,16 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/rexel-france/jobs/responsable-grands-comptes-nationaux-data-center-f-h-paris_paris | Rexel France | Responsable Grands Comptes Nationaux Data Center F/H Paris | Paris, France | posted: 2026-11-13
 - [ ] https://www.welcometothejungle.com/en/companies/diot-siaci/jobs/directeur-de-clientele-psc-h-f_lyon | Diot Siaci | Directeur de Clientèle PSC H/F | Lyon, France | posted: 2026-11-16
 
+- [ ] https://www.welcometothejungle.com/en/companies/ab-tasty/jobs/senior-customer-success-manager-enterprise-france-m-f-d_paris | AB Tasty | Senior Customer Success Manager Enterprise - France m/f/d | Paris, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/datadome/jobs/enterprise-account-executive-emea_paris_DATAD_MNN9bQg | DataDome | Enterprise Account Executive - EMEA | Paris, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/theodogovtech/jobs/key-account-manager-secteur-public-cdi-paris_paris | Theodo GovTech | Key Account Manager - Secteur Public - CDI - Paris | Paris, France | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/legalplace/jobs/customer-success_montpellier_LEGAL_dVVJDK9 | LegalPlace | Customer Success | Montpellier, France | 312000 EUR | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/legalplace/jobs/customer-success_montpellier_LEGAL_dMmO2O7 | LegalPlace | Customer Success - Niveau 2 | Montpellier, France | 26000 EUR | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/octopus-energy/jobs/customer-success-specialist-b2c_paris | Octopus Energy France | Customer Success Specialist B2C | Paris, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/ooti/jobs/customer-success-manager-qbr-fr-en_paris | OOTI | Customer Success Manager - QBR (FR/EN) | Paris, France | 32000-37000 EUR | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/ooti/jobs/customer-success-manager-onboarding-fr-en_paris_OOTI_9NjMPP | OOTI | Customer Success Manager — Onboarding (FR/EN) | Paris, France | 32000-37000 EUR | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/pluxee-france/jobs/cdd-customer-success-manager-h-f_paris | Pluxee France | CDD - Customer Success Manager H/F | Paris, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/spendesk/jobs/customer-success-manager-french-market_paris_SPEND_qQW8r1y | Spendesk | Customer Success Manager - French Market | Paris, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/ooti/jobs/account-manager-customer-success-produit_paris | OOTI | Account Manager Customer Success & Produit | Paris, France | 32000-37000 EUR | posted: 2026-11-17
+
 ## Processed

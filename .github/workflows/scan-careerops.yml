@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: careerops-job-scan
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   scan:
@@ -74,26 +74,22 @@ jobs:
           set -e
           git config user.name "job-radar-bot"
           git config user.email "job-radar-bot@users.noreply.github.com"
-          git add data/careerops-jobs.json careerops/runtime/data/scan-history.tsv careerops/runtime/data/pipeline.md careerops/runtime/receipt.json 2>/dev/null || true
-
-          if git diff --cached --quiet; then
-            echo "No Career Ops changes"
-            exit 0
-          fi
-
-          git commit -m "Refresh Career Ops jobs"
-
-          for attempt in 1 2 3; do
+          # Scanner outputs can be produced while other workflows commit.
+          # Rebase conflicts on generated TSV/JSON are not resolvable by git.
+          # Re-stage the latest local scan snapshot onto the latest main tip.
+          for attempt in 1 2 3 4 5; do
             git fetch origin main
-            if git rebase origin/main; then
-              if git push origin HEAD:main; then
-                exit 0
-              fi
-            else
-              git rebase --abort || true
+            git reset --soft origin/main
+            git add data/careerops-jobs.json careerops/runtime/data/scan-history.tsv careerops/runtime/data/pipeline.md careerops/runtime/receipt.json 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "No Career Ops changes to publish"
+              exit 0
+            fi
+            git commit -m "Refresh Career Ops jobs"
+            if git push origin HEAD:main; then
+              exit 0
             fi
             sleep $((attempt * 2))
           done
-
-          echo "Unable to push Career Ops results after 3 attempts."
+          echo "Unable to publish the latest Career Ops scan." >&2
           exit 1

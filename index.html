@@ -329,6 +329,9 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 .add-job-actions{display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #ebeff5;padding-top:18px}
 @media(max-width:650px){.add-job-fields{grid-template-columns:1fr}.add-job-fields label{grid-column:1/-1}.add-job-dialog form{padding:18px}.add-job-actions .btn{flex:1}}
 
+
+#ownerFreshScanLink{display:inline-block;font-size:11px;color:#495acc;font-weight:740;margin-top:4px}
+#ownerFreshScanLink[hidden]{display:none}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -374,7 +377,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
     <div class="matching-feedback" id="matchingFeedback" aria-live="polite"></div>
   </section>
   <div class="top">
-    <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div><a id="manualScanLink" href="https://github.com/SE7EN2606/job-radar/actions/workflows/scan-profile.yml" target="_blank" rel="noopener noreferrer" hidden>Run the profile scan manually on GitHub Actions ↗</a></div>
+    <div><div class="eyebrow">YOUR JOB SEARCH</div><h1>Opportunities<span class="headline-period">.</span></h1><p class="page-subtitle">Discover, qualify, and keep the right roles moving.</p><div class="muted" id="scanMeta" style="font-size:12px;margin-top:5px">Loading scanner data…</div><a id="ownerFreshScanLink" href="https://github.com/SE7EN2606/job-radar/actions/workflows/scan-owner-ats.yml" target="_blank" rel="noopener noreferrer">Run fresh IT/SaaS scan on GitHub ↗</a><a id="manualScanLink" href="https://github.com/SE7EN2606/job-radar/actions/workflows/scan-profile.yml" target="_blank" rel="noopener noreferrer" hidden>Run the profile scan manually on GitHub Actions ↗</a></div>
     <div class="top-actions"><button class="btn ghost" id="addJobButton" type="button" onclick="openAddJob()">+ Add job</button><button class="btn ghost" onclick="showSettings(event)">Manage profiles</button><button id="scanBtn" class="btn primary" onclick="scan(event)"><span aria-hidden="true">↻</span> Run scan</button></div>
   </div>
   <div class="grid">
@@ -389,7 +392,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
    <label>From city <input id="distanceOrigin" type="text" placeholder="e.g. Tallinn, Estonia" autocomplete="off" aria-label="Reference city for distances"></label>
    <label>Radius <select id="distanceRadius" onchange="updateDistanceRadius(this.value)"><option value="50">50 km</option><option value="100">100 km</option><option value="150" selected>150 km</option><option value="250">250 km</option><option value="500">500 km</option><option value="1000">1,000 km</option></select></label>
    <button class="btn ghost small" type="button" id="calculateDistances" onclick="calculateDistances()">Calculate distances</button>
-   <label class="nearby-toggle"><input type="checkbox" id="withinRadius" onchange="renderCurrent()"> Only within radius</label><label class="nearby-toggle"><input type="checkbox" id="newThisWeek" onchange="renderCurrent()"> New this week</label>
+   <label class="nearby-toggle"><input type="checkbox" id="withinRadius" onchange="renderCurrent()"> Only within radius</label><label class="nearby-toggle"><input type="checkbox" id="newThisWeek" onchange="renderCurrent()"> New this week</label><label class="nearby-toggle"><input type="checkbox" id="europeRemoteOnly" onchange="renderCurrent()"> EU/EMEA remote only</label>
    <span id="distanceStatus" class="muted" role="status">Straight-line km · not driving distance</span>
   </div>
   <div class="toolbar">
@@ -757,6 +760,7 @@ function updateProfileUI(){
  if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent=profileResultMeta[activeProfileId]||'No current results for this profile; run an updated scan.';
  else updateOwnerScanMeta();
  const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
+ const ownerLink=document.getElementById('ownerFreshScanLink');if(ownerLink)ownerLink.hidden=activeProfileId!=='owner';
  const top=document.getElementById('topProfileSelect');if(top)top.value=activeProfileId;
  const city=document.getElementById('distanceOrigin');if(city)city.value=profile().homeCity||'';
  const radius=document.getElementById('distanceRadius');if(radius)radius.value=String(profile().distanceRadius||150);
@@ -1212,6 +1216,7 @@ function filteredJobs(){
   if(currentFilter!=='all') list=list.filter(j=>j.type.includes(currentFilter));
   if(document.getElementById('withinRadius')?.checked)list=list.filter(j=>{const km=distanceKM(j);return km!==null&&km<=Number(profile().distanceRadius||150)});
   if(document.getElementById('newThisWeek')?.checked)list=list.filter(j=>discoveredTimestamp(j)>Date.now()-7*86400000);
+  if(document.getElementById('europeRemoteOnly')?.checked)list=list.filter(j=>j.locationCategory==='europe-remote'||/(?:remote.{0,18}(?:eu\b|europe|emea)|(?:europe|emea).{0,18}remote)/i.test(j.location||''));
   const query=(document.getElementById('jobSearch')?.value||'').trim().toLocaleLowerCase();
   if(query)list=list.filter(j=>[j.company,j.title,j.location,j.domain,j.salary].some(v=>String(v||'').toLocaleLowerCase().includes(query)));
   const mode=sortBy.value;

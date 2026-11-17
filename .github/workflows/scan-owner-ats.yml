@@ -1,0 +1,52 @@
+name: Refresh owner IT/SaaS sales ATS opportunities
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "35 7,12,17 * * 1-5"
+  push:
+    paths:
+      - "scanner/owner_ats.mjs"
+      - ".github/workflows/scan-owner-ats.yml"
+permissions:
+  contents: write
+concurrency:
+  group: owner-ats-fresh
+  cancel-in-progress: true
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Read public ATS vacancy lists
+        run: node scanner/owner_ats.mjs
+      - name: Guard against empty/broken publication
+        run: |
+          node --input-type=module -e "import fs from 'node:fs';let d=JSON.parse(fs.readFileSync('data/owner-ats-jobs.json'));if(!d.generatedAt||!Array.isArray(d.jobs)||d.count!==d.jobs.length||d.sourcesSucceeded<1||d.jobs.some(j=>!j.applyUrl||!j.location||!j.title))process.exit(1);console.log(d.count,'jobs,',d.newCount,'new')"
+      - name: Commit updated owner listings
+        run: |
+          set -e
+          git config user.name "job-radar-bot"
+          git config user.email "job-radar-bot@users.noreply.github.com"
+          git add data/owner-ats-jobs.json
+          if git diff --cached --quiet; then
+            echo "No listing changes"
+            exit 0
+          fi
+          git commit -m "Refresh owner IT/SaaS ATS vacancies"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then exit 0; fi
+            else
+              git rebase --abort || true
+            fi
+            sleep $((attempt * 3))
+          done
+          echo "Could not publish ATS results" >&2
+          exit 1

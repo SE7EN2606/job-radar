@@ -110,7 +110,7 @@ export function normalizeJob(raw,source,previous,now){
   cover:'Not generated.',source:source.provider,sourceDisplay:'Employer ATS · '+source.provider,
   foundVia:source.company+' careers',sourceUrl:url,applyUrl:url,
   companyUrl:source.provider==='greenhouse'?'https://job-boards.greenhouse.io/'+source.board:'https://jobs.ashbyhq.com/'+source.board,
-  description:String(raw.description||'').slice(0,9500),
+  description:String(raw.description||'').slice(0,2200),
   datePosted,updatedAt,firstSeenAt:firstSeen,lastSeenAt:now,
   addedAt:firstSeen,sourceBoard:source.board,locationCategory:place.code,
   locationEligibility:place.warning,verifiedLive:false

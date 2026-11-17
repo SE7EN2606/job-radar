@@ -1,0 +1,22 @@
+name: Owner Career Ops export tests
+on:
+  push:
+    paths:
+      - "careerops/export.mjs"
+      - "tests/owner-careerops-export.test.mjs"
+      - ".github/workflows/test-owner-careerops.yml"
+  pull_request:
+    paths:
+      - "careerops/export.mjs"
+      - "tests/owner-careerops-export.test.mjs"
+      - ".github/workflows/test-owner-careerops.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - run: node --test tests/owner-careerops-export.test.mjs

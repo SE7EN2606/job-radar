@@ -107,7 +107,7 @@ export function normalizeJob(raw,source,previous,now){
   verificationStatus:'listed-at-source',type:'scanned ae it-sales'+(place.code.includes('remote')?' remote':''),
   rec:'REVIEW',pros:['Published on employer job board','IT / SaaS employer'],
   cons:flags.filter(Boolean),diff:'Confirm hard requirements and permitted countries before tailoring CV.',
-  cover:'Not generated.',source:source.provider,sourceDisplay:'Employer ATS · '+source.provider,
+  cover:'Not generated.',source:'owner-public-ats',provider:source.provider,sourceDisplay:'Employer ATS · '+source.provider,
   foundVia:source.company+' careers',sourceUrl:url,applyUrl:url,
   companyUrl:source.provider==='greenhouse'?'https://job-boards.greenhouse.io/'+source.board:'https://jobs.ashbyhq.com/'+source.board,
   description:String(raw.description||'').slice(0,9500),

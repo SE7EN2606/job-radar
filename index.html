@@ -771,7 +771,7 @@ function updateProfileUI(){
  if(activeProfileId==='owner'&&location.hostname.endsWith('github.io'))b.textContent='↻ Refresh listings';
  if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent=profileResultMeta[activeProfileId]||'No current results for this profile; run an updated scan.';
  else updateOwnerScanMeta();
- const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
+ const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent='High title/location relevance';
  const ownerLink=document.getElementById('ownerFreshScanLink');if(ownerLink)ownerLink.hidden=activeProfileId!=='owner';
  const sourceFilter=document.getElementById('jobSourceFilter');
  if(sourceFilter&&activeProfileId!=='owner')sourceFilter.value='all';
@@ -1234,7 +1234,7 @@ function filteredJobs(){
   });
   if(currentFilter!=='all') list=list.filter(j=>j.type.includes(currentFilter));
   const source=document.getElementById('jobSourceFilter')?.value||'all';
-  if(source==='fresh')list=list.filter(j=>j.source==='owner-public-ats');
+  if(source==='fresh')list=list.filter(j=>j.source==='owner-public-ats'||j.id.startsWith('ownerats-'));
   else if(source==='careerops')list=list.filter(j=>j.id.startsWith('careerops-'));
   else if(source==='manual')list=list.filter(j=>j.type==='manual');
   if(document.getElementById('withinRadius')?.checked)list=list.filter(j=>{const km=distanceKM(j);return km!==null&&km<=Number(profile().distanceRadius||150)});
@@ -1316,7 +1316,7 @@ async function enrichVisibleJobs(){
 
 function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
-  const scoreLabel=document.getElementById('scoreColumnLabel');if(scoreLabel)scoreLabel.textContent=sortBy.value==='proximity'?'Match + near':activeProfileId==='owner'?'Fit':'Search match';
+  const scoreLabel=document.getElementById('scoreColumnLabel');if(scoreLabel)scoreLabel.textContent=sortBy.value==='proximity'?'Search fit + near':'Search fit';
   const items=filteredJobs();
   const counter=document.getElementById('visibleCount');
   const rendered=items.slice(0,visibleJobLimit);

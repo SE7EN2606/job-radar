@@ -312,6 +312,8 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 @media(prefers-reduced-motion:reduce){#matchingProgressFill{transition:none}}
 
 
+.job-load-more{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px 12px;margin:4px 0 20px;color:#64748b;font-size:12px}
+.job-load-more[hidden]{display:none}
 .add-job-dialog{border:1px solid #dae2ef;border-radius:16px;padding:0;width:min(670px,calc(100vw - 24px));max-height:min(90vh,900px);box-shadow:0 30px 90px rgba(19,36,67,.22);background:#fff;color:#1c2d44;overflow:auto}
 .add-job-dialog::backdrop{background:rgba(9,20,37,.58)}
 .add-job-dialog form{padding:26px}
@@ -387,7 +389,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
     <div class="stat"><span class="muted">Hidden</span><b id="hiddenCount">0</b></div>
   </div>
 
-  <div class="opportunity-heading"><div><h2>All opportunities</h2><span id="visibleCount" class="muted">Your reviewed and discovered roles</span></div><label class="job-search"><span aria-hidden="true">⌕</span><input id="jobSearch" type="search" aria-label="Search jobs by company, title or location" placeholder="Search company, role, location…" oninput="renderCurrent()"><kbd>/</kbd></label></div>
+  <div class="opportunity-heading"><div><h2>All opportunities</h2><span id="visibleCount" class="muted">Your reviewed and discovered roles</span></div><label class="job-search"><span aria-hidden="true">⌕</span><input id="jobSearch" type="search" aria-label="Search jobs by company, title or location" placeholder="Search company, role, location…" oninput="resetJobPage();renderCurrent()"><kbd>/</kbd></label></div>
   <div class="proximity-bar" role="group" aria-label="Distance options">
    <label>From city <input id="distanceOrigin" type="text" placeholder="e.g. Tallinn, Estonia" autocomplete="off" aria-label="Reference city for distances"></label>
    <label>Radius <select id="distanceRadius" onchange="updateDistanceRadius(this.value)"><option value="50">50 km</option><option value="100">100 km</option><option value="150" selected>150 km</option><option value="250">250 km</option><option value="500">500 km</option><option value="1000">1,000 km</option></select></label>
@@ -432,6 +434,10 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 
   <div class="table" id="jobs">
     <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Match</div><div>Industry</div><div>Location</div><div>Distance</div><div>Posted / Seen</div><div>Salary</div><div>Vacancy</div><div></div></div>
+  </div>
+  <div id="jobLoadMore" class="job-load-more" hidden>
+    <button type="button" class="btn ghost" onclick="showMoreJobs()">Show 100 more</button>
+    <span id="jobLoadMoreMeta" class="muted"></span>
   </div>
 </div>
 <section id="settingsView" style="display:none;max-width:840px">
@@ -772,7 +778,7 @@ async function switchProfile(id){
  if(!profiles.list.some(p=>p.id===id))return;
  distanceRunToken++;
  if(activeProfileId!=='owner')saveLocalProfileState();
- activeProfileId=id;profiles.active=id;storeProfiles();selectedJobs.clear();closeDrawer();
+ activeProfileId=id;profiles.active=id;storeProfiles();selectedJobs.clear();closeDrawer();resetJobPage();
  state=id==='owner'?{hidden:[],applied:['duvo']}:localProfileState();
  if(id==='owner')await loadState();else await loadProfileJobs();
  renderProfileSettings();updateProfileUI();updateStats();renderCurrent();renderMatching();
@@ -904,7 +910,7 @@ function distanceKM(job){
  return directKM(a,b);
 }
 function onSortChanged(){
- renderCurrent();
+ resetJobPage();renderCurrent();
  const mode=document.getElementById('sortBy').value;
  if((mode==='nearest'||mode==='proximity')&&profile().homeCity&&allProfileJobs().length&&!cityCoordsCache[placeKey(profile().homeCity)?.key])calculateDistances();
 }
@@ -1148,6 +1154,11 @@ const jobs=[...curatedJobs];
 let state={hidden:[],applied:['duvo']};
 let currentTab='opportunities';
 let currentFilter='all';
+const JOB_PAGE_SIZE=100;
+let visibleJobLimit=JOB_PAGE_SIZE;
+function resetJobPage(){visibleJobLimit=JOB_PAGE_SIZE}
+function visiblePageJobs(){return filteredJobs().slice(0,visibleJobLimit)}
+function showMoreJobs(){visibleJobLimit+=JOB_PAGE_SIZE;renderCurrent()}
 let activeJobId=null;
 let lastScanGeneratedAt=null;
 const selectedJobs=new Set();
@@ -1295,9 +1306,14 @@ function renderCurrent(){
   const host=document.getElementById('jobs');host.querySelectorAll('.data,.empty').forEach(x=>x.remove());
   const scoreLabel=document.getElementById('scoreColumnLabel');if(scoreLabel)scoreLabel.textContent=sortBy.value==='proximity'?'Match + near':activeProfileId==='owner'?'Fit':'Search match';
   const items=filteredJobs();
-  const counter=document.getElementById('visibleCount');if(counter)counter.textContent=items.length+' '+(activeProfileId==='owner'?'role':'unverified lead')+(items.length===1?'':'s')+' in this view';
+  const counter=document.getElementById('visibleCount');
+  const rendered=items.slice(0,visibleJobLimit);
+  if(counter)counter.textContent=(items.length>visibleJobLimit?'Showing '+rendered.length+' of ':'')+items.length+' '+(activeProfileId==='owner'?'role':'unverified lead')+(items.length===1?'':'s')+' in this view';
+  const more=document.getElementById('jobLoadMore');
+  more.hidden=items.length<=rendered.length;
+  document.getElementById('jobLoadMoreMeta').textContent=items.length-rendered.length+' more available';
   if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent=activeProfileId==='owner'?'No jobs in this folder.':(profileResultMeta[activeProfileId]||'No current results for this profile')+' Use Run scan above to refresh. Employer verification is still required.';host.appendChild(e);return}
-  items.forEach(j=>{
+  rendered.forEach(j=>{
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;
     const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
     const sourceLabel=j.foundVia||j.sourceDisplay||j.source||'Unknown source';
@@ -1332,12 +1348,12 @@ function updateBulkBar(){
   const n=selectedJobs.size;
   bulkCount.textContent=n+' selected';
   bulkBar.classList.toggle('show',n>0);
-  const visible=filteredJobs();
+  const visible=visiblePageJobs();
   selectAll.checked=visible.length>0&&visible.every(j=>selectedJobs.has(j.id));
   selectAll.indeterminate=visible.some(j=>selectedJobs.has(j.id))&&!selectAll.checked;
 }
 function toggleJobSelection(id,checked){if(checked)selectedJobs.add(id);else selectedJobs.delete(id);updateBulkBar()}
-function toggleSelectAll(checked){filteredJobs().forEach(j=>checked?selectedJobs.add(j.id):selectedJobs.delete(j.id));renderCurrent()}
+function toggleSelectAll(checked){visiblePageJobs().forEach(j=>checked?selectedJobs.add(j.id):selectedJobs.delete(j.id));renderCurrent()}
 function clearSelection(){selectedJobs.clear();renderCurrent()}
 async function bulkAction(action){
   const ids=[...selectedJobs];if(!ids.length)return;
@@ -1501,8 +1517,8 @@ function updateStats(){
   applied.textContent=allProfileJobs().filter(j=>isApplied(j)&&!isHidden(j)).length;
   hiddenCount.textContent=state.hidden.length;
 }
-function switchTab(tab,el){currentTab=tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
-function setFilter(filter,el){currentFilter=filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
+function switchTab(tab,el){currentTab=tab;resetJobPage();document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
+function setFilter(filter,el){currentFilter=filter;resetJobPage();document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderCurrent()}
 function jumpToTab(e,tab){if(e)e.preventDefault();showOpportunities();const button=document.querySelector('[data-tab="'+tab+'"]');if(button)switchTab(tab,button)}
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)){if(document.getElementById('radarView').style.display!=='none'){e.preventDefault();document.getElementById('jobSearch').focus();}}});
 async function enrichJobDetails(j){

@@ -450,4 +450,6 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/vizzia/jobs/account-executive_paris | Vizzia | Account Executive France | Paris, France | posted: 2026-11-07
 - [ ] https://www.welcometothejungle.com/en/companies/karmen/jobs/growth-intern_paris | Karmen | Account Executive (AE) B2B - CDI | Paris, France | posted: 2026-11-06
 
+- [ ] https://www.welcometothejungle.com/en/companies/yourban/jobs/f4a5e17a-d89a-4ac3-b241-b7fa475ac997 | Yourban | Founding Account Executive Enterprise (H/F) | Paris, France | 90000-120000 EUR | posted: 2026-10-27
+
 ## Processed

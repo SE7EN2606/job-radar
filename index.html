@@ -755,7 +755,7 @@ function updateProfileUI(){
  b.title=activeProfileId==='owner'?'Refresh published source listings; scheduled scans run automatically on GitHub Actions':'Run a candidate-specific discovery scan';
  if(activeProfileId==='owner'&&location.hostname.endsWith('github.io'))b.textContent='↻ Refresh listings';
  if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent=profileResultMeta[activeProfileId]||'No current results for this profile; run an updated scan.';
- else document.getElementById('scanMeta').textContent=lastScanGeneratedAt?'Career Ops: last scan '+new Date(lastScanGeneratedAt).toLocaleString():'Owner job search · results loaded';
+ else updateOwnerScanMeta();
  const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
  const top=document.getElementById('topProfileSelect');if(top)top.value=activeProfileId;
  const city=document.getElementById('distanceOrigin');if(city)city.value=profile().homeCity||'';
@@ -1879,20 +1879,52 @@ async function fetchScanPayload(useRaw=false){
   const url=useRaw?'https://raw.githubusercontent.com/SE7EN2606/job-radar/main/data/careerops-jobs.json?ts='+Date.now():'data/careerops-jobs.json?ts='+Date.now();
   const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('Unable to load Career Ops scan data');return res.json();
 }
+let ownerAtsscanMeta=null;
 function mergeScannedJobs(payload){
-  const incoming=payload.jobs||[];
-  for(const j of incoming){
-    const idx=jobs.findIndex(x=>x.id===j.id);
-    j.type=(j.type||'')+' scanned';
-    if(idx>=0 && jobs[idx].type.includes('scanned')) jobs[idx]={...jobs[idx],...j};
-    else if(idx<0) jobs.push(j);
+ const incoming=Array.isArray(payload?.jobs)?payload.jobs:[];
+ if(payload?.source==='owner-public-ats'){
+  const incomingIds=new Set(incoming.map(x=>x.id));
+  for(let i=jobs.length-1;i>=0;i--){
+   const j=jobs[i];
+   if(j.source==='owner-public-ats'&&j.id.startsWith('ownerats-')&&!incomingIds.has(j.id))jobs.splice(i,1);
   }
-  lastScanGeneratedAt=payload.generatedAt||lastScanGeneratedAt;
-  const when=payload.generatedAt?new Date(payload.generatedAt).toLocaleString():'not run yet';
-  scanMeta.textContent='Scanner: Career Ops ATS engine · last scan '+when+' · '+(payload.count||0)+' matches';
+  ownerAtsscanMeta={generatedAt:payload.generatedAt,count:incoming.length,newCount:payload.newCount||0,sourcesSucceeded:payload.sourcesSucceeded||0,sourcesChecked:payload.sourcesChecked||0};
+ }
+ for(const raw of incoming){
+  if(!raw||!raw.id||!raw.title||!raw.company)continue;
+  const j={...raw,type:String(raw.type||'scanned').includes('scanned')?raw.type:String(raw.type||'')+' scanned'};
+  const key=jobUrlKey(j.applyUrl||j.sourceUrl);
+  const idx=jobs.findIndex(x=>x.id===j.id||(key&&jobUrlKey(x.applyUrl||x.sourceUrl)===key));
+  if(idx>=0){
+   if(jobs[idx].type.includes('scanned')){
+    const id=jobs[idx].id;
+    jobs[idx]={...jobs[idx],...j,id};
+   }
+  }else jobs.push(j);
+ }
+ if(payload.generatedAt&&(!lastScanGeneratedAt||stamp(payload.generatedAt)>stamp(lastScanGeneratedAt)))lastScanGeneratedAt=payload.generatedAt;
+ updateOwnerScanMeta();
 }
-async function loadScannedJobs(){try{mergeScannedJobs(await fetchScanPayload(false))}catch{scanMeta.textContent='Curated roles loaded · scanner data unavailable'}}
-
+function updateOwnerScanMeta(){
+ const oldCount=jobs.filter(j=>j.id.startsWith('careerops-')).length;
+ if(ownerAtsscanMeta){
+  const m=ownerAtsscanMeta;
+  scanMeta.textContent='IT/SaaS ATS: '+m.count+' current listed leads · '+m.newCount+' newly indexed last run · '+m.sourcesSucceeded+'/'+m.sourcesChecked+' boards checked · '+new Date(m.generatedAt).toLocaleString()+' · Career Ops historical leads: '+oldCount;
+ }else scanMeta.textContent=lastScanGeneratedAt?'Career Ops snapshot: '+new Date(lastScanGeneratedAt).toLocaleString()+' · '+oldCount+' older leads':'No source scan available';
+}
+async function loadScannedJobs(){
+ const failures=[];
+ try{mergeScannedJobs(await fetchScanPayload(false))}catch(e){failures.push('Career Ops')}
+ try{
+  const r=await fetch('data/owner-ats-jobs.json?ts='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw Error('HTTP '+r.status);
+  const data=await r.json();
+  if(data.source!=='owner-public-ats'||!Array.isArray(data.jobs))throw Error('Bad owner ATS JSON');
+  mergeScannedJobs(data);
+ }catch(e){failures.push('IT/SaaS ATS')}
+ if(failures.length===2)scanMeta.textContent='Published job lists unavailable. Check GitHub Actions.';
+ else if(failures.length)scanMeta.textContent+=' · Unavailable: '+failures.join(', ');
+}
 async function scanSelectedProfile(e){
  const b=e?.currentTarget||document.getElementById('scanBtn');
  const p=profile();
@@ -1931,6 +1963,11 @@ async function scanSelectedProfile(e){
 
 async function scan(e){
   if(activeProfileId!=='owner'){await scanSelectedProfile(e);return}
+  if(location.hostname.endsWith('github.io')){
+    const b=e.currentTarget;b.disabled=true;b.textContent='Refreshing listings…';
+    try{await loadScannedJobs();updateStats();renderCurrent();renderMatching()}finally{b.disabled=false;b.textContent='↻ Refresh listings'}
+    return;
+  }
   const b=e.currentTarget,before=lastScanGeneratedAt;b.disabled=true;b.textContent='Starting…';scanMeta.textContent='Starting scanner…';
   try{
     const res=await fetch('/api/scan',{method:'POST'}),payload=await res.json();if(!res.ok)throw new Error(payload.error||payload.details||'Unable to start scan');
@@ -1945,7 +1982,7 @@ async function scan(e){
     }catch{}},5000);
   }catch(err){b.disabled=false;b.textContent='Scan now';scanMeta.textContent='Scan failed: '+err.message}
 }
-async function init(){await loadPublicProfiles();renderProfileSettings();await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent();renderMatching();await importSearchFromLink()}
+async function init(){await loadPublicProfiles();renderProfileSettings();if(activeProfileId==='owner')sortBy.value='newest';await Promise.all([loadState(),loadScannedJobs()]);if(activeProfileId!=='owner')await loadProfileJobs();updateProfileUI();updateStats();renderCurrent();renderMatching();await importSearchFromLink()}
 init();
 </script>
 </body>

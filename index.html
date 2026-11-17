@@ -404,7 +404,8 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
       <option value="fit-asc">Fit low → high</option>
       <option value="nearest">Distance: nearest first</option>
       <option value="proximity">Sort: match + proximity</option>
-      <option value="newest">Newest first</option>
+      <option value="newest">Recently discovered ↓</option>
+      <option value="posted-newest">Posting date ↓ (unknown last)</option>
       <option value="company">Company A → Z</option>
 
     </select>
@@ -427,7 +428,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
   </div>
 
   <div class="table" id="jobs">
-    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Match</div><div>Industry</div><div>Location</div><div>Distance</div><div>Posted</div><div>Salary</div><div>Vacancy</div><div></div></div>
+    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Match</div><div>Industry</div><div>Location</div><div>Distance</div><div>Posted / Seen</div><div>Salary</div><div>Vacancy</div><div></div></div>
   </div>
 </div>
 <section id="settingsView" style="display:none;max-width:840px">
@@ -630,10 +631,20 @@ function suggestedApplicationAnswer(label,j){
 
 
 const PROFILE_STORAGE='jobRadarLocalProfilesV1';
-const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manager; Enterprise Account Manager; Key Account Manager; Enterprise Customer Growth',experience:'10+ years enterprise SaaS; ecommerce, retail, strategic relationships, French and English',locations:'France; Estonia; Sweden; Switzerland; northern Italy; Prague; Slovenia; Warsaw; Portugal; Luxembourg; Monaco',excluded:'Finland; Norway; Denmark; Netherlands; Slovakia; Balkans except Slovenia; Spain; Austria; Germany; UK; Ireland; Malta; Cyprus; Belgium',salary:'90000',homeCity:'Tallinn, Estonia',distanceRadius:150,rules:'Prioritize renewals and account expansion; exclude mandatory consulting experience and hunter-only roles'};
+const defaultOwner={id:'owner',name:'My profile',roles:'Strategic Account Manager; Enterprise Account Manager; Key Account Manager; Enterprise Customer Growth; Enterprise Account Executive; Strategic Account Executive; Senior Account Executive; Commercial Account Executive; Account Director; Global Account Manager; Major Account Executive; IT Sales Executive; Senior Enterprise Sales Executive; Business Development Manager; Business Development Director; Solutions Sales Specialist; Business Solutions Manager; Regional Sales Manager; Sales Director; Enterprise Customer Success Manager; Channel Account Manager; Partner Manager; Alliances Manager',experience:'10+ years enterprise SaaS; ecommerce, retail, strategic relationships, French and English',locations:'France; Estonia; Sweden; Switzerland; northern Italy; Prague; Slovenia; Warsaw; Portugal; Luxembourg; Monaco',excluded:'Finland; Norway; Denmark; Netherlands; Slovakia; Balkans except Slovenia; Spain; Austria; Germany on-site; UK; Ireland; Malta; Cyprus; Belgium',salary:'90000',homeCity:'Tallinn, Estonia',distanceRadius:150,rules:'Prioritize renewals and account expansion; exclude mandatory consulting experience and hunter-only roles'};
 function getProfileStore(){try{const o=JSON.parse(localStorage.getItem(PROFILE_STORAGE)||'{}');const list=Array.isArray(o.list)?o.list:[];const savedOwner=list.find(x=>x.id==='owner')||{};return {list:[{...defaultOwner,...savedOwner,id:'owner'},...list.filter(x=>x.id!=='owner')],active:o.active||'owner'}}catch{return {list:[defaultOwner],active:'owner'}}}
 let profiles=getProfileStore();
 let activeProfileId=profiles.list.some(x=>x.id===profiles.active)?profiles.active:'owner';
+const OWNER_ROLE_ADDITIONS=['Enterprise Account Executive','Strategic Account Executive','Senior Account Executive','Commercial Account Executive','Account Director','Global Account Manager','Major Account Executive','IT Sales Executive','Senior Enterprise Sales Executive','Business Development Manager','Business Development Director','Solutions Sales Specialist','Business Solutions Manager','Regional Sales Manager','Sales Director','Enterprise Customer Success Manager','Channel Account Manager','Partner Manager','Alliances Manager'];
+const ownerProfile=profiles.list.find(p=>p.id==='owner');
+if(ownerProfile){
+ const existing=String(ownerProfile.roles||'').split(/[;\n]/).map(x=>x.trim()).filter(Boolean);
+ const seen=new Set(existing.map(x=>x.toLowerCase()));
+ for(const role of OWNER_ROLE_ADDITIONS)if(!seen.has(role.toLowerCase()))existing.push(role);
+ ownerProfile.roles=existing.join('; ');
+ ownerProfile.excluded=String(ownerProfile.excluded||'').replace(/\bGermany(?=\s*;|\s*$)/i,'Germany on-site (remote roles reviewed separately)');
+}
+
 
 const PUBLIC_PROFILE_DIRECTORY='data/profiles-public.json';
 let publicProfileIds=new Set();
@@ -741,7 +752,8 @@ function updateProfileUI(){
  // The top-right native select is now the visible candidate label; no old label node remains.
  const avatar=document.getElementById('profileAvatar');if(avatar)avatar.textContent=(profile().name||'P').trim().charAt(0).toUpperCase();
  const b=document.getElementById('scanBtn');b.disabled=false;
- b.title=activeProfileId==='owner'?'Run job scan':'Run a candidate-specific discovery scan';
+ b.title=activeProfileId==='owner'?'Refresh published source listings; scheduled scans run automatically on GitHub Actions':'Run a candidate-specific discovery scan';
+ if(activeProfileId==='owner'&&location.hostname.endsWith('github.io'))b.textContent='↻ Refresh listings';
  if(activeProfileId!=='owner')document.getElementById('scanMeta').textContent=profileResultMeta[activeProfileId]||'No current results for this profile; run an updated scan.';
  else document.getElementById('scanMeta').textContent=lastScanGeneratedAt?'Career Ops: last scan '+new Date(lastScanGeneratedAt).toLocaleString():'Owner job search · results loaded';
  const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
@@ -969,6 +981,8 @@ function industryFor(job){
 }
 function vacancyInfo(job){
  const status=String(job.verificationStatus||'').toLowerCase();
+ if(status==='listed-at-source')return {label:'Listed on ATS',tone:'info'};
+ if(status==='not-rechecked')return {label:'Not rechecked',tone:'warn'};
  if(status==='verified-open'||status==='verified_open')return {label:'Verified open',tone:'good'};
  if(status==='closed'||status==='expired')return {label:'Closed',tone:'bad'};
  return {label:'Not verified',tone:'warn'};
@@ -1180,8 +1194,10 @@ function statusPill(j){
 }
 function practicalFit(j){
   const loc=(j.location||'').toLowerCase();
-  const excluded=['london','united kingdom','germany','austria','spain','netherlands','belgium','ireland','malta','cyprus','denmark','norway','finland','slovakia'];
-  if(j.type.includes('blocked')||excluded.some(x=>loc.includes(x))) return Math.min(Number(j.fit)||0,45);
+  const excluded=['london','united kingdom','austria','spain','netherlands','belgium','ireland','malta','cyprus','denmark','norway','finland','slovakia'];
+  const remote=/remote|home.?office|teletravail|télétravail/.test(loc)||j.type.includes('remote');
+  if(j.type.includes('blocked')||(!remote&&excluded.concat(['germany']).some(x=>loc.includes(x))))return Math.min(Number(j.fit)||0,45);
+  if(j.locationCategory==='country-limited-remote')return Math.min(Number(j.fit)||0,66);
   return Number(j.fit)||0;
 }
 function filteredJobs(){
@@ -1197,16 +1213,25 @@ function filteredJobs(){
   if(query)list=list.filter(j=>[j.company,j.title,j.location,j.domain,j.salary].some(v=>String(v||'').toLocaleLowerCase().includes(query)));
   const mode=sortBy.value;
   list.sort((a,b)=>{
-    if(mode==='newest'&&Boolean(a.type==='manual')!==Boolean(b.type==='manual'))return a.type==='manual'?-1:1;
+    if(mode==='newest')return discoveredTimestamp(b)-discoveredTimestamp(a)||practicalFit(b)-practicalFit(a);
+    if(mode==='posted-newest')return postedTimestamp(b)-postedTimestamp(a)||discoveredTimestamp(b)-discoveredTimestamp(a);
     if(mode==='fit-asc') return practicalFit(a)-practicalFit(b);
     if(mode==='nearest'){const aKm=distanceKM(a),bKm=distanceKM(b);return (aKm===null?Infinity:aKm)-(bKm===null?Infinity:bKm)||practicalFit(b)-practicalFit(a)}
     if(mode==='proximity')return weightedFit(b)-weightedFit(a)||practicalFit(b)-practicalFit(a);
     if(mode==='company') return a.company.localeCompare(b.company);
 
-    if(mode==='newest') return String(b.datePosted||'').localeCompare(String(a.datePosted||''));
+
     return practicalFit(b)-practicalFit(a);
   });
   return list;
+}
+function stamp(value){const ms=Date.parse(value||'');return Number.isFinite(ms)?ms:0}
+function postedTimestamp(job){return stamp(job.datePosted)}
+function discoveredTimestamp(job){return stamp(job.firstSeenAt||job.addedAt||job.datePosted||job.updatedAt)}
+function displayJobDate(job){
+ if(postedTimestamp(job))return formatDate(job.datePosted);
+ const seen=job.firstSeenAt||job.addedAt;
+ return seen?'Seen '+formatDate(seen):'—';
 }
 function formatDate(value){
   if(!value) return '—';
@@ -1286,7 +1311,7 @@ function renderCurrent(){
       '<div class="industry">'+escapeJobText(industry)+'</div>'+
       '<div>'+escapeJobText(j.location||'—')+'</div>'+
       '<div class="'+(inRadius?'proximity-near':km===null?'proximity-unknown':'')+'">'+escapeJobText(proximityText)+'</div>'+
-      '<div>'+escapeJobText(formatDate(j.datePosted))+'</div>'+
+      '<div>'+escapeJobText(displayJobDate(j))+'</div>'+
       '<div class="salary">'+escapeJobText(j.salary&&j.salary!=='Undisclosed'?j.salary:'—')+'</div>'+
       '<div><span class="pill '+vacancy.tone+'">'+escapeJobText(vacancy.label)+'</span></div>'+
       '<div class="actions"><button class="btn ghost small" onclick="openDrawer(\''+id+'\')">Review</button></div>';

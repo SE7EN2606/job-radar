@@ -1,0 +1,22 @@
+name: Owner ATS scanner tests
+on:
+  push:
+    paths:
+      - "scanner/owner_ats.mjs"
+      - "tests/owner-ats.test.mjs"
+      - ".github/workflows/test-owner-ats.yml"
+  pull_request:
+    paths:
+      - "scanner/owner_ats.mjs"
+      - "tests/owner-ats.test.mjs"
+      - ".github/workflows/test-owner-ats.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - run: node --test tests/owner-ats.test.mjs

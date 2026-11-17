@@ -20,6 +20,23 @@ The current version is a static front-end prototype. It demonstrates the intende
 - Cover-letter angle
 - Application / follow-up states
 
+## Owner IT/SaaS search (November 2026)
+
+The owner account now has two separate discovery lanes:
+
+- **Fresh ATS scan:** \`scanner/owner_ats.mjs\` reads public employer job-board APIs (Greenhouse and Ashby), not JobSpy. \`.github/workflows/scan-owner-ats.yml\` runs on weekdays and when the scanner is changed. It writes \`data/owner-ats-jobs.json\` with the current listed jobs, first-seen dates, source status, and new-since-last-scan count. A temporary API outage marks retained records "not rechecked" rather than claiming they are open.
+- **Career Ops:** \`careerops/portals.yml\`, \`careerops/export.mjs\` and \`.github/workflows/scan-careerops.yml\` provide additional leads from company boards and Welcome to the Jungle. Its historical results are not independently guaranteed live.
+
+Both feeds load into the **owner** Opportunities view, which deduplicates matching URLs and preserves the original job ID when available to retain local Yes/No decisions. The owner defaults to "Recently discovered". "Posting date" sorts only actual known posting dates; where absent, "Seen" is clearly labeled. The "New this week" and "EU/EMEA remote only" filters are optional.
+
+Germany-based remote roles are *discoverable*, not presumed eligible for someone living in Estonia. Country-limited remote vacancies receive a lower score until authorized hiring countries and language requirements are verified.
+
+On GitHub Pages, **Refresh listings** only reloads published JSON. To initiate a new ATS collection, use the **Run fresh IT/SaaS scan on GitHub** link (requires appropriate GitHub permissions). No token is embedded in the static website.
+
+All owner-only configuration lives in the scanner, \`careerops/\` and owner defaults inside \`index.html\`. Clément's public directory entry and profile-specific JobSpy scanner remain unchanged.
+
+Job Board APIs are public interfaces for employer-hosted vacancies, but public access does not imply unrestricted commercial redistribution. Check each source's terms before selling or republishing feed data at scale.
+
 ## Run locally
 
 No build process is required.

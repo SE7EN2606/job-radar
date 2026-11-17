@@ -404,6 +404,12 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
       <button class="chip" data-tab="applied" onclick="switchTab('applied',this)">Applied</button>
       <button class="chip" data-tab="hidden" onclick="switchTab('hidden',this)">Hidden <span id="hiddenTabCount">0</span></button>
     </div>
+    <select id="jobSourceFilter" aria-label="Job source" onchange="resetJobPage();renderCurrent()">
+      <option value="all">All sources</option>
+      <option value="fresh">Fresh employer ATS</option>
+      <option value="careerops">Career Ops leads</option>
+      <option value="manual">Manually added</option>
+    </select>
     <select id="sortBy" onchange="onSortChanged()">
       <option value="fit-desc">Sort: Fit high → low</option>
       <option value="fit-asc">Fit low → high</option>
@@ -767,6 +773,8 @@ function updateProfileUI(){
  else updateOwnerScanMeta();
  const strongLabel=document.getElementById('strongLabel');if(strongLabel)strongLabel.textContent=activeProfileId==='owner'?'Strong matches':'High title/location relevance';
  const ownerLink=document.getElementById('ownerFreshScanLink');if(ownerLink)ownerLink.hidden=activeProfileId!=='owner';
+ const sourceFilter=document.getElementById('jobSourceFilter');
+ if(sourceFilter&&activeProfileId!=='owner')sourceFilter.value='all';
  const top=document.getElementById('topProfileSelect');if(top)top.value=activeProfileId;
  const city=document.getElementById('distanceOrigin');if(city)city.value=profile().homeCity||'';
  const radius=document.getElementById('distanceRadius');if(radius)radius.value=String(profile().distanceRadius||150);
@@ -1225,6 +1233,10 @@ function filteredJobs(){
     return !isHidden(j)&&!isApplied(j);
   });
   if(currentFilter!=='all') list=list.filter(j=>j.type.includes(currentFilter));
+  const source=document.getElementById('jobSourceFilter')?.value||'all';
+  if(source==='fresh')list=list.filter(j=>j.source==='owner-public-ats');
+  else if(source==='careerops')list=list.filter(j=>j.id.startsWith('careerops-'));
+  else if(source==='manual')list=list.filter(j=>j.type==='manual');
   if(document.getElementById('withinRadius')?.checked)list=list.filter(j=>{const km=distanceKM(j);return km!==null&&km<=Number(profile().distanceRadius||150)});
   if(document.getElementById('newThisWeek')?.checked)list=list.filter(j=>discoveredTimestamp(j)>Date.now()-7*86400000);
   if(document.getElementById('europeRemoteOnly')?.checked)list=list.filter(j=>j.locationCategory==='europe-remote'||/(?:remote.{0,18}(?:eu\b|europe|emea)|(?:europe|emea).{0,18}remote)/i.test(j.location||''));

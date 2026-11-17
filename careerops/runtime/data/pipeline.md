@@ -303,4 +303,6 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/tenacy/jobs/2604f3a5-d8a9-4dd6-ae3e-073060f28ea7 | Tenacy | Customer Success Manager - Onboarding | Lyon, France | 45000-50000 EUR | posted: 2026-11-17
 - [ ] https://www.welcometothejungle.com/en/companies/clerk/jobs/customer-success-manager_begles | Haiku | Customer Success Manager | Bègles, France, Remote | 45000-60000 EUR | posted: 2026-11-17
 
+- [ ] https://www.welcometothejungle.com/en/companies/hublo/jobs/key-account-manager-fullstack-public-sector-x-f-m_paris | Hublo | Key Account Manager fullstack - Public Sector (x/f/m) | Paris, France | 60000-96000 EUR | posted: 2026-11-17
+
 ## Processed

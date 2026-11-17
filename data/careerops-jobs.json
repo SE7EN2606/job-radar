@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-17T16:07:42.011Z",
+  "generatedAt": "2026-11-17T18:54:20.244Z",
   "source": "career-ops",
-  "count": 1441,
+  "count": 1445,
   "jobs": [
     {
       "id": "careerops-303bce05fc2f12f05c44",
@@ -8859,6 +8859,41 @@
       "language": ""
     },
     {
+      "id": "careerops-8b59dd749bd80611641b",
+      "company": "Hublo",
+      "title": "Key Account Manager fullstack - Public Sector (x/f/m)",
+      "fit": 74,
+      "domainFit": 74,
+      "hunter": "Low",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/hublo/jobs/key-account-manager-fullstack-public-sector-x-f-m_paris",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/hublo/jobs/key-account-manager-fullstack-public-sector-x-f-m_paris",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-17",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-06db460aede4a054e871",
       "company": "hupso",
       "title": "Head of Customer success",
@@ -9204,6 +9239,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/innovorder/jobs/responsable-developpement-grands-comptes-restauration-collective-h-f_paris_INNOV_JWKQRpw",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-11-13",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-6568642a95981f9371d9",
+      "company": "Innovorder",
+      "title": "Responsable Développement Grands Comptes – Restauration collective (H/F)",
+      "fit": 74,
+      "domainFit": 74,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/innovorder/jobs/responsable-developpement-grands-comptes-restauration-collective-h-f_paris_INNOV_22y2x07",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/innovorder/jobs/responsable-developpement-grands-comptes-restauration-collective-h-f_paris_INNOV_22y2x07",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-17",
       "description": "",
       "trustScore": "",
       "language": ""
@@ -18309,6 +18379,41 @@
       "language": ""
     },
     {
+      "id": "careerops-d1d3b7d0b8aa11a905a7",
+      "company": "WENES Group",
+      "title": "Responsable développement commercial - Grands Comptes",
+      "fit": 74,
+      "domainFit": 74,
+      "hunter": "Medium",
+      "location": "Alfortville, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned growth",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/wenes/jobs/responsable-developpement-commercial-grands-comptes_alfortville",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/wenes/jobs/responsable-developpement-commercial-grands-comptes_alfortville",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-17",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
       "id": "careerops-5ad14aabdaa9229db7f9",
       "company": "Wezen",
       "title": "Customer Success Manager",
@@ -22294,6 +22399,41 @@
       "applyUrl": "https://www.welcometothejungle.com/en/companies/innovorder/jobs/account-executive-senior-restauration-commerciale-h-f_paris_INNOV_VZrM4p2",
       "companyUrl": "https://welcometothejungle.com",
       "datePosted": "2026-11-13",
+      "description": "",
+      "trustScore": "",
+      "language": ""
+    },
+    {
+      "id": "careerops-e4df572ee3da5080352d",
+      "company": "Innovorder",
+      "title": "Account Executive senior - Restauration commerciale (H/F)",
+      "fit": 64,
+      "domainFit": 64,
+      "hunter": "Medium",
+      "location": "Paris, France",
+      "salary": "Undisclosed",
+      "rating": "—",
+      "status": "Review",
+      "statusTone": "warn",
+      "type": "careerops scanned ae",
+      "rec": "INVESTIGATE",
+      "pros": [
+        "Direct ATS/company career source via Career Ops",
+        "Provider: wttj-api"
+      ],
+      "cons": [
+        "First-pass score; description-level evaluation follows after review"
+      ],
+      "diff": "Use the job description for controlled CV tailoring before applying.",
+      "cover": "Generate after job-description review.",
+      "source": "career-ops",
+      "sourceDisplay": "Company ATS · wttj-api",
+      "foundVia": "Career Ops · wttj-api",
+      "provider": "wttj-api",
+      "sourceUrl": "https://www.welcometothejungle.com/en/companies/innovorder/jobs/account-executive-senior-restauration-commerciale-h-f_paris_INNOV_q3JOJPy",
+      "applyUrl": "https://www.welcometothejungle.com/en/companies/innovorder/jobs/account-executive-senior-restauration-commerciale-h-f_paris_INNOV_q3JOJPy",
+      "companyUrl": "https://welcometothejungle.com",
+      "datePosted": "2026-11-17",
       "description": "",
       "trustScore": "",
       "language": ""

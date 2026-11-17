@@ -31,14 +31,20 @@ function domain(url){
 function typeFor(title,location){
   const t=(title||'').toLowerCase();
   const types=['careerops','scanned'];
-  if(/account manager|customer success|expansion|account director|key account|grands comptes|clientèle/.test(t)) types.push('growth');
-  if(/account executive/.test(t)) types.push('ae');
-  if(/remote/i.test(location||'')) types.push('remote');
+  if(/account manager|customer success|expansion|account director|key account|grands comptes|clientèle|renewal|partner manager|channel account/.test(t)) types.push('growth');
+  if(/account executive|sales executive|sales director|sales manager|business development manager|solutions sales/.test(t)) types.push('ae');
+  if(/remote|home.?office|télétravail|teletravail/i.test(location||'')) types.push('remote');
   return types.join(' ');
 }
 function allowedLocation(location){
   const l=String(location||'').toLowerCase().trim();
-  if(!l) return false;
+  if(!l)return false;
+  // Germany and other European countries are eligible for DISCOVERY when
+  // explicitly marked remote; the right to work from Estonia is not implied.
+  const remote=/remote|home.?office|t[eé]l[eé]travail/.test(l);
+  const europe=/germany|deutschland|france|estonia|sweden|switzerland|italy|poland|portugal|slovenia|czechia|europe|european|emea|netherlands|belgium|spain|austria|denmark|finland|norway|luxembourg|romania|hungary|croatia|latvia|lithuania|bulgaria|greece/.test(l);
+  const outside=/united states|usa|united kingdom|london|india|australia|singapore|brazil|canada|japan|south korea|mexico|uae|united arab emirates/.test(l);
+  if(remote&&europe&&!outside)return true;
 
   // Explicitly eligible countries/cities. Italy is north-only; Czech=Prague only; Poland=Warsaw only.
   const allowed=[
@@ -68,8 +74,11 @@ function score(title, location){
   domainFit=Math.min(99,domainFit);
 
   let practical=domainFit;
+  const l=String(location||'').toLowerCase();
+  const remote=/remote|home.?office|t[eé]l[eé]travail/.test(l);
   const blocked=['united kingdom','london','germany','austria','spain','netherlands','belgium','ireland','malta','cyprus','denmark','norway','finland','slovakia'];
-  if(blocked.some(x=>(location||'').toLowerCase().includes(x))) practical=Math.min(practical,45);
+  if(!remote&&blocked.some(x=>l.includes(x)))practical=Math.min(practical,45);
+  if(remote&&blocked.some(x=>l.includes(x)))practical=Math.min(practical,66); // Country-remote, eligibility unknown
   return {practical,domainFit};
 }
 
@@ -91,7 +100,9 @@ for(const line of lines){
   if(!/^https?:\/\//.test(row.url)||!row.title||!row.company) continue;
   // Keep records that Career Ops accepted into its pipeline, plus previously
   // seen live records. Drop explicit filter/expired statuses.
-  if(/filtered|expired|closed|blacklist/i.test(row.status||'')) continue;
+  if(/filtered|expired|closed|blacklist/i.test(row.status||''))continue;
+  const when=Date.parse(row.posted_at||row.first_seen||'');
+  if(Number.isFinite(when)&&Date.now()-when>45*86400000)continue;
   byUrl.set(row.url,row);
 }
 
@@ -112,10 +123,10 @@ for(const row of byUrl.values()){
     location:row.location||'Unspecified',
     salary:'Undisclosed',
     rating:'—',
-    status:isApplied?'APPLIED':(practical>=80?'Strong match':'Review'),
-    statusTone:isApplied?'info':(practical>=80?'good':'warn'),
+    status:isApplied?'APPLIED':'Unverified vacancy',
+    statusTone:isApplied?'info':'warn',
     type:typeFor(row.title,row.location)+(isApplied?' applied':''),
-    rec:isApplied?'APPLIED':(practical>=80?'APPLY / REVIEW':'INVESTIGATE'),
+    rec:isApplied?'APPLIED':'INVESTIGATE',
     pros:['Direct ATS/company career source via Career Ops',row.portal?('Provider: '+row.portal):''],
     cons:['First-pass score; description-level evaluation follows after review'].filter(Boolean),
     diff:'Use the job description for controlled CV tailoring before applying.',
@@ -127,8 +138,11 @@ for(const row of byUrl.values()){
     sourceUrl:row.url,
     applyUrl:row.url,
     companyUrl:'https://'+domain(row.url),
-    datePosted:row.posted_at||row.first_seen||'',
+    datePosted:row.posted_at||'',
+    firstSeenAt:row.first_seen||'',
     description:'',
+    verificationStatus:'unverified',
+    locationEligibility:/remote/i.test(row.location||'')?'Check permitted countries; remote does not mean Estonia eligible':'Check work location and employment authorization',
     trustScore:row.trust_score||'',
     language:row.language||''
   });

@@ -299,4 +299,8 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/spendesk/jobs/customer-success-manager-french-market_paris_SPEND_qQW8r1y | Spendesk | Customer Success Manager - French Market | Paris, France | posted: 2026-11-17
 - [ ] https://www.welcometothejungle.com/en/companies/ooti/jobs/account-manager-customer-success-produit_paris | OOTI | Account Manager Customer Success & Produit | Paris, France | 32000-37000 EUR | posted: 2026-11-17
 
+- [ ] https://www.welcometothejungle.com/en/companies/widilo-by-afiliza/jobs/key-account-manager-italian-market_paris | Widilo Cashback | Key Account Manager - Italian market | Paris, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/tenacy/jobs/2604f3a5-d8a9-4dd6-ae3e-073060f28ea7 | Tenacy | Customer Success Manager - Onboarding | Lyon, France | 45000-50000 EUR | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/clerk/jobs/customer-success-manager_begles | Haiku | Customer Success Manager | Bègles, France, Remote | 45000-60000 EUR | posted: 2026-11-17
+
 ## Processed

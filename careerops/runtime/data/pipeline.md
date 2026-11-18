@@ -452,4 +452,18 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 
 - [ ] https://www.welcometothejungle.com/en/companies/yourban/jobs/f4a5e17a-d89a-4ac3-b241-b7fa475ac997 | Yourban | Founding Account Executive Enterprise (H/F) | Paris, France | 90000-120000 EUR | posted: 2026-10-27
 
+- [ ] https://www.welcometothejungle.com/en/companies/witco/jobs/full-cycle-account-executive-us-market-h-f_paris | Witco | Full-Cycle Account Executive - US market (H/F) | Paris, France | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/nextories/jobs/key-account-manager_paris | Nextories | Key Account Manager (H/F) -CDI- PARIS | Paris, France | 45000-60000 EUR | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-en-logistique-h-f-cdi-nantes-carquefou-44_nantes | Gojob | Key Account Manager en Logistique H/F - (CDI) - Nantes/Carquefou (44) | Nantes, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/quadient/jobs/leader-customer-success-digital-europe_paris | Quadient | Leader Customer Success Digital Europe | Paris, France | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/playplay/jobs/customer-success-manager-mid-market_paris_tmayna2i | PlayPlay | Customer Success Manager - Mid-Market | Paris, France | 42000-48000 EUR | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/trustpair/jobs/customer-success-manager-france-m-f-mx_paris_TRUST_9DeYjd1 | Trustpair | Customer Success Manager (France) M/F/Mx | Paris, France | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/madtech/jobs/csm_paris | Klara | Customer Success Care | Paris, France | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/beamy/jobs/senior-customer-success_paris | Beamy | Senior Customer Success / Account Manager | Paris, France | 60000-100000 EUR | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/bluelink/jobs/airline-customer-success-advisor-with-polish_prague | BlueLink | Airline Customer Success Advisor with Polish | Prague, Czech Republic | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/graneet/jobs/account-executive_paris_kkyiowpr | Graneet | Account Executive | Paris, France | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/dream-catcher-sales/jobs/account-executive-mid-market-scale-up-saas-b2b-martech-e-commerce-h-f_paris | Dream Catcher Sales | 🚀 Account Executive Mid-Market / Scale-up SaaS B2B - MarTech & E-commerce - H/F | Paris, France | 70000-100000 EUR | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/partoo/jobs/account-executive-mid-market-cdi-paris-h-f-x_paris | Partoo | Account Executive Mid Market - CDI - Paris - H/F/X | Paris, France | 87000-92000 EUR | posted: 2026-11-05
+- [ ] https://www.welcometothejungle.com/en/companies/tandem-health-global-sas/jobs/commercial-partnerships-france_paris | Tandem Health | Account Executive - SMB + Primary Care | Paris, France | posted: 2026-11-04
+
 ## Processed

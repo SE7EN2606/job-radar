@@ -37,32 +37,34 @@ function typeFor(title,location){
   return types.join(' ');
 }
 function allowedLocation(location){
-  const l=String(location||'').toLowerCase().trim();
-  if(!l)return false;
-  // Germany and other European countries are eligible for DISCOVERY when
-  // explicitly marked remote; the right to work from Estonia is not implied.
-  const remote=/remote|home.?office|t[eé]l[eé]travail/.test(l);
-  const europe=/germany|deutschland|france|estonia|sweden|switzerland|italy|poland|portugal|slovenia|czechia|europe|european|emea|netherlands|belgium|spain|austria|denmark|finland|norway|luxembourg|romania|hungary|croatia|latvia|lithuania|bulgaria|greece/.test(l);
-  const outside=/united states|usa|united kingdom|london|india|australia|singapore|brazil|canada|japan|south korea|mexico|uae|united arab emirates/.test(l);
-  if(remote&&europe&&!outside)return true;
-
-  // Explicitly eligible countries/cities. Italy is north-only; Czech=Prague only; Poland=Warsaw only.
-  const allowed=[
-    'france','paris','lyon','montpellier','toulouse','bordeaux','lille','nantes','nice',
-    'estonia','tallinn',
-    'sweden','stockholm','gothenburg','malmö','malmo',
-    'switzerland','zurich','zürich','geneva','lausanne','romandy',
-    'milan','milano','turin','torino','bologna','verona','venice','venezia',
-    'prague','praha',
-    'slovenia','ljubljana',
-    'warsaw','warszawa',
-    'portugal','lisbon','lisboa','porto',
-    'luxembourg','monaco',
-    'remote europe','europe remote','remote - europe','remote, europe','eu remote','remote eu','emea remote','remote emea'
-  ];
-  return allowed.some(x=>l.includes(x));
+ const l=String(location||'').trim();
+ if(!l)return false;
+ // HARD EXCLUSION: US/Asia and other overseas positions, even "remote".
+ // No permissive fallback for generic "Remote" without European location.
+ const overseas=/\b(united states|usa|u\.s\.a?\.?|us[ -]only|us[ -]remote|us[ -]based|north america|america|asia|apac|india|japan|china|hong kong|taiwan|korea|philippines|vietnam|thailand|malaysia|singapore|indonesia|pakistan|bangladesh|israel|uae|dubai|turkey|türkiye|australia|new zealand|canada|brazil|mexico|argentina|colombia|latin america|latam|africa|egypt|south africa|california|new york|san francisco|los angeles|seattle|boston|chicago|austin|texas|toronto|vancouver|mumbai|bengaluru|tokyo|sydney|melbourne)\b/i;
+ if(overseas.test(l))return false;
+ const remote=/\b(remote|home.?office|t[eé]l[eé]travail)\b/i.test(l);
+ const europe=/\b(europe|european|emea|eea|dach|eu\b)\b/i;
+ if(remote&&europe.test(l))return true;
+ const allowedOffice=/\b(france|paris|lyon|marseille|montpellier|toulouse|bordeaux|lille|nantes|nice|strasbourg|rennes|estonia|tallinn|sweden|stockholm|gothenburg|malmö|malmo|switzerland|suisse|schweiz|zurich|zürich|geneva|genève|lausanne|basel|bern|zug|milan|milano|turin|torino|bologna|verona|venice|venezia|prague|praha|slovenia|ljubljana|warsaw|warszawa|portugal|lisbon|lisboa|porto|luxembourg|monaco)\b/i;
+ if(allowedOffice.test(l))return true;
+ // Germany (plus other European countries) only when explicitly remote:
+ // the owner has not requested physical relocation to those countries.
+ const remoteOnly=/\b(germany|deutschland|austria|spain|netherlands|belgium|ireland|poland|italy|denmark|norway|finland|slovakia|romania|hungary|croatia|latvia|lithuania|bulgaria|greece|czechia|cyprus|malta)\b/i;
+ return remote&&remoteOnly.test(l);
 }
-
+function postingSite(row){
+ const portal=String(row.portal||'').toLowerCase(),host=domain(row.url);
+ if(host.includes('linkedin.com')||portal.includes('linkedin'))return 'LinkedIn (legacy)';
+ if(host.includes('welcometothejungle.com')||portal.includes('wttj'))return 'Welcome to the Jungle';
+ if(host.includes('greenhouse.io')||portal.includes('greenhouse'))return 'Greenhouse';
+ if(host.includes('ashbyhq.com')||portal.includes('ashby'))return 'Ashby';
+ if(host.includes('teamtailor')||portal.includes('teamtailor'))return 'Teamtailor';
+ if(host.includes('lever.co')||portal.includes('lever'))return 'Lever';
+ if(host.includes('workable.com')||portal.includes('workable'))return 'Workable';
+ if(host.includes('recruitee.com')||portal.includes('recruitee'))return 'Recruitee';
+ return host||'Employer career website';
+}
 function score(title, location){
   const s=(title+' '+location).toLowerCase();
   let domainFit=60;
@@ -110,7 +112,8 @@ const jobs=[];
 for(const row of byUrl.values()){
   const id=idFor(row);
   if(hidden.has(id)) continue;
-  if(!allowedLocation(row.location)) continue;
+  if(!allowedLocation(row.location))continue;
+  if(postingSite(row)==='LinkedIn (legacy)')continue; // Owner scans do not scrape LinkedIn.
   const {practical,domainFit}=score(row.title,row.location);
   const isApplied=applied.has(id);
   jobs.push({
@@ -127,16 +130,17 @@ for(const row of byUrl.values()){
     statusTone:isApplied?'info':'warn',
     type:typeFor(row.title,row.location)+(isApplied?' applied':''),
     rec:isApplied?'APPLIED':'INVESTIGATE',
-    pros:['Direct ATS/company career source via Career Ops',row.portal?('Provider: '+row.portal):''],
+    pros:['Discovered by Career Ops',row.portal?('Collector: '+row.portal):''],
     cons:['First-pass score; description-level evaluation follows after review'].filter(Boolean),
     diff:'Use the job description for controlled CV tailoring before applying.',
     cover:'Generate after job-description review.',
     source:'career-ops',
-    sourceDisplay:row.portal ? ('Company ATS · '+row.portal) : 'Company career site',
-    foundVia:row.portal ? ('Career Ops · '+row.portal) : 'Career Ops',
+    sourceDisplay:postingSite(row)+' · Career Ops',
+    postingSite:postingSite(row),discoveryMethod:'Career Ops '+(row.portal||'source'),
+    foundVia:'Career Ops · '+postingSite(row),
     provider:row.portal||'',
     sourceUrl:row.url,
-    applyUrl:row.url,
+    applyUrl:row.url,originalPostingUrl:row.url,
     companyUrl:'https://'+domain(row.url),
     datePosted:row.posted_at||'',
     firstSeenAt:row.first_seen||'',

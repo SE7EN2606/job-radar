@@ -23,13 +23,22 @@ try{
     id:'careerops-duplicate',title:'Enterprise Account Executive',company:'Mock IT Germany',
     location:'Remote - Germany',fit:40,type:'scanned ae',source:'career-ops',
     sourceUrl:'https://job-boards.greenhouse.io/mock/jobs/101',applyUrl:'https://job-boards.greenhouse.io/mock/jobs/101',datePosted:''}]})}));
- let currentJobs=jobs;
+ const overseas=[
+  {...jobs[2],id:'ownerats-testus',company:'Mock IT USA',location:'Remote - United States',
+   applyUrl:'https://jobs.ashbyhq.com/mock/201',sourceUrl:'https://jobs.ashbyhq.com/mock/201'},
+  {...jobs[2],id:'ownerats-testasia',company:'Mock IT Asia',location:'Remote - Singapore / Asia',
+   applyUrl:'https://jobs.ashbyhq.com/mock/202',sourceUrl:'https://jobs.ashbyhq.com/mock/202'},
+  {...jobs[2],id:'ownerats-testanywhere',company:'Mock IT Anywhere',location:'Remote - Global',
+   applyUrl:'https://jobs.ashbyhq.com/mock/203',sourceUrl:'https://jobs.ashbyhq.com/mock/203'}
+ ];
+ let currentJobs=[...jobs,...overseas];
  await page.route('**/data/owner-ats-jobs.json*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(payload(currentJobs))}));
  await page.goto('http://127.0.0.1:8765/',{waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>document.querySelector('#scanMeta')?.textContent.includes('IT/SaaS ATS:'));
  const facts=await page.evaluate(()=>({
   active:activeProfileId,mode:sortBy.value,roles:profile().roles,
-  matches:allProfileJobs().filter(j=>j.company.startsWith('Mock IT')).map(j=>({id:j.id,company:j.company,fit:practicalFit(j)})),
+  matches:filteredJobs().filter(j=>j.company.startsWith('Mock IT')).map(j=>({id:j.id,company:j.company,fit:practicalFit(j)})),
+  queue:matchingQueue().filter(j=>j.company.startsWith('Mock IT')).map(j=>j.company),
   meta:scanMeta.textContent
  }));
  if(facts.active!=='owner')throw Error('owner profile not active');
@@ -37,8 +46,15 @@ try{
  if(facts.mode!=='newest')throw Error('Default sort not recently discovered');
  if(facts.matches.length!==3)throw Error('Expected 3 jobs with deduplicated original '+JSON.stringify(facts.matches));
  if(facts.matches.find(x=>x.company==='Mock IT Germany')?.fit>66)throw Error('Germany remote eligibility cap missing');
+ if(facts.queue.some(c=>/USA|Asia|Anywhere/.test(c)))throw Error('Overseas job leaked into Job Matching');
+ const noOverseas=await page.evaluate(()=>['Mock IT USA','Mock IT Asia','Mock IT Anywhere'].every(c=>!filteredJobs().some(j=>j.company===c)));
+ if(!noOverseas)throw Error('Overseas/unknown remote job leaked into owner list');
  await page.locator('#jobSearch').fill('Mock IT');
  await page.waitForFunction(()=>document.querySelectorAll('#jobs .row.data').length===3);
+ const src=await page.locator('#jobs .row.data').filter({hasText:'Mock IT Europe'}).locator('.source-column').textContent();
+ if(!src.includes('Ashby')||!src.includes('Direct employer feed'))throw Error('Posting source and discovery method not identified: '+src);
+ const sourceLink=await page.locator('#jobs .row.data').filter({hasText:'Mock IT Europe'}).locator('.source-column a').getAttribute('href');
+ if(sourceLink!=='https://jobs.ashbyhq.com/mock/103')throw Error('Source link does not lead to original advert');
  const first=async()=>page.locator('#jobs .row.data').first().textContent();
  if(!(await first()).includes('Mock IT Germany'))throw Error('Discovery sort newest should be Germany');
  await page.locator('#sortBy').selectOption('posted-newest');

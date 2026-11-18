@@ -11,7 +11,7 @@ a{color:var(--accent)}.app{display:grid;grid-template-columns:250px 1fr;min-heig
 .main{padding:28px;max-width:1550px;width:100%}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}.top h1{margin:0;font-size:28px}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.btn:disabled{cursor:not-allowed}.btn.primary{background:var(--accent);color:#07101f}.btn.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.btn.danger{background:transparent;color:var(--bad);border:1px solid rgba(255,107,107,.4)}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}.stat b{display:block;font-size:26px;margin-top:6px}.muted{color:var(--muted)}
 .toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:14px 0 18px;flex-wrap:wrap}.tabs,.filters{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}.chip.active{color:var(--text);border-color:var(--accent)}select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
-.table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.row{display:grid;grid-template-columns:34px 1.85fr .52fr .72fr .81fr .9fr .65fr .75fr .65fr .75fr .65fr;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}.row.head{border-top:0;background:#10182a;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}.row.blocked{background:rgba(255,107,107,.035)}.company{font-weight:800}.title{font-size:13px;color:var(--muted);margin-top:4px}.meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.info{color:var(--accent)}.score{font-size:22px;font-weight:900}.salary{font-weight:700}.actions{display:flex;gap:6px;justify-content:flex-end}.small{padding:7px 9px;font-size:12px}
+.table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.row{display:grid;grid-template-columns:34px 2.05fr .55fr .68fr .8fr .76fr .82fr .62fr .95fr .72fr;gap:10px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}.row.head{border-top:0;background:#10182a;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em}.row.blocked{background:rgba(255,107,107,.035)}.company{font-weight:800}.title{font-size:13px;color:var(--muted);margin-top:4px}.meta{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.info{color:var(--accent)}.score{font-size:22px;font-weight:900}.salary{font-weight:700}.actions{display:flex;gap:6px;justify-content:flex-end}.small{padding:7px 9px;font-size:12px}
 .drawer{display:none;position:fixed;right:0;top:0;width:min(680px,96vw);height:100vh;background:#0f1728;border-left:1px solid var(--line);padding:24px;overflow:auto;box-shadow:-20px 0 60px rgba(0,0,0,.35);z-index:20}.drawer.open{display:block}.drawer h2{margin:0 0 6px}.section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.section h3{margin:0 0 10px;font-size:15px}.kv{display:grid;grid-template-columns:145px 1fr;gap:8px;font-size:14px;margin:6px 0}.diff,.copybox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;background:#0a1120;border-radius:10px;padding:12px;line-height:1.5}.drawer-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}.empty{padding:40px;text-align:center;color:var(--muted)}.bulkbar{display:none;align-items:center;gap:8px;margin:10px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.bulkbar.show{display:flex}.bulkbar .spacer{flex:1}.row input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 @media(max-width:1100px){.app{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1.8fr .6fr .7fr .9fr 1fr .7fr}.row>*:nth-child(3),.row>*:nth-child(6){display:none}}
 .profileFields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.profileFields label{display:flex;flex-direction:column;gap:7px;color:var(--muted);font-size:13px}.profileFields textarea,.profileFields input{background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px;font:inherit;width:100%}.profileFields label:not(:first-child){grid-column:1/-1}.questionEntry{padding:12px 0;border-top:1px solid var(--line)}.questionEntry label{font-weight:700;display:block;margin-bottom:5px}.questionEntry textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px;border-radius:9px;margin-top:8px;font:inherit}.questionEntry .muted{font-size:13px}@media(max-width:700px){.profileFields{grid-template-columns:1fr}}
@@ -312,9 +312,6 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
 @media(prefers-reduced-motion:reduce){#matchingProgressFill{transition:none}}
 
 
-.source-column{display:flex;flex-direction:column;gap:4px;font-size:11px;min-width:0;overflow-wrap:anywhere}
-.source-column a{font-weight:780;color:var(--accent)}
-.source-column small{font-size:10px;color:var(--muted)}
 .job-load-more{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px 12px;margin:4px 0 20px;color:#64748b;font-size:12px}
 .job-load-more[hidden]{display:none}
 .add-job-dialog{border:1px solid #dae2ef;border-radius:16px;padding:0;width:min(670px,calc(100vw - 24px));max-height:min(90vh,900px);box-shadow:0 30px 90px rgba(19,36,67,.22);background:#fff;color:#1c2d44;overflow:auto}
@@ -442,7 +439,7 @@ select{background:#fff;color:#283a51;border:1px solid #d9e0e9}
   </div>
 
   <div class="table" id="jobs">
-    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Match</div><div>Industry</div><div>Location</div><div>Source</div><div>Distance</div><div>Posted / Seen</div><div>Salary</div><div>Vacancy</div><div></div></div>
+    <div class="row head"><div><input id="selectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"></div><div>Company / Role</div><div id="scoreColumnLabel">Match</div><div>Industry</div><div>Location</div><div>Distance</div><div>Posted / Seen</div><div>Salary</div><div>Vacancy</div><div></div></div>
   </div>
   <div id="jobLoadMore" class="job-load-more" hidden>
     <button type="button" class="btn ghost" onclick="showMoreJobs()">Show 100 more</button>
@@ -1136,44 +1133,6 @@ function submitManualJob(event){
  const message=document.getElementById('scanMeta');
  if(message)message.textContent='✓ Manually added '+company+' — saved on this device for '+profile().name+'.';
 }
-
-/** Owner profile only: exclude all automated US/Asia/unknown worldwide roles.
- * Human-added jobs are deliberately not automatically removed. */
-function ownerGeographyAllowed(job){
- if(activeProfileId!=='owner'||job.type==='manual')return true;
- const loc=String(job.location||'').trim();
- if(!loc)return false;
- const blocked=/\b(united states|usa|u\.s\.a?\.?|us[ -]only|us[ -]remote|us[ -]based|north america|asia|apac|latin america|latam|india|indonesia|pakistan|bangladesh|china|hong kong|taiwan|japan|south korea|philippines|vietnam|thailand|malaysia|singapore|nepal|saudi arabia|uae|dubai|turkey|türkiye|africa|egypt|south africa|australia|new zealand|canada|brazil|mexico|argentina|colombia|chile|california|new york|san francisco|los angeles|seattle|chicago|austin|texas|toronto|vancouver|mumbai|bengaluru|tokyo|sydney|melbourne)\b/i;
- if(blocked.test(loc))return false;
- const remote=/\b(remote|home.?office|t[eé]l[eé]travail)\b/i.test(loc);
- const europe=/\b(europe|european|emea|eea|dach|eu\b)\b/i;
- const inScope=/\b(france|paris|lyon|montpellier|bordeaux|nantes|toulouse|marseille|lille|strasbourg|rennes|nice|estonia|tallinn|tartu|sweden|stockholm|gothenburg|göteborg|malmo|malmö|switzerland|suisse|schweiz|zurich|zürich|geneva|genève|lausanne|basel|bern|zug|italy|milan|milano|turin|torino|bologna|verona|venice|prague|praha|czechia|slovenia|ljubljana|poland|warsaw|warszawa|portugal|lisbon|lisboa|porto|luxembourg|monaco)\b/i;
- const countryRemote=/\b(germany|deutschland|austria|spain|netherlands|belgium|ireland|denmark|norway|finland|slovakia|romania|hungary|croatia|latvia|lithuania|bulgaria|greece|cyprus|malta)\b/i;
- return (remote&&europe.test(loc))||inScope.test(loc)||(remote&&countryRemote.test(loc));
-}
-function jobPostingSite(j){
- if(j.type==='manual')return 'Manual import';
- if(j.postingSite)return String(j.postingSite);
- const host=(()=>{try{return new URL(j.originalPostingUrl||j.applyUrl||j.sourceUrl||'').hostname.toLowerCase()}catch{return ''}})();
- const provider=String(j.provider||j.sourceDisplay||j.foundVia||'').toLowerCase();
- if(host.includes('linkedin.com'))return 'LinkedIn (linked)';
- if(host.includes('welcometothejungle.com')||provider.includes('wttj')||provider.includes('jungle'))return 'Welcome to the Jungle';
- if(host.includes('greenhouse.io')||provider.includes('greenhouse'))return 'Greenhouse';
- if(host.includes('ashbyhq.com')||provider.includes('ashby'))return 'Ashby';
- if(host.includes('lever.co')||provider.includes('lever'))return 'Lever';
- if(host.includes('teamtailor')||provider.includes('teamtailor'))return 'Teamtailor';
- if(host.includes('workable.com')||provider.includes('workable'))return 'Workable';
- if(host.includes('recruitee.com')||provider.includes('recruitee'))return 'Recruitee';
- if(host.includes('arbeitnow.com'))return 'Arbeitnow';
- return host.replace(/^www\./,'')||'Original site unknown';
-}
-function jobDiscoveryLabel(j){
- if(j.type==='manual')return 'Manually added';
- if(j.source==='owner-public-ats'||j.id?.startsWith('ownerats-'))return 'Direct employer feed';
- if(j.source==='career-ops'||j.id?.startsWith('careerops-'))return 'Career Ops collector';
- return 'Curated / manually linked';
-}
-
 function allProfileJobs(){return [...manualJobsFor(),...(activeProfileId==='owner'?jobs:(profileJobCache[activeProfileId]||[]))]}
 async function loadProfileJobs(){
  if(activeProfileId==='owner')return;
@@ -1268,7 +1227,6 @@ function practicalFit(j){
 }
 function filteredJobs(){
   let list=allProfileJobs().filter(j=>{
-    if(!ownerGeographyAllowed(j))return false;
     if(currentTab==='hidden') return isHidden(j);
     if(currentTab==='shortlist')return matchingYesIds().has(j.id)&&!isHidden(j)&&!isApplied(j);
     if(currentTab==='applied') return isApplied(j)&&!isHidden(j);
@@ -1370,7 +1328,7 @@ function renderCurrent(){
   rendered.forEach(j=>{
     const r=document.createElement('div');r.className='row data'+(j.type.includes('blocked')?' blocked':'');r.dataset.jobId=j.id;
     const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);
-    const sourceLabel=jobPostingSite(j),discoveryLabel=jobDiscoveryLabel(j);
+    const sourceLabel=j.foundVia||j.sourceDisplay||j.source||'Unknown source';
     const km=distanceKM(j);
     const inRadius=km!==null&&km<=Number(profile().distanceRadius||150);
     const proximityText=km===null?'—':km.toLocaleString()+' km';
@@ -1383,13 +1341,11 @@ function renderCurrent(){
     const id=String(j.id||'');
     if(!/^[a-zA-Z0-9_-]+$/.test(id))return;
     const applyLink=url?'<a href="'+escapeJobText(url)+'" target="_blank" rel="noopener noreferrer">Job ad ↗</a>':'';
-    const sourceLink=url?'<a href="'+escapeJobText(url)+'" target="_blank" rel="noopener noreferrer" title="Open original posting">'+escapeJobText(sourceLabel)+' ↗</a>':'<span>'+escapeJobText(sourceLabel)+'</span>';
     r.innerHTML='<div><input type="checkbox" '+(selectedJobs.has(id)?'checked':'')+' onchange="toggleJobSelection(\''+id+'\',this.checked)"></div>'+
       '<div><div class="company">'+escapeJobText(j.company)+'</div><div class="title">'+escapeJobText(j.title)+'</div><div class="meta"><span class="pill info">'+escapeJobText(sourceLabel)+'</span>'+(discoveredTimestamp(j)>Date.now()-7*86400000?'<span class="pill good">NEW</span>':'')+applyLink+'</div></div>'+
       '<div class="score">'+(j.type==='manual'?'—':score)+(bonus?'<div class="muted" style="font-size:10px">+'+bonus+' nearby</div>':'')+'</div>'+
       '<div class="industry">'+escapeJobText(industry)+'</div>'+
       '<div>'+escapeJobText(j.location||'—')+'</div>'+
-      '<div class="source-column">'+sourceLink+'<small>'+escapeJobText(discoveryLabel)+'</small></div>'+
       '<div class="'+(inRadius?'proximity-near':km===null?'proximity-unknown':'')+'">'+escapeJobText(proximityText)+'</div>'+
       '<div>'+escapeJobText(displayJobDate(j))+'</div>'+
       '<div class="salary">'+escapeJobText(j.salary&&j.salary!=='Undisclosed'?j.salary:'—')+'</div>'+
@@ -1447,7 +1403,7 @@ function persistMatchingYes(ids){
 }
 function matchingQueue(){
  return allProfileJobs()
-  .filter(j=>ownerGeographyAllowed(j)&&!isHidden(j)&&!isApplied(j)&&!matchingYesIds().has(j.id))
+  .filter(j=>!isHidden(j)&&!isApplied(j)&&!matchingYesIds().has(j.id))
   .sort((a,b)=>(b.type==='manual'?1:0)-(a.type==='manual'?1:0)||practicalFit(b)-practicalFit(a)||String(b.datePosted||'').localeCompare(String(a.datePosted||'')));
 }
 function refreshNavigation(){
@@ -1497,7 +1453,7 @@ function openMatchingShortlist(){
 function renderMatching(){
  const section=document.getElementById('matchingView'),container=document.getElementById('matchingCardContent');
  if(!section||!container)return;
- const totalJobs=allProfileJobs().filter(j=>ownerGeographyAllowed(j)&&!isApplied(j));
+ const totalJobs=allProfileJobs().filter(j=>!isApplied(j));
  const saved=matchingYesIds();
  const reviewed=totalJobs.filter(j=>isHidden(j)||saved.has(j.id)).length;
  const queue=matchingQueue();
@@ -1604,7 +1560,7 @@ async function enrichJobDetails(j){
       dDate.textContent=formatDate(j.datePosted);
       dLocation.textContent=j.location||'—';
       dSalary.textContent=j.salary||'Undisclosed';
-      dSource.textContent=jobPostingSite(j)+' · '+jobDiscoveryLabel(j);
+      dSource.textContent=j.foundVia||j.sourceDisplay||j.source||d.source||'Unknown';
       renderCurrent();
     }
   }catch{}
@@ -1613,7 +1569,7 @@ async function enrichJobDetails(j){
 function openDrawer(id){
   const j=allProfileJobs().find(x=>x.id===id);if(!j)return;activeJobId=id;
   dCompany.textContent=j.company;dTitle.textContent=j.title;dRec.textContent=j.rec;dStatus.textContent=isHidden(j)?'Hidden':isApplied(j)?'Applied':j.status;
-  dFit.textContent=j.type==='manual'?'Not scored':practicalFit(j)+'/100';dDomainFit.textContent=j.type==='manual'?'Not scored':(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSalary.textContent=j.salary||'Undisclosed';dSource.textContent=jobPostingSite(j)+' · '+jobDiscoveryLabel(j);
+  dFit.textContent=j.type==='manual'?'Not scored':practicalFit(j)+'/100';dDomainFit.textContent=j.type==='manual'?'Not scored':(j.domainFit??j.fit)+'/100';dHunter.textContent=j.hunter;dLocation.textContent=j.location;dDate.textContent=formatDate(j.datePosted);dSalary.textContent=j.salary||'Undisclosed';dSource.textContent=j.foundVia||j.sourceDisplay||j.source||'Unknown';
   const domain=domainFromJob(j);const companyUrl=safeUrl(j.companyUrl)||(j.domain?'https://'+j.domain:'');dDomain.innerHTML=domain==='—'?'—':(companyUrl?'<a href="'+companyUrl+'" target="_blank" rel="noopener">'+domain+' ↗</a>':domain);
   const url=safeUrl(j.applyUrl)||safeUrl(j.sourceUrl);dLink.innerHTML=url?'<a href="'+url+'" target="_blank" rel="noopener">Open job ad ↗</a>':'No direct link';
   dPros.innerHTML=(j.pros||[]).map(x=>'• '+x).join('<br>');dCons.innerHTML=(j.cons||[]).map(x=>'• '+x).join('<br>');
@@ -1986,7 +1942,7 @@ function mergeScannedJobs(payload){
  updateOwnerScanMeta();
 }
 function updateOwnerScanMeta(){
- const oldCount=jobs.filter(j=>j.id.startsWith('careerops-')&&ownerGeographyAllowed(j)).length;
+ const oldCount=jobs.filter(j=>j.id.startsWith('careerops-')).length;
  if(ownerAtsscanMeta){
   const m=ownerAtsscanMeta;
   scanMeta.textContent='IT/SaaS ATS: '+m.count+' current listed leads · '+m.newCount+' newly indexed last run · '+m.sourcesSucceeded+'/'+m.sourcesChecked+' boards checked · '+new Date(m.generatedAt).toLocaleString()+' · Career Ops historical leads: '+oldCount;

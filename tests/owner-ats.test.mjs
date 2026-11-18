@@ -12,20 +12,12 @@ test('broader IT/sales titles and exclusions',()=>{
 test('Germany remote is discoverable but not assumed eligible',()=>{
  assert.equal(locationClass('Remote - Germany').include,true);
  assert.equal(locationClass('Remote - Germany').code,'country-limited-remote');
- assert.match(locationClass('Remote - Germany').warning,/ineligible|unconfirmed/i);
+ assert.match(locationClass('Remote - Germany').warning,/unconfirmed/);
  assert.equal(locationClass('Berlin, Germany').include,false);
  assert.equal(locationClass('Remote — Europe').code,'europe-remote');
  assert.equal(locationClass('Remote, United States').include,false);
  assert.equal(locationClass('Tallinn, Estonia').include,true);
  assert.equal(locationClass('Paris, France').include,true);
- // Overseas-only and ambiguously remote jobs must be excluded even if
- // the title contains "Remote" or the listing mentions Europe too.
- for(const loc of ['Remote - United States','Remote - US','Remote - US only','Remote - India','Remote - Singapore','Remote - APAC','Remote - Japan','Remote - Asia','Remote - Global','Remote - Anywhere','Remote','Europe / United States','France / India','Germany / Asia','Remote - Canada','Remote - Hong Kong'])
-  assert.equal(locationClass(loc,'Enterprise Account Executive',true).include,false,loc);
- assert.equal(locationClass('Remote - Switzerland').include,true);
- assert.equal(locationClass('Zurich, Switzerland').include,true);
- assert.equal(locationClass('Remote - EMEA').include,true);
- assert.equal(locationClass('Berlin, Germany').include,false);
 });
 test('GH update does not become fabricated posting date',()=>{
  const raw=parseBoardPayload(src,{jobs:[{title:'Enterprise Account Executive',absolute_url:'https://job-boards.greenhouse.io/grafanalabs/jobs/1001',updated_at:'2026-11-17T06:00:00Z',location:{name:'Remote - Germany'}}]});

@@ -80,6 +80,7 @@ export const BOARDS = [
   {provider:'ashby',board:'jua',company:'Jua',industry:'Energy / AI data software'},
   // Cross-Europe remote
   {provider:'ashby',board:'enode',company:'Enode',industry:'Energy / EV software'},
+  {provider:'ashby',board:'lago',company:'Lago',industry:'Billing infrastructure SaaS'},
   {provider:'ashby',board:'alphalifesci',company:'Alpha Life Sciences',industry:'AI / Life sciences SaaS'},
   {provider:'ashby',board:'siena',company:'Siena AI',industry:'AI / Customer support SaaS'}
 ];
@@ -96,7 +97,7 @@ export function titleMatch(raw) {
 const ELIGIBLE_LOCAL=/\b(france|paris|lyon|bordeaux|toulouse|nantes|lille|rennes|montpellier|marseille|strasbourg|grenoble|nice|estonia|tallinn|tartu|sweden|stockholm|gothenburg|göteborg|malmo|malmö|switzerland|suisse|schweiz|z[uü]rich|geneva|genève|basel|basle|bern|berne|lausanne|zug|lucerne|luzern|winterthur|milan|milano|turin|torino|bologna|verona|venice|venezia|prague|praha|czechia|czech republic|slovenia|ljubljana|warsaw|warszawa|portugal|lisbon|lisboa|porto|luxembourg|monaco)\b/i;
 const EUROPE=/\b(europe|european|eu\b|emea|eea|western europe|northern europe|central europe|pan.european|anywhere in europe|europe-wide|dach)\b/i;
 const EUROPE_COUNTRY=/\b(germany|deutschland|österreich|austria|spain|netherlands|belgium|ireland|italy|poland|denmark|norway|finland|slovakia|romania|hungary|croatia|latvia|lithuania|bulgaria|greece|czechia|cyprus|malta|switzerland|suisse|schweiz|france|estonia|sweden|portugal|slovenia)\b/i;
-const OUTSIDE_EUROPE=/\b(united states|usa|u\.s\.a?\.?|us\b|us[ -]only|us[ -]based|us[ -]remote|united kingdom|india|indonesia|pakistan|bangladesh|china|hong kong|taiwan|japan|south korea|korea|philippines|vietnam|thailand|singapore|malaysia|nepal|israel|saudi arabia|united arab emirates|uae|dubai|qatar|turkey|türkiye|africa|south africa|egypt|nigeria|kenya|australia|new zealand|canada|brazil|argentina|mexico|chile|colombia|peru|latin america|latam|apac|asia|asia pacific|north america|n[ao]rth americas?|united states of america|california|new york|san francisco|los angeles|seattle|boston|chicago|austin|texas|toronto|vancouver|montreal|bengaluru|bangalore|hyderabad|mumbai|delhi|tokyo|sydney|melbourne)\b/i;
+const OUTSIDE_EUROPE=/\b(united states|usa|u\.s\.a?\.?|us[ -]only|us[ -]based|us[ -]remote|united kingdom|india|indonesia|pakistan|bangladesh|china|hong kong|taiwan|japan|south korea|korea|philippines|vietnam|thailand|singapore|malaysia|nepal|israel|saudi arabia|united arab emirates|uae|dubai|qatar|turkey|türkiye|africa|south africa|egypt|nigeria|kenya|australia|new zealand|canada|brazil|argentina|mexico|chile|colombia|peru|latin america|latam|apac|asia|asia pacific|north america|n[ao]rth americas?|united states of america|california|new york|san francisco|los angeles|seattle|boston|chicago|austin|texas|toronto|vancouver|montreal|bengaluru|bangalore|hyderabad|mumbai|delhi|tokyo|sydney|melbourne)\b/i;
 const REMOTE=/\b(remote|fully remote|work from home|home.?office|anywhere|distributed|t[eé]l[eé]travail)\b/i;
 /** Strict geographic discovery: only Europe / Switzerland; no US/Asia/unknown remote. */
 export function locationClass(location,title='',isRemote=false){

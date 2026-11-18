@@ -466,4 +466,7 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/partoo/jobs/account-executive-mid-market-cdi-paris-h-f-x_paris | Partoo | Account Executive Mid Market - CDI - Paris - H/F/X | Paris, France | 87000-92000 EUR | posted: 2026-11-05
 - [ ] https://www.welcometothejungle.com/en/companies/tandem-health-global-sas/jobs/commercial-partnerships-france_paris | Tandem Health | Account Executive - SMB + Primary Care | Paris, France | posted: 2026-11-04
 
+- [ ] https://www.welcometothejungle.com/en/companies/qwant/jobs/sales-account-executive-enterprise-sales-f-h-x_paris | Qwant | Sales Account Executive - Enterprise Sales (F/H/X) | Paris, France | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/worklife/jobs/customer-success-manager-f-h-44-a-48k-fixe-variable_paris | Worklife | Customer Success Manager - (F/H) - 44 à 48k fixe + variable | Paris, France | posted: 2026-11-18
+
 ## Processed

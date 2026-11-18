@@ -20,7 +20,7 @@ test('Germany remote is discoverable but not assumed eligible',()=>{
  assert.equal(locationClass('Paris, France').include,true);
  // Overseas-only and ambiguously remote jobs must be excluded even if
  // the title contains "Remote" or the listing mentions Europe too.
- for(const loc of ['Remote - United States','Remote - US only','Remote - India','Remote - Singapore','Remote - APAC','Remote - Japan','Remote - Asia','Remote - Global','Remote - Anywhere','Remote','Europe / United States','France / India','Germany / Asia','Remote - Canada','Remote - Hong Kong'])
+ for(const loc of ['Remote - United States','Remote - US','Remote - US only','Remote - India','Remote - Singapore','Remote - APAC','Remote - Japan','Remote - Asia','Remote - Global','Remote - Anywhere','Remote','Europe / United States','France / India','Germany / Asia','Remote - Canada','Remote - Hong Kong'])
   assert.equal(locationClass(loc,'Enterprise Account Executive',true).include,false,loc);
  assert.equal(locationClass('Remote - Switzerland').include,true);
  assert.equal(locationClass('Zurich, Switzerland').include,true);

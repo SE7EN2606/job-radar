@@ -469,4 +469,31 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/qwant/jobs/sales-account-executive-enterprise-sales-f-h-x_paris | Qwant | Sales Account Executive - Enterprise Sales (F/H/X) | Paris, France | posted: 2026-11-18
 - [ ] https://www.welcometothejungle.com/en/companies/worklife/jobs/customer-success-manager-f-h-44-a-48k-fixe-variable_paris | Worklife | Customer Success Manager - (F/H) - 44 à 48k fixe + variable | Paris, France | posted: 2026-11-18
 
+- [ ] https://www.welcometothejungle.com/en/companies/salesforce-1/jobs/account-executive-platform-security-specialist-public-sector_paris_huil63s3 | Salesforce | Account Executive (Platform & Security Specialist, Public Sector) | Paris, France | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/salesforce-1/jobs/enterprise-account-executive-healthcare_paris_m2wawnad | Salesforce | Enterprise Account Executive (Healthcare) | Paris, France | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/salesforce-1/jobs/account-executive-appromore_paris_znfzjuvz | Salesforce | Account Executive (Appromore) | Paris, France | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/okta/jobs/senior-technical-account-manager_london_dzyubkd7 | Okta | Senior Technical Account Manager | Warsaw, Poland | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/nasuni/jobs/enterprise-account-executive-neur_amsterdam_kc3brnub | Nasuni | Enterprise Account Executive (NEUR) | Stockholm, Sweden | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/jfrog/jobs/new-business-enterprise-account-executive_paris_4gylmnvt | JFrog | New Business Enterprise Account Executive | Paris, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/sophia-genetics/jobs/strategic-account-manager-customer-success-manager-france_paris_27cgmqs7 | SOPHiA GENETICS | Strategic Account Manager / Customer Success Manager (France) | Paris, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/learnlight/jobs/senior-strategic-account-manager_paris_mqlkauiv | Learnlight | Senior Strategic Account Manager | Paris, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/synera/jobs/account-executive_paris_c4vdf6om | Synera | Account Executive | Paris, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/magnite/jobs/account-director-of-publisher-platforms-adtech_paris_rmtfbjd2 | Magnite | Account Director of Publisher Platforms (AdTech) | Paris, France | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/inqom/jobs/key-account-manager-grands-comptes-expertise-comptable-h-f_paris | Inqom | Key Account Manager - Grands Comptes / Expertise Comptable (H/F) | Paris, France, Remote | 80000-100000 EUR | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-en-evenementiel-h-f-idf_paris | Gojob | Key Account Manager en Evènementiel H/F - IDF | Paris, France | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/h-h-group/jobs/kam-export_paris | H&H France | Key Account Manager Export (H/F) | Paris, France | posted: 2026-11-16
+- [ ] https://www.welcometothejungle.com/en/companies/kraaft/jobs/customer-success-manager_paris_KRAAF_pOl39Kg | Kraaft | 💙 Customer Success Manager 💛 | Paris, France | 35000-44993 EUR | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/filigran/jobs/senior-customer-success-emea_paris_aadfvb4o | Filigran | Senior Customer Success - EMEA | Paris, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/kong/jobs/senior-customer-success-manager_paris_wagplfw5 | Kong | Senior Customer Success Manager | Paris, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/bloomco/jobs/account-executive-senior-consulting-paris_paris | Bloomco | Account Executive Senior (consulting) - Paris | Paris, France | 70000-90000 EUR | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/skello/jobs/key-account-sales-executive_paris_SKELL_OlzXXyM | Skello | Account Executive (Mid Market / Enterprise) | Paris, France | posted: 2026-10-23
+- [ ] https://www.welcometothejungle.com/en/companies/lightspeed/jobs/field-account-executive_lyon_LIGHT_eokzl2L | Lightspeed | Field Account Executive | Lyon, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/darktrace/jobs/account-executive-acquisition_paris_lsbnkwck | Darktrace | Account Executive (Acquisition) | Paris, France | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/mediarithmics/jobs/account-executive_paris | mediarithmics | Account Executive | Paris, France | 100000-130000 EUR | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/beyond-plans/jobs/account-executive-epm-h-f_paris | Beyond Plans | Account Executive — EPM (H/F) | Paris, France | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/cafeyn/jobs/account-executive-b2b-cse_paris_CAFEY_mJlo4x1 | Cafeyn | Account Executive - B2B CSE | Paris, France | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/hipay/jobs/technical-account-manager-pos_levallois-perret_HIPAY_AyDK91Q | HiPay | Technical Account Manager POS | Levallois-Perret, France | 40000-45000 EUR | posted: 2026-11-18
+- [ ] https://www.welcometothejungle.com/en/companies/palo-alto-networks-1/jobs/global-account-manager_paris_k4ayysko | Palo Alto Networks | Global Account Manager | Paris, France, Remote | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/okta/jobs/technical-account-manager-auth0_london_tea4powa | Okta | Technical Account Manager (Auth0) | Paris, France | posted: 2026-11-19
+
 ## Processed

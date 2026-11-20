@@ -507,4 +507,6 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/doctolib/jobs/field-sales-fr-account-executive-lyon-x-f-m_lyon_zhiousy5 | Doctolib | \[Field Sales - FR \] Account Executive Lyon (x/f/m) | Lyon, France | posted: 2026-11-20
 - [ ] https://www.welcometothejungle.com/en/companies/septeo/jobs/account-manager-h-f_strasbourg | Septeo | Account Executive Marché Avocats H/F | Strasbourg, France | posted: 2026-11-09
 
+- [ ] https://www.welcometothejungle.com/en/companies/witco/jobs/technical-csm_paris | Witco | Technical Customer Success Manager (H/F) | Paris, France | 40000-50000 EUR | posted: 2026-11-18
+
 ## Processed

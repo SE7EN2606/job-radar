@@ -496,4 +496,15 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/palo-alto-networks-1/jobs/global-account-manager_paris_k4ayysko | Palo Alto Networks | Global Account Manager | Paris, France, Remote | posted: 2026-11-19
 - [ ] https://www.welcometothejungle.com/en/companies/okta/jobs/technical-account-manager-auth0_london_tea4powa | Okta | Technical Account Manager (Auth0) | Paris, France | posted: 2026-11-19
 
+- [ ] https://www.welcometothejungle.com/en/companies/dashdoc/jobs/account-executive-nantes_bordeaux | Dashdoc | Account Executive Nantes | Bordeaux, France | 40000-60000 EUR | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/360learning/jobs/key-account-manager-mid-market-pool_paris | 360Learning | Key Account Manager Mid-Market - Pool | Paris, France, Remote | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/360learning/jobs/key-account-manager-mid-market_paris_360LE_0mY7ook | 360Learning | Key Account Manager Mid Market | Paris, France, Remote | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/cognism/jobs/sales-director-france_paris_shpfb7qv | Cognism | Sales Director (France) | Paris, France | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/ipaidthat/jobs/customer-success_paris_IPAID_OLkrjjY | iPaidThat | Customer Success | Paris, France | 38000-43000 EUR | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/clerk/jobs/customer-sucess-manager-cdi_begles | Haiku | Customer Success Manager (CSM) Ops | Bègles, France, Remote | 35000 EUR | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/digitaleo-/jobs/account-executive-mid-market-f-h_rennes_DIGIT_zMOrV0 | Digitaleo | Account Executive Mid-Market F/H | Rennes, France | 45000-48000 EUR | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/qare/jobs/qare-relais-sante-sales-executive_paris | Qare | Qare Relais Santé Account Executive | Paris, France | posted: 2026-11-19
+- [ ] https://www.welcometothejungle.com/en/companies/doctolib/jobs/field-sales-fr-account-executive-lyon-x-f-m_lyon_zhiousy5 | Doctolib | \[Field Sales - FR \] Account Executive Lyon (x/f/m) | Lyon, France | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/septeo/jobs/account-manager-h-f_strasbourg | Septeo | Account Executive Marché Avocats H/F | Strasbourg, France | posted: 2026-11-09
+
 ## Processed

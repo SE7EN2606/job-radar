@@ -509,4 +509,30 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 
 - [ ] https://www.welcometothejungle.com/en/companies/witco/jobs/technical-csm_paris | Witco | Technical Customer Success Manager (H/F) | Paris, France | 40000-50000 EUR | posted: 2026-11-18
 
+- [ ] https://www.welcometothejungle.com/en/companies/scaleway/jobs/account-executive-retail-ecommerce_paris | Scaleway | Account Executive - Retail & Ecommerce | Paris, France | posted: 2026-11-21
+- [ ] https://www.welcometothejungle.com/en/companies/accenture-france/jobs/account-executive-sap-h-f_paris | Accenture France | Account Executive SAP - H/F | Paris, France | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/veeam-1/jobs/lead-account-executive-enterprise_paris_uigu22qi | Veeam | Lead Account Executive (Enterprise) | Paris, France | posted: 2026-11-22
+- [ ] https://www.welcometothejungle.com/en/companies/gitlab/jobs/strategic-account-executive-france_paris_wgcqdec2 | GitLab | Strategic Account Executive | Paris, France, Remote | posted: 2026-11-21
+- [ ] https://www.welcometothejungle.com/en/companies/anthropic/jobs/public-sector-sales-lead_paris_rqqpfsfg | Anthropic | Enterprise Account Executive (Public Sector) | Paris, France | posted: 2026-10-31
+- [ ] https://www.welcometothejungle.com/en/companies/preventeo/jobs/strategic-key-account-manager-grands-comptes-f-h_biot | PREVENTEO | Strategic Key Account Manager – Grands Comptes (F/H) | Biot, France | 60-70 EUR | posted: 2026-11-17
+- [ ] https://www.welcometothejungle.com/en/companies/opswat/jobs/regional-sales-manager-defence_paris_ladd3mvn | Opswat | Regional Sales Manager (Defence) | Paris, France, Remote | 200000-240000 EUR | posted: 2026-11-21
+- [ ] https://www.welcometothejungle.com/en/companies/staffmatch/jobs/key-account-manager-h-f_levallois-perret_STAFF_YDwWZMd | Staffmatch | Key account manager H/F | Levallois-Perret, France | 38000-45000 EUR | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/coachello/jobs/account-manager-b2b-strategic-clients_paris | Coachello | Key Account Manager B2B | Paris, France | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-en-logistique-h-f-region-aura_lyon | Gojob | Key Account Manager en Logistique H/F - Région AURA | Lyon, France | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/kiosk/jobs/key-account-manager-private-accounts_paris_gnaosqce | Parallel | Key Account Manager - Private Accounts | Paris, France | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/qobra/jobs/customer-success-manager_paris_QOBRA_Q2xQgoq | Qobra | Customer Success Manager | Paris, France | 50000 EUR | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/zei/jobs/customer-success-manager-grands-comptes_paris | Zei | Customer Success Manager ESG/RSE | Paris, France | 40000-50000 EUR | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/weefin/jobs/senior-customer-success-manager-data-esg_paris | WeeFin | Senior Customer Success Manager (Data & ESG) | Paris, France | 50000-60000 EUR | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/egerie/jobs/customer-success-manager_paris_EGERI_Mo6d4oR | EGERIE | Customer Success Manager | Paris, France | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/semperis/jobs/customer-success-manager_paris_xbih2fig | Semperis | Customer Success Manager | Paris, France | posted: 2026-11-22
+- [ ] https://www.welcometothejungle.com/en/companies/gitlab/jobs/customer-success-architect-france_paris_wrxo36dc | GitLab | Customer Success Architect (France) | Paris, France, Remote | posted: 2026-11-21
+- [ ] https://www.welcometothejungle.com/en/companies/simundia/jobs/6e078c2f-3935-4a5f-8ef1-9a0faa794562 | Simundia | Customer Success Manager (CSM) - CDI | Paris, France | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/exo/jobs/customer-success-h-f-cdi_paris_EXO_ZwLejjq | EXO | Customer success H/F (CDI) | Paris, France | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/qualisocial/jobs/account-executive-f-h_paris_QUALI_Mozq15J | Qualisocial | Account Executive F/H | Paris, France | 55000-65000 EUR | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/sas-lema/jobs/account-executive-cdi_paris | OLTEGA | Account Executive (CDI) | Paris, France | 60000 EUR | posted: 2026-11-20
+- [ ] https://www.welcometothejungle.com/en/companies/craft-ai/jobs/account-executive-ia_paris | Craft AI | Account Executive IA | Paris, France | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/bam-1/jobs/account-executive-aglo_marseille | BAM ARCHI | Account Executive — AGLO | Marseille, France | 31000 EUR | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/veeam-1/jobs/technical-account-manager_paris_rvbkotk4 | Veeam | Technical Account Manager | Paris, France, Remote | posted: 2026-11-22
+- [ ] https://www.welcometothejungle.com/en/companies/payfit/jobs/sales-mid-market-paris_paris | PayFit | Account Executive Mid Market - Paris | Paris, France | 97000 EUR | posted: 2026-11-20
+
 ## Processed

@@ -535,4 +535,25 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/veeam-1/jobs/technical-account-manager_paris_rvbkotk4 | Veeam | Technical Account Manager | Paris, France, Remote | posted: 2026-11-22
 - [ ] https://www.welcometothejungle.com/en/companies/payfit/jobs/sales-mid-market-paris_paris | PayFit | Account Executive Mid Market - Paris | Paris, France | 97000 EUR | posted: 2026-11-20
 
+- [ ] https://careers.teamviewer.com/jobs/8790074-technical-account-manager | TeamViewer | Technical Account Manager | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/swan/jobs/senior-account-executive-enterprise_paris_SWAN_XKZ53w1 | Swan | Senior Account Executive (Enterprise) | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/ab-tasty/jobs/senior-enterprise-account-executive-france_paris | AB Tasty | Senior Enterprise Account Executive - France | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/datadome/jobs/account-executive-dach_paris | DataDome | Account Executive -DACH | Paris, France, Remote | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/whoz/jobs/senior-customer-success-manager-strategic-accounts-f-h-x_paris_sft5x2h7 | Whoz | Senior Customer Success Manager – Strategic Accounts F/H/X | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/la-petite-epicerie/jobs/key-account-manager-commercial-grands-comptes-h-f_montreuil_qpghts5a | La Petite Epicerie | Key Account manager - Commercial grands comptes - H/F | Montreuil, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/comerso/jobs/customer-success-manager-comptes-franchises-gms-gss-h-f_lyon | Comerso | Customer Success Manager - Comptes franchisés - GMS / GSS (H/F) | Lyon, France, Remote | 30000-36000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/playplay/jobs/customer-success-manager-enterprise_paris_khcb2x6e | PlayPlay | Customer Success Manager Enterprise | Paris, France | 54000-60000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/singulart/jobs/customer-success-cdi-fr-en-help-9-000-artists-sell-worldwide_paris | SINGULART | Customer Success CDI (FR & EN): Help 9,000+ Artists Sell Worldwide | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/exo/jobs/customer-success-h-f-cdi_paris_EXO_5NXAyMr | EXO | Team lead customer success H/F FR/ENG (CDI) | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/mercateam/jobs/senior-customer-success-manager_paris_MERCA_k7Ap8w | Mercateam | Senior Customer Success Manager | Paris, France | 45000-60000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/skapa/jobs/customer-success-manager-expertise-copilote-exigee-international-h-f_paris | Skapa | Customer Success Manager– expertise Copilote exigée International (H/F) | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/clutch/jobs/customer-success-manager-onboarding-adoption-it-saas_paris | Primo | Customer Success | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/pollen/jobs/account-executive-cdi_paris_POLLE_22XJ37j | Pollen | Senior Account Executive (CDI à Paris) | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/sidecare/jobs/business-developer-b2b-account-executive_paris | SideCare | Business Developer B2B - Account Executive | Paris, France | 45000-80000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/younited/jobs/account-executive-f-h_paris | Younited | Account Executive (F/H) | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/datatorii/jobs/account-executive-business-manager_paris | Datatorii | Account Executive / Business Manager | Paris, France | 50000-90000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/c-clerc/jobs/5353a9e8-4e6d-4474-a4fd-a3e9426e7eb0 | C-Clerc | Account Executive (H/F) | Paris, France | 37000-60000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/sendinblue/jobs/account-executive-ecommerce_paris | Brevo | Account Executive, Ecommerce | Paris, France | posted: 2026-11-23
+- [ ] https://www.welcometothejungle.com/en/companies/360learning/jobs/account-executive-mid-market-france_paris_360LE_drPaa7a | 360Learning | Account Executive Mid-Market France | Paris, France, Remote | posted: 2026-11-21
+
 ## Processed

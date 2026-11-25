@@ -556,4 +556,26 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/sendinblue/jobs/account-executive-ecommerce_paris | Brevo | Account Executive, Ecommerce | Paris, France | posted: 2026-11-23
 - [ ] https://www.welcometothejungle.com/en/companies/360learning/jobs/account-executive-mid-market-france_paris_360LE_drPaa7a | 360Learning | Account Executive Mid-Market France | Paris, France, Remote | posted: 2026-11-21
 
+- [ ] https://www.welcometothejungle.com/en/companies/mistral-ai/jobs/account-executive-enterprise-public-sector_paris | Mistral Ai | Account Executive Enterprise, Public Sector | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/mistral-ai/jobs/account-executive-enterprise-manufacturing_paris | Mistral Ai | Account Executive Enterprise, Manufacturing | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/ovh/jobs/strategic-account-manager-m-w-n_paris | OVHcloud | Strategic Account Manager M/W/N | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/schneider-electric/jobs/key-account-manager-solar-distribution-ev-charging_eybens | Schneider Electric | Key Account Manager – Solar Distribution & EV Charging | Eybens, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/lesfurets/jobs/key-account-manager-h-f-nb_paris_LESFU_78Lq6Qg | lesfurets | Key Account Manager (H/F/NB) | Paris, France | 45000 EUR | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/lucca/jobs/consultant-customer-success-grands-comptes_paris_LUCCA_moJGk8Y | Lucca | Consultant Customer Success - Grands Comptes | Paris, France | 45000-55000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/seyna/jobs/talent-pool-customer-success-manager_paris | Seyna | Talent Pool - Customer Success Manager | Paris, France | 40000-80000 EUR | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/scaleway/jobs/customer-success-manager-france_paris_SCALE_1zPlj4M | Scaleway | Customer Success Manager - France | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/kiosk/jobs/lead-customer-success_paris_y7dpouzo | Parallel | Lead Customer Success | Paris, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/siemens-france/jobs/responsable-grands-comptes-developpement-defense-f-h_courbevoie | SIEMENS FRANCE | Responsable Grands Comptes & Développement Défense f/h | Courbevoie, France | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/jobglober/jobs/responsable-grands-comptes-flotte-f-h_paris | JOBGLOBER | Responsable Grands Comptes Flotte F/H | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/n2jsoft-fr/jobs/sales-director-grands-comptes-secteur-public_lyon | N2jsoft | Sales Director Grands Comptes & Secteur Public | Lyon, France | 80000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/socialy/jobs/directeur-de-clientele-some_paris | Socialy | Directeur de clientèle Social Media H/F | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/foodflow-1/jobs/business-developer-account-executive-h-f-idf-93-95_paris | FoodFlow | Business Developer - Account Executive (H/F) IDF 93/95 | Paris, France | 30000-60000 EUR | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/new-kryole/jobs/a108e314-7b34-473a-85b3-cf69bb2fa2d4 | NEW KRYOLE | Account Executive BtoB H/F | Paris, France | 40000-45000 EUR | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/septeo/jobs/account-manager-h-f_bouc-bel-air | Septeo | Account Executive H/F | Marseille, France | posted: 2026-11-09
+- [ ] https://www.welcometothejungle.com/en/companies/n2jsoft-fr/jobs/senior-key-account-executive_lyon_N2JSO_1Wp6weL | N2jsoft | Senior Key Account Executive | Lyon, France | 60000-80000 EUR | posted: 2026-11-24
+- [ ] https://www.welcometothejungle.com/en/companies/navan/jobs/senior-account-executive_paris_jtsmrjl4 | Navan | Senior Account Executive | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/ovh/jobs/technical-account-manager-f-h-n_roubaix | OVHcloud | Technical Account Manager F/H/N | Roubaix, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/braze/jobs/account-executive-scale_paris_ejh565ly | Braze | Account Executive, Scale | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/edf/jobs/strategy-business-development-manager-senior-f-h_courbevoie | EDF | Strategy & Business Development Manager Senior F/H | Courbevoie, France | posted: 2026-11-25
+
 ## Processed

@@ -578,4 +578,31 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/braze/jobs/account-executive-scale_paris_ejh565ly | Braze | Account Executive, Scale | Paris, France | posted: 2026-11-25
 - [ ] https://www.welcometothejungle.com/en/companies/edf/jobs/strategy-business-development-manager-senior-f-h_courbevoie | EDF | Strategy & Business Development Manager Senior F/H | Courbevoie, France | posted: 2026-11-25
 
+- [ ] https://www.welcometothejungle.com/en/companies/lighton-1/jobs/account-executive-enterprise-france-f-h_paris | LightOn | Account Executive Enterprise – France F/H | Paris, France | 90000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/yourban/jobs/7389ea8b-0d3e-404a-ba75-15f3c6935292 | Yourban | Account Executive Enterprise (H/F) | Paris, France | 80000-120000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/illuin-tech/jobs/senior-account-executive-enterprise-ai-solutions_paris | ILLUIN Technology | Senior Account Executive - Telecommunications (F/H) | Puteaux, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/mendo-1/jobs/account-executive-strategic-accounts_paris | Mendo | Account Executive Strategic Accounts | Paris, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/descours-cabaud/jobs/key-account-manager-f-h_saint-herblain_DC_w01A9kR | DESCOURS & CABAUD | Key account manager (F/H) | Saint-Herblain, France | 55000-60000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/descours-cabaud/jobs/key-account-manager-f-h_vendin-le-vieil_DC_wDG9eq8 | DESCOURS & CABAUD | Key account manager (F/H) | Vendin-le-Vieil, France | 55000-60000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/itec-materials/jobs/85b4257d-e440-48fc-aad5-2234b11d949c | Itec Materials | Key Account Manager Industrie | Lyon, France | 40000-50000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-division-retail-h-f-cdi-idf_paris | Gojob | Key Account Manager - division Retail (H/F) - CDI - IDF | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-industrie-h-f-region-calvados_caen | Gojob | Key Account Manager Industrie H/F - Région Calvados | Caen, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-industrie-h-f-region-eure_evreux | Gojob | Key Account Manager Industrie H/F - Région Eure | Évreux, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/grafana-labs/jobs/smb-account-executive_paris_vz4akhir | Grafana Labs | SMB Account Executive | Paris, France, Remote | 87000-94000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/docaposte-1/jobs/responsable-relation-client-customer-success-csm-f-h_ivry-sur-seine | Docaposte | Responsable Relation Client (Customer Success - CSM) F/H | Ivry-sur-Seine, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/doctrine/jobs/customer-success-manager_paris_DOCTR_A3L5X6o | Doctrine | Customer Success Manager | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/dawex/jobs/senior-customer-success-manager_DAWEX_bgK6z8q | Dawex | Senior Customer Success Manager | Paris, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/servicenow/jobs/senior-technical-customer-success-manager_sens_b4lepurc | ServiceNow | Senior Technical Customer Success Manager | Sens, France, Remote | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/modash/jobs/technical-customer-success-manager-europe_ee_yettaper | Modash | Technical Customer Success Manager (Europe) | Estonia, Remote | 60000-90000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/nomadia/jobs/sales-account-executive-field-service-management-h-f_paris | Nomadia | Account Executive (Field Service Management) (H/F) | Paris, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/nomadia/jobs/sales-account-executive-delivery-h-f_paris | Nomadia | Account Executive (Delivery) (H/F) | Paris, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/kahoot/jobs/senior-account-executive-education-france_paris_5lnq5ap6 | Kahoot! | Senior Account Executive (Education, France) | Paris, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/clio/jobs/senior-account-executive-mid-market-france_paris_v4u2thfi | Clio | Senior Account Executive, Mid Market France | Paris, France, Remote | 50200-75400 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/clio/jobs/senior-account-executive-smb-france_paris_xlviazj6 | Clio | Senior Account Executive (SMB France) | Paris, France, Remote | 50200-75400 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/paladin/jobs/account-executive-mid-market-h-f-x_paris | Paladin | Account Executive Mid-Market (H/F/X) | Paris, France | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/bureaudestalents/jobs/account-executive-recrutement_levallois-perret_cpdddvi4 | Bureaudestalents | Account Executive Recrutement | Levallois-Perret, France | 45000-70000 EUR | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/bureaudestalents/jobs/account-executive-secteur-martech_paris_j5dogtke | Bureaudestalents | Account Executive - Secteur MarTech | Paris, France | 55000-60000 EUR | posted: 2026-11-25
+- [ ] https://www.welcometothejungle.com/en/companies/la-belle-equipe/jobs/business-developer-accueil-en-entreprise | La Belle Equipe | Account Executive (H/F) | Lyon, France | 40000-65000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/flatpay/jobs/account-executive-h-f_saint-ouen-sur-seine | Flatpay | Account Executive (H/F) | Saint-Ouen-sur-Seine, France | posted: 2026-11-25
+
 ## Processed

@@ -605,4 +605,17 @@ Paste job URLs below as `- [ ] {url}` then run `/career-ops pipeline`.
 - [ ] https://www.welcometothejungle.com/en/companies/la-belle-equipe/jobs/business-developer-accueil-en-entreprise | La Belle Equipe | Account Executive (H/F) | Lyon, France | 40000-65000 EUR | posted: 2026-11-26
 - [ ] https://www.welcometothejungle.com/en/companies/flatpay/jobs/account-executive-h-f_saint-ouen-sur-seine | Flatpay | Account Executive (H/F) | Saint-Ouen-sur-Seine, France | posted: 2026-11-25
 
+- [ ] https://www.welcometothejungle.com/en/companies/elevo/jobs/senior-account-executive-paris_paris | Elevo | Senior Account Executive (Paris) | Paris, France | posted: 2026-11-27
+- [ ] https://www.welcometothejungle.com/en/companies/stormshield/jobs/key-account-manager-comptes-publics-strategiques-f-h_paris | Stormshield | Key Account Manager Comptes publics stratégiques F/H | Paris, France | posted: 2026-11-27
+- [ ] https://www.welcometothejungle.com/en/companies/stormshield/jobs/key-account-manager-defense-f-h_paris | Stormshield | Key Account Manager Défense F/H | Paris, France | posted: 2026-11-27
+- [ ] https://www.welcometothejungle.com/en/companies/gojob/jobs/key-account-manager-en-logistique-h-f-cdi-rouen-76_rouen | Gojob | Key Account Manager en Logistique H/F - (CDI) - Rouen (76) | Rouen, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/supervan/jobs/key-account-manager-retail-region_paris | Supervan | Key Account Manager – Retail & Région | Paris, France | posted: 2026-11-27
+- [ ] https://www.welcometothejungle.com/en/companies/phenix-1/jobs/customer-success-manager-nice_nice_PHENI_Vb49zP9 | Phenix | Customer Success Manager - Nice | Nice, France | 31-35000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/phenix-1/jobs/customer-success-manager-bordeaux_bordeaux_PHENI_a92agrJ | Phenix | Customer success manager Bordeaux | Bordeaux, France | 31000-35000 EUR | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/groupe-henner/jobs/directeur-de-clientele-international-employee-benefits-f-h_neuilly-sur-seine_GH_w9p3MZR | Groupe Henner | Directeur de Clientèle International Employee Benefits F/H | Neuilly-sur-Seine, France | posted: 2026-11-27
+- [ ] https://www.welcometothejungle.com/en/companies/axa/jobs/maxis-gbn-account-executive-western-europe-f-h_puteaux_fl4fucze | AXA | MAXIS GBN - Account Executive Western Europe F/H | Puteaux, France | posted: 2026-11-27
+- [ ] https://www.welcometothejungle.com/en/companies/sahar/jobs/international-account-executive-btog_paris | SAHAR | International Account Executive BtoG | Paris, France | 105000-135000 EUR | posted: 2026-11-27
+- [ ] https://www.welcometothejungle.com/en/companies/fe-fundinfo/jobs/senior-business-development-manager-dissemination-distribution_paris_fu4cw3qf | FE Fundinfo | Senior Business Development Manager (Dissemination & Distribution) | Paris, France | posted: 2026-11-26
+- [ ] https://www.welcometothejungle.com/en/companies/alma/jobs/account-executive-smb-italy_milan_ALMA_1VpeYV0 | Alma | Inbound Account Executive SMB - Italy | Milan, Italy | posted: 2026-11-27
+
 ## Processed
